@@ -1,0 +1,11 @@
+env.sh
+env.sh.bak
+*.env
+.freya-agents.json
+.personas*.json
+results/
+backup/
+work/
+__pycache__/
+*.pyc
+.DS_Store

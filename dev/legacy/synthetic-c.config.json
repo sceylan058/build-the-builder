@@ -1,0 +1,514 @@
+{
+ "openapi": "briefs/synthetic-c.openapi.json",
+ "calendar": {
+  "workdays": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "holidays": [],
+  "now_var": "now",
+  "numeric_date_order": "mdy",
+  "horizon_days": 7
+ },
+ "system_prompt": "You are Freya Air's virtual assistant, answering a passenger who called in about a cancelled flight. Speak English. One or two short sentences per turn, one question at a time.\nRules that always hold:\n- If asked whether you are a robot: say you are Freya Air's virtual assistant, then continue.\n- Never offer cash compensation or any option not given to you. Never invent flights, prices or rules.\n- Honesty: never say something is rebooked, refunded or issued unless a tool result says it worked.\n- Tools: when a rule says to call a tool, call it. One tool call per message. After every tool result, call the next tool or speak; obey what_to_do_next.\n- Never say goodbye yourself: a closing line is spoken automatically.",
+ "items": {
+  "source_var": "tickets",
+  "id_field": "ticket_id",
+  "noun": "ticket",
+  "noun_plural": "tickets",
+  "label": {
+   "field": "route",
+   "templates": {}
+  },
+  "tiers": {
+   "expr": "it.get('hours_notice')",
+   "list": [
+    {
+     "name": "under_24h",
+     "min": -1000000,
+     "max": 23.99,
+     "limit": {
+      "type": "calendar_days",
+      "n": 7,
+      "adjust": "next_business_day"
+     },
+     "voucher_pct": 120,
+     "ladder": [
+      {
+       "text": "rebook on any flight up to {rebook_until_say}",
+       "date": "limit"
+      },
+      {
+       "text": "a full refund of {fare_m}"
+      },
+      {
+       "text": "a voucher of {voucher_m} (120 % of the fare)"
+      }
+     ]
+    },
+    {
+     "name": "24_to_48h",
+     "min": 24,
+     "max": 48,
+     "limit": {
+      "type": "calendar_days",
+      "n": 3,
+      "adjust": "next_business_day"
+     },
+     "voucher_pct": 110,
+     "ladder": [
+      {
+       "text": "rebook on any flight up to {rebook_until_say}",
+       "date": "limit"
+      },
+      {
+       "text": "a voucher of {voucher_m} (110 % of the fare)"
+      }
+     ]
+    },
+    {
+     "name": "over_48h",
+     "min": 48.01,
+     "max": 1000000,
+     "limit": {
+      "type": "calendar_days",
+      "n": 3,
+      "adjust": "next_business_day"
+     },
+     "voucher_pct": 100,
+     "ladder": [
+      {
+       "text": "rebook on any flight up to {rebook_until_say}",
+       "date": "limit"
+      },
+      {
+       "text": "a voucher of {voucher_m} (100 % of the fare)"
+      }
+     ]
+    }
+   ]
+  },
+  "fields": {
+   "fare": "num(it.get('fare'))",
+   "voucher": "round(f['fare'] * T['voucher_pct'] / 100, 2)",
+   "rebook_until": "rule_date(T['limit'], today)"
+  },
+  "limit_field": "rebook_until",
+  "text": "{n}. ticket_id {id}: {label}, original departure {departure}, cancelled {hours_notice} hours before departure. Fare {fare_m}. Rebooking window: up to {rebook_until_say} ({rebook_until_iso}).",
+  "ladder": {
+   "header": "   OPTIONS ({n} option{s}; each no moves to the next option, nothing goes in between):",
+   "step": "     option {k}: {text}",
+   "footer": "     after option {n} is declined: STOP, this ticket has no resolution. No other option."
+  },
+  "header": "TICKETS, in this order:",
+  "summary": {
+   "line": "Your flight {label}, departing {departure}, was cancelled.",
+   "single": "Thank you, I found your booking. {line} Let me go through your options.",
+   "multi": "Thank you, I found your booking with {count} cancelled tickets. {lines} Let me go through your options for each one."
+  },
+  "facts_var": "ticket_facts",
+  "summary_var": "ticket_summary"
+ },
+ "tools": {
+  "lookup_booking": {
+   "role": "verify",
+   "description": "Find the booking and check the caller. CALL it once you have the booking reference, the last name and the date of the first flight.",
+   "fields": {
+    "pnr": {
+     "description": "Booking reference, 6 letters or digits, as said."
+    },
+    "last_name": {
+     "description": "Passenger's last name."
+    },
+    "flight_date": {
+     "description": "Date of the first flight as YYYY-MM-DD (numbers-only dates are month, day, year)."
+    }
+   },
+   "map": [
+    {
+     "path": "data.tickets",
+     "var": "tickets"
+    },
+    {
+     "path": "data.found",
+     "var": "booking_found"
+    }
+   ]
+  },
+  "rebook_flight": {
+   "role": "record",
+   "description": "Rebook one ticket. CALL it once per ticket whose rebooking the caller confirmed in the read-back.",
+   "fields": {
+    "ticket_id": {
+     "description": "ticket_id from the TICKETS list, copied exactly."
+    },
+    "new_date": {
+     "description": "The confirmed new flight date, YYYY-MM-DD."
+    }
+   },
+   "record": {
+    "item_arg": "ticket_id",
+    "noun": "resolution",
+    "clamp": [
+     {
+      "arg": "new_date",
+      "type": "date",
+      "max_field": "rebook_until"
+     }
+    ],
+    "confirm": "rebooked for {new_date}",
+    "confirm_note": "Tell the caller exactly this.",
+    "give_up": "Tell the caller this ticket could not be changed because of a technical problem."
+   }
+  },
+  "issue_refund": {
+   "role": "record",
+   "description": "Refund one ticket. CALL it once per ticket whose refund the caller confirmed in the read-back.",
+   "fields": {
+    "ticket_id": {
+     "description": "ticket_id from the TICKETS list, copied exactly."
+    }
+   },
+   "record": {
+    "item_arg": "ticket_id",
+    "noun": "resolution",
+    "confirm": "",
+    "confirm_note": "Tell the caller the refund is issued.",
+    "give_up": "Tell the caller the refund could not be issued because of a technical problem."
+   }
+  },
+  "issue_voucher": {
+   "role": "record",
+   "description": "Issue a voucher for one ticket. CALL it once per ticket whose voucher the caller confirmed in the read-back.",
+   "fields": {
+    "ticket_id": {
+     "description": "ticket_id from the TICKETS list, copied exactly."
+    },
+    "amount": {
+     "description": "The voucher amount from the TICKETS list."
+    }
+   },
+   "record": {
+    "item_arg": "ticket_id",
+    "noun": "resolution",
+    "clamp": [
+     {
+      "arg": "amount",
+      "type": "number",
+      "max_field": "voucher"
+     }
+    ],
+    "confirm": "voucher of {amount}",
+    "confirm_note": "Tell the caller exactly this.",
+    "give_up": "Tell the caller the voucher could not be issued because of a technical problem."
+   }
+  },
+  "escalate_to_agent": {
+   "role": "flag",
+   "description": "Hand over to a person. CALL it with reason request when the caller asks for a human or complains; with reason third_party when someone who is not the passenger wants to leave a message.",
+   "fields": {
+    "reason": {
+     "description": "Why the call is handed over."
+    }
+   },
+   "flag": {
+    "value_arg": "reason",
+    "ledger_key": "escalated",
+    "var": "escalated",
+    "ok_text": "The hand-over is done.",
+    "fail_text": "The hand-over did NOT work. Tell the caller you could not connect them right now."
+   }
+  },
+  "close_call": {
+   "role": "close"
+  }
+ },
+ "flow": {
+  "start": "identify",
+  "nodes": {
+   "identify": {
+    "type": "verify",
+    "enter": {
+     "tts": "Thank you for calling Freya Air. I am a virtual assistant and this call is being recorded. How can I help you today?"
+    },
+    "task": "The caller is calling about a cancelled flight. Ask for the booking reference, the passenger's last name and the date of the first flight, then call lookup_booking with all three. Obey what_to_do_next after each result.\n- If the caller says they are not the passenger (a relative, a colleague, a travel agent), do not look anything up.\n- If they ask for a human or want to complain, call escalate_to_agent with reason request.\nSay nothing about any ticket before the booking is found.",
+    "tools": [
+     "lookup_booking",
+     "escalate_to_agent"
+    ],
+    "tool_overrides": {
+     "escalate_to_agent": {
+      "fields": {
+       "reason": {
+        "enum": [
+         "request"
+        ]
+       }
+      }
+     }
+    },
+    "extract": [
+     {
+      "name": "caller",
+      "type": "string",
+      "enum_values": [
+       "passenger",
+       "someone_else",
+       "unclear"
+      ],
+      "description": "Is the caller the passenger? someone_else: a relative, colleague or travel agent calling for the passenger.",
+      "min_confidence": 0.6
+     }
+    ],
+    "verify": {
+     "tool": "lookup_booking",
+     "questions": [
+      {
+       "field": "pnr",
+       "ask": "the booking reference",
+       "kind": "text"
+      },
+      {
+       "field": "last_name",
+       "ask": "the passenger's last name",
+       "kind": "text"
+      },
+      {
+       "field": "flight_date",
+       "ask": "the date of the first flight",
+       "kind": "date"
+      }
+     ],
+     "args": {},
+     "response": {
+      "verified": "found"
+     },
+     "max_wrong": 3,
+     "on_pass": "clock_now",
+     "on_fail": "end:not_found",
+     "pass_description": "Booking found"
+    },
+    "turns": 15,
+    "overflow": "end:none",
+    "routes": [
+     {
+      "to": "third_party",
+      "when": {
+       "eq": [
+        "caller",
+        "someone_else"
+       ]
+      },
+      "description": "Not the passenger"
+     },
+     {
+      "to": "end:escalated",
+      "when": {
+       "set": "escalated"
+      },
+      "description": "Handed over"
+     }
+    ]
+   },
+   "clock_now": {
+    "type": "clock",
+    "next": "compute_tickets"
+   },
+   "third_party": {
+    "type": "converse",
+    "enter": {
+     "llm": "The caller is not the passenger. Say that only the passenger can change the booking, and offer to pass a message to a colleague."
+    },
+    "task": "The caller is not the passenger. Do not look up or change anything. If they want to leave a message, call escalate_to_agent with reason third_party. Otherwise call transition_to_end_third_party.",
+    "tools": [
+     "escalate_to_agent"
+    ],
+    "tool_overrides": {
+     "escalate_to_agent": {
+      "fields": {
+       "reason": {
+        "enum": [
+         "third_party"
+        ]
+       }
+      }
+     }
+    },
+    "turns": 6,
+    "overflow": "end:third_party",
+    "routes": [
+     {
+      "to": "end:escalated",
+      "when": {
+       "set": "escalated"
+      },
+      "description": "Message passed on"
+     },
+     {
+      "to": "end:third_party",
+      "tool_call": true,
+      "description": "The caller does not want to leave a message."
+     }
+    ]
+   },
+   "compute_tickets": {
+    "type": "compute",
+    "next": "options",
+    "fail": "end:lookup_error"
+   },
+   "options": {
+    "type": "converse",
+    "enter": {
+     "tts": "{{ticket_summary}}"
+    },
+    "task": "The booking is found.\n{{today_facts}}\n\n{{ticket_facts}}\n\nRULES\nA. Go through the tickets one by one, in the order listed, naming each. For each ticket offer its options in the order of its OPTIONS list, one at a time. A no or a non-answer moves to the next option. Never offer an option that is not in that ticket's list and never offer cash.\nB. A rebooking date must be on or before that ticket's rebooking window end. Look the date up in the CALENDAR.\nC. When every ticket has a chosen option or no resolution: say \"To confirm:\" and read all chosen options back together, then ask \"Do you confirm?\". After a clear yes, call transition_to_record. If no ticket has a chosen option, call transition_to_end_none.\nD. A request for a human or a complaint: call escalate_to_agent with reason request.\nNever use the words rebooked, refunded or issued in this step.\n\n{{calendar_facts}}",
+    "tools": [
+     "escalate_to_agent"
+    ],
+    "tool_overrides": {
+     "escalate_to_agent": {
+      "fields": {
+       "reason": {
+        "enum": [
+         "request"
+        ]
+       }
+      }
+     }
+    },
+    "turns": 40,
+    "overflow": "end:none",
+    "routes": [
+     {
+      "to": "end:escalated",
+      "when": {
+       "set": "escalated"
+      },
+      "description": "Handed over"
+     },
+     {
+      "to": "record",
+      "tool_call": true,
+      "description": "The caller clearly confirmed the read-back of the chosen options."
+     },
+     {
+      "to": "end:none",
+      "tool_call": true,
+      "description": "No ticket has a chosen option."
+     }
+    ]
+   },
+   "record": {
+    "type": "converse",
+    "enter": {
+     "llm": "The caller confirmed. Your next message must be ONLY a tool call: the tool for the first ticket with a chosen option, with exactly the confirmed values."
+    },
+    "task": "Carry out what was confirmed.\n{{ticket_facts}}\n- For each ticket with a chosen option call its tool once: rebook_flight (ticket_id, new_date), issue_refund (ticket_id) or issue_voucher (ticket_id, amount).\n- One tool call per message. Obey what_to_do_next. Never ask for confirmation again.\n- Never say something is done unless the tool result says it IS recorded.\n- When what_to_do_next says every ticket is handled: tell the caller briefly what was done, then call transition_to_end_done.",
+    "tools": [
+     "rebook_flight",
+     "issue_refund",
+     "issue_voucher"
+    ],
+    "record_noun": "resolution",
+    "turns": 12,
+    "overflow": "end:done",
+    "routes": [
+     {
+      "to": "end:done",
+      "tool_call": true,
+      "done": true,
+      "description": "Every ticket is handled and the caller was told what was done."
+     }
+    ]
+   }
+  }
+ },
+ "outcomes": {
+  "rules": [
+   {
+    "when": {
+     "flag": "escalated"
+    },
+    "outcome": "escalated"
+   },
+   {
+    "when": {
+     "recorded_by": "issue_refund"
+    },
+    "outcome": "refunded"
+   },
+   {
+    "when": {
+     "recorded_by": "rebook_flight"
+    },
+    "outcome": "rebooked"
+   },
+   {
+    "when": {
+     "recorded_by": "issue_voucher"
+    },
+    "outcome": "voucher_issued"
+   }
+  ],
+  "by_hint": {
+   "done": [
+    "no_resolution",
+    ""
+   ],
+   "none": [
+    "no_resolution",
+    ""
+   ],
+   "not_found": [
+    "no_resolution",
+    ""
+   ],
+   "third_party": [
+    "no_resolution",
+    ""
+   ],
+   "lookup_error": [
+    "no_resolution",
+    ""
+   ],
+   "escalated": [
+    "escalated",
+    ""
+   ]
+  },
+  "no_reason": [
+   "escalated",
+   "refunded",
+   "rebooked",
+   "voucher_issued",
+   "no_resolution"
+  ],
+  "args": {
+   "outcome": "outcome"
+  }
+ },
+ "closing": {
+  "lines": {
+   "default": "Thank you for calling Freya Air. Goodbye.",
+   "not_found": "I am sorry, I could not find the booking. You can also manage it on our website. Thank you for calling Freya Air. Goodbye.",
+   "third_party": "Only the passenger can change the booking. Thank you for calling Freya Air. Goodbye.",
+   "escalated": "A colleague will take it from here. Thank you for calling Freya Air. Goodbye.",
+   "lookup_error": "I am sorry, I cannot open the booking right now because of a technical problem. Thank you for calling Freya Air. Goodbye."
+  },
+  "after_records": {
+   "prefix": "You will receive a confirmation by email.",
+   "line": "default",
+   "unless_flag": "escalated"
+  }
+ },
+ "test_variables": {
+  "customer_id": "c_test",
+  "now": "2026-11-03T09:30",
+  "closing_line": "Thank you for calling Freya Air. Goodbye."
+ }
+}
