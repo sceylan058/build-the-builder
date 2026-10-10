@@ -161,7 +161,8 @@ def make_guard(workdir, T):
                 why = f"{name} outside the work folder: {ti.get('path')} {ti.get('pattern')}"
         elif name == "Bash":
             cmd = str(ti.get("command", ""))
-            abs_paths = [m for m in re.findall(r"(?<![\w.])(/[^\s'\";|&]+)", cmd) if not (m == root or m.startswith(root + os.sep)) and m not in ("/dev/null",)]
+            abs_paths = [m for m in re.findall(r"(?<![\w.])(/[^\s'\";|&]+)", cmd)
+                         if not (m == root or m.startswith(root + os.sep)) and m not in ("/dev/null",) and not (m.startswith(spill) and "/tool-results/" in m)]
             if ".." in cmd or "~" in cmd or abs_paths or re.search(r"\bcd\s+/", cmd) or "$HOME" in cmd:
                 why = f"Bash command reaches outside the work folder: {cmd[:160]}"
         elif name not in ("TodoWrite",):
@@ -191,7 +192,8 @@ class Writer:
             hooks={"PreToolUse": [HookMatcher(matcher=None, hooks=[make_guard(self.workdir, self.T)])]},
             system_prompt=("You write config.json for a phone-agent generator, inside the current folder only. "
                            "Follow skill/SKILL.md exactly. Never read or write outside the current folder."),
-            env={"BASH_DEFAULT_TIMEOUT_MS": "120000"})
+            env=dict({"BASH_DEFAULT_TIMEOUT_MS": "120000"}, **({"ANTHROPIC_API_KEY": os.environ["ANTHROPIC_API_KEY"]} if os.environ.get("ANTHROPIC_API_KEY") else {})))
+        self.T.line("model credentials: " + ("ANTHROPIC_API_KEY (from the environment)" if os.environ.get("ANTHROPIC_API_KEY") else "Claude login (no ANTHROPIC_API_KEY set)"))
         self.client = ClaudeSDKClient(options=opts)
         await self.client.connect()
 
