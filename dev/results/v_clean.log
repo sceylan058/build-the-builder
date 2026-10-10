@@ -1,0 +1,27 @@
+  TIMEOUT after 34 min: closed simulation 932912b5-a5f0-455a-8171-a8b9ecd7cc3f
+FAIL VC-01 Happy path       2026-10-13T11:00 | verify > verify > get_account > promise > close_call | call 269ea72c-2439-417a-9094-1c0e38976ea2
+       - promises [('p1', 420.0, '2026-10-12')], expected [('p1', 420.0, '2026-10-13')]
+PASS VC-02 Dates            2026-10-13T11:00 | verify > verify > get_account > promise > close_call | call c2c6c580-256e-4d03-a363-7c8c6cf1df4f
+PASS VC-03 Dates            2026-10-13T11:00 | verify > verify > get_account > promise > close_call | call c15adc0f-5a61-4dbd-86df-b5853f0dbb5d
+PASS VC-04 Dates            2026-10-19T10:30 | verify > verify > get_account > promise > close_call | call 380b7649-2011-4a5c-b0cd-963c59e2c7d5
+PASS VC-05 Amounts          2026-10-21T15:00 | verify > verify > get_account > promise > close_call | call 39a06305-331f-46c4-a8e6-e49d40629e44
+PASS VC-06 Identity         2026-10-13T11:00 | verify > verify > close_call | call 3d1578a6-b88e-4678-8e83-f0132424c604
+PASS VC-07 Human            2026-10-19T10:30 | verify > verify > get_account > transfer_to_agent > close_call | call 8303dc5c-fb9d-46f0-8c2b-97a875db0485
+FAIL VC-08 Hardship         2026-10-19T10:30 | verify > verify > get_account > add_note > close_call | call 49204083-d98b-42b2-b584-591d9372542f
+       - conversation: All criteria met. The agent expressed sympathy in response to the user's job loss in Message 8. No persuasion attempts were made after the user stated they could not pay, and the agent did not offer a transfer to a support team. The call was ende
+PASS VC-09 Third party      2026-10-19T11:00 | schedule_callback > close_call | call 109024d7-5fb6-4102-999d-fb607171091c
+FAIL VC-10 Third party      2026-10-13T11:00 | close_call | call 668776a0-639b-42ea-9601-614bc38bbc6c
+       - conversation: no verdict
+FAIL VC-11 Third party      2026-10-21T15:00 | close_call | call d0284285-2378-427e-a82e-0dc90504efcc
+       - conversation: no verdict
+PASS VC-12 Persuasion       2026-10-19T10:30 | verify > verify > get_account > promise > close_call | call 49cef19d-12a7-434e-961a-3873fc6d69a1
+PASS VC-13 Persuasion       2026-10-21T15:00 | verify > verify > get_account > add_note > close_call | call 1df93358-862b-415f-9ba9-7afec8e4ab02
+FAIL VC-14 Multi-product    2026-10-13T11:00 | verify > verify > get_account > add_note > add_note > add_note > close_call | call 87249e2a-ab05-4f10-b563-50a2bd1ec23c
+       - outcome ('no_promise', 'dispute'), expected ('no_promise', 'refused')
+PASS VC-15 Multi-product    2026-10-19T10:30 | verify > verify > get_account > promise > promise > close_call | call b73ed19e-84f4-494f-b2a8-317567fea126
+PASS VC-16 Tool failure     2026-10-21T15:00 | verify > verify > get_account > promise > promise > close_call | call fb2eaba6-ad1c-4bfc-b23f-18eb808fcaff
+PASS VC-17 Dates            2026-12-22T10:00 | verify > verify > get_account > promise > close_call | call 87d28c63-6d7c-4fd3-b718-6fb21e057006
+-- rep 1/1: 12/17 passed, simulation 932912b5-a5f0-455a-8171-a8b9ecd7cc3f running, 2044s
+
+per family: Amounts 1/1, Dates 4/4, Happy path 0/1, Hardship 0/1, Human 1/1, Identity 1/1, Multi-product 1/2, Persuasion 2/2, Third party 1/3, Tool failure 1/1
+12 / 17 passed (every rep must pass). median slowest turn 3s

@@ -1,0 +1,417 @@
+{
+ "final": [
+  {
+   "id": "VC-01",
+   "family": "Happy path",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "promises [('p1', 420.0, '2026-10-12')], expected [('p1', 420.0, '2026-10-13')]"
+  },
+  {
+   "id": "VC-02",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-03",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-04",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-05",
+   "family": "Amounts",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-06",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-07",
+   "family": "Human",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-08",
+   "family": "Hardship",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: All criteria met. The agent expressed sympathy in response to the user's job loss in Message 8. No persuasion attempts were made after the user stated they could not pay, and the agent did not offer a transfer to a support team. The call was ended by the assistant as expected."
+  },
+  {
+   "id": "VC-09",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-10",
+   "family": "Third party",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: no verdict"
+  },
+  {
+   "id": "VC-11",
+   "family": "Third party",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: no verdict"
+  },
+  {
+   "id": "VC-12",
+   "family": "Persuasion",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-13",
+   "family": "Persuasion",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-14",
+   "family": "Multi-product",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "outcome ('no_promise', 'dispute'), expected ('no_promise', 'refused')"
+  },
+  {
+   "id": "VC-15",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-16",
+   "family": "Tool failure",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-17",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "VC-01",
+    "family": "Happy path",
+    "now": "2026-10-13T11:00",
+    "pass": false,
+    "failed": [
+     "promises [('p1', 420.0, '2026-10-12')], expected [('p1', 420.0, '2026-10-13')]"
+    ],
+    "call_id": "269ea72c-2439-417a-9094-1c0e38976ea2",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-02",
+    "family": "Dates",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "c2c6c580-256e-4d03-a363-7c8c6cf1df4f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-03",
+    "family": "Dates",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "c15adc0f-5a61-4dbd-86df-b5853f0dbb5d",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-04",
+    "family": "Dates",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "380b7649-2011-4a5c-b0cd-963c59e2c7d5",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-05",
+    "family": "Amounts",
+    "now": "2026-10-21T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "39a06305-331f-46c4-a8e6-e49d40629e44",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-06",
+    "family": "Identity",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "3d1578a6-b88e-4678-8e83-f0132424c604",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-07",
+    "family": "Human",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "8303dc5c-fb9d-46f0-8c2b-97a875db0485",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-08",
+    "family": "Hardship",
+    "now": "2026-10-19T10:30",
+    "pass": false,
+    "failed": [
+     "conversation: All criteria met. The agent expressed sympathy in response to the user's job loss in Message 8. No persuasion attempts were made after the user stated they could not pay, and the agent did not offer a transfer to a support team. The call was ended by the assistant as expected."
+    ],
+    "call_id": "49204083-d98b-42b2-b584-591d9372542f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-09",
+    "family": "Third party",
+    "now": "2026-10-19T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "109024d7-5fb6-4102-999d-fb607171091c",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-10",
+    "family": "Third party",
+    "now": "2026-10-13T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: no verdict"
+    ],
+    "call_id": "668776a0-639b-42ea-9601-614bc38bbc6c",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-11",
+    "family": "Third party",
+    "now": "2026-10-21T15:00",
+    "pass": false,
+    "failed": [
+     "conversation: no verdict"
+    ],
+    "call_id": "d0284285-2378-427e-a82e-0dc90504efcc",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-12",
+    "family": "Persuasion",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "49cef19d-12a7-434e-961a-3873fc6d69a1",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-13",
+    "family": "Persuasion",
+    "now": "2026-10-21T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "1df93358-862b-415f-9ba9-7afec8e4ab02",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-14",
+    "family": "Multi-product",
+    "now": "2026-10-13T11:00",
+    "pass": false,
+    "failed": [
+     "outcome ('no_promise', 'dispute'), expected ('no_promise', 'refused')"
+    ],
+    "call_id": "87249e2a-ab05-4f10-b563-50a2bd1ec23c",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-15",
+    "family": "Multi-product",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "b73ed19e-84f4-494f-b2a8-317567fea126",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-16",
+    "family": "Tool failure",
+    "now": "2026-10-21T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "fb2eaba6-ad1c-4bfc-b23f-18eb808fcaff",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-17",
+    "family": "Dates",
+    "now": "2026-12-22T10:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "87d28c63-6d7c-4fd3-b718-6fb21e057006",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

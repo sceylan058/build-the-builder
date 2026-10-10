@@ -1,0 +1,5 @@
+{"at": "2026-10-11 00:51:49", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/pub_check.json", "style": null, "reps": 1, "passed": 2, "total": 3, "failed": ["PUB-01"], "median_slowest_s": 5.9}
+{"at": "2026-10-11 01:33:04", "agent": "9bccc985-dd48-4b90-997f-9b91353a1b29", "cases": "dev/cases/v_clean.json", "style": null, "reps": 1, "passed": 12, "total": 17, "failed": ["VC-01", "VC-08", "VC-10", "VC-11", "VC-14"], "median_slowest_s": 2.6}
+{"at": "2026-10-11 01:41:52", "agent": "e25a7405-6eb3-4a76-95e9-88d24ab06e16", "cases": "dev/cases/v_raw.json", "style": null, "reps": 1, "passed": 14, "total": 15, "failed": ["VR-02"], "median_slowest_s": 4.1}
+{"at": "2026-10-11 01:47:09", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/ab_extended.json", "style": null, "reps": 1, "passed": 19, "total": 19, "failed": [], "median_slowest_s": 1.9}
+{"at": "2026-10-11 01:49:32", "agent": "71c4002e-5545-4d8d-8426-0e7b7cfe86ca", "cases": "dev/cases/ab_extended.json", "style": null, "reps": 1, "passed": 5, "total": 5, "failed": [], "median_slowest_s": 14.7}

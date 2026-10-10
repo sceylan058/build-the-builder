@@ -1,0 +1,8 @@
+FAIL PUB-01 Happy path       2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call d10960f5-c6e1-4bf8-bc32-f5cc87f43c4a
+       - promises [('p1', 420.0, '2026-10-12')], expected [('p1', 420.0, '2026-10-14')]
+PASS PUB-02 Third party      2026-10-14T11:00 | schedule_callback > close_call | call c35d310c-d611-4f83-a8cd-ed491c44019c
+PASS PUB-03 Identity         2026-10-14T11:00 | verify > verify > verify > close_call | call c56a6839-569d-4706-939a-bf308a2660e5
+-- rep 1/1: 2/3 passed, simulation 5c38f934-978b-4bea-a184-b1f737683ce7 completed, 42s
+
+per family: Happy path 0/1, Identity 1/1, Third party 1/1
+2 / 3 passed (every rep must pass). median slowest turn 6s

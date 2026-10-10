@@ -3,7 +3,7 @@ env.sh.bak
 *.env
 .freya-agents.json
 .personas*.json
-results/
+/results/
 backup/
 work/
 __pycache__/
