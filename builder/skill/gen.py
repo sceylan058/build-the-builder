@@ -771,6 +771,8 @@ class Gen:
         self.validate()
         self.base = api["servers"][0]["url"].rstrip("/")
         self.nodes = {}
+        # a body field named like a call variable is always filled from that variable, never by the model
+        self.call_vars = (set(cfg.get("call_variables", [])) | set(cfg.get("test_variables", {}))) - {"closing_line"}
 
     # ------------------------------------------------------------------ validation (fail fast, no invented defaults)
     def validate(self):
@@ -913,9 +915,11 @@ class Gen:
         body = {}
         for f, spec in props.items():
             leaf = {"type": spec.get("type", "string")}
-            if f == "customer_id":
-                leaf["default"] = "{{customer_id}}"
-            elif f in baked:
+            if f in baked:
+                leaf["default"] = baked[f]
+            elif f in self.call_vars:
+                leaf["default"] = "{{" + f + "}}"
+            elif False:
                 leaf["default"] = baked[f]
             else:
                 leaf["default"] = "{{" + f + "}}"
@@ -933,7 +937,7 @@ class Gen:
                               "url": {"type": "string", "default": self.base + "/" + name},
                               "method": {"type": "string", "default": "POST"},
                               "headers": {"type": "object", "properties": {"Content-Type": {"type": "string", "default": "application/json"}}},
-                              "body": {"type": "object", "properties": body, "required": [f for f in req if f != "customer_id"]}}}}}
+                              "body": {"type": "object", "properties": body, "required": [f for f in req if f not in self.call_vars]}}}}}
         if pre:
             t["pre_process_code"] = check_code(pre, name + " pre")
         if post:
@@ -946,9 +950,11 @@ class Gen:
         props, _ = self.schema(name)
         body = {}
         for f in props:
-            if f == "customer_id":
-                body[f] = {"type": "string", "default": "{{customer_id}}"}
-            elif baked and f in baked:
+            if baked and f in baked:
+                body[f] = {"type": props[f].get("type", "string"), "default": baked[f]}
+            elif f in self.call_vars:
+                body[f] = {"type": "string", "default": "{{" + f + "}}"}
+            elif False:
                 body[f] = {"type": props[f].get("type", "string"), "default": baked[f]}
         return {"type": "function", "config": {"timeoutMs": 15000, "maxRetries": retries},
                 "function": {"name": name, "handler": "__function__:api_call", "description": name,

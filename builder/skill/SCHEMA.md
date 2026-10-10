@@ -6,7 +6,10 @@
 
 | Field | Type | | Meaning |
 |---|---|---|---|
-| `openapi` | string | R | path to the tool API file. Every tool name must be a path in it. |
+| `openapi` | string | R | the tool API file, always `openapi.json` in the work folder. Every tool name must be a path in it; tool URLs are its `servers[0].url` + path. |
+| `call_variables` | string[] | | the brief's call variables (for example the customer id, names, now). A body field with the same name is filled from the variable. |
+| `forbidden_before_verification` | string[] | | words the brief forbids before identity is checked; check.py scans the fixed spoken lines reachable before verification |
+| `provenance` | object | | `{"derived": {"<value or phrase>": "<why/formula>"}}` for values or quoted phrases that are not literally in the brief |
 | `system_prompt` | string | R | rules that hold in every step |
 | `calendar` | object | R | see Calendar |
 | `tools` | object | R | tool name → tool spec. See Tools. |
