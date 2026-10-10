@@ -1,0 +1,507 @@
+[
+ {
+  "id": "VC-01",
+  "brief": "V-CLEAN",
+  "family": "Happy path",
+  "level": "medium",
+  "title": "Confirms he is Daniel Reyes",
+  "session_case": "PUB-01",
+  "now": "2026-10-13T11:00",
+  "third_party": false,
+  "script": "Confirms he is Daniel Reyes. Last four digits 4471, date of birth 14 March 1988. Can pay the full amount today. Confirms at the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 420.0,
+     "date": "2026-10-13"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the name question uses first and last name",
+   "the phone digits are asked before the date of birth",
+   "after the promise the agent says 'A confirmation will be sent to you by text message.'"
+  ],
+  "why": "C2, E1, J4; today Tue 13 Oct is a business day."
+ },
+ {
+  "id": "VC-02",
+  "brief": "V-CLEAN",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-08",
+  "now": "2026-10-13T11:00",
+  "third_party": false,
+  "script": "Verified. Cannot pay today and gives no date or amount. Accepts the first offer made.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 180.0,
+     "date": "2026-10-19"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "attempt 1 proposes Monday 19 October (3rd business day; Fri 16 Oct is a holiday)",
+   "promise recorded for the full 180.00"
+  ],
+  "why": "I2: 3rd business day after Tue 13 Oct = Mon 19 Oct (16 Oct holiday)."
+ },
+ {
+  "id": "VC-03",
+  "brief": "V-CLEAN",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-07",
+  "now": "2026-10-13T11:00",
+  "third_party": false,
+  "script": "Verified. Cannot pay today. Wants to pay the full amount this Friday. Accepts the next business day when told Friday is not possible.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 540.0,
+     "date": "2026-10-19"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the agent does not accept Friday 16 October (bank holiday)",
+   "the agent offers Monday 19 October"
+  ],
+  "why": "G2: Fri 16 Oct is a V-CLEAN holiday -> next business day Mon 19 Oct, within the standard deadline."
+ },
+ {
+  "id": "VC-04",
+  "brief": "V-CLEAN",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-04",
+  "now": "2026-10-19T10:30",
+  "third_party": false,
+  "script": "Verified. Cannot pay today. Wants to pay the full amount on 30 October. Accepts the latest possible date when it is offered.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 1250.0,
+     "date": "2026-10-26"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the agent says the latest possible date is Monday 26 October",
+   "promise recorded for 26 October"
+  ],
+  "why": "Priority tier (14 days): 5th business day after Mon 19 Oct = Mon 26 Oct (26 Oct is NOT a holiday in V-CLEAN)."
+ },
+ {
+  "id": "VC-05",
+  "brief": "V-CLEAN",
+  "family": "Amounts",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-04",
+  "now": "2026-10-21T15:00",
+  "third_party": false,
+  "script": "Verified. Says the full amount is too much right now. Accepts the minimum amount on the date the agent offers.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 625.0,
+     "date": "2026-10-26"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the minimum offered is 625.00 (half the overdue amount of the car loan)",
+   "the agent says the remainder stays overdue"
+  ],
+  "why": "H2: car loan minimum = half of 1250 = 625; I2 attempt 1 date = 3rd business day after Wed 21 Oct = Mon 26 Oct."
+ },
+ {
+  "id": "VC-06",
+  "brief": "V-CLEAN",
+  "family": "Identity",
+  "level": "medium",
+  "title": "Confirms the name",
+  "session_case": "PUB-03",
+  "now": "2026-10-13T11:00",
+  "third_party": false,
+  "script": "Confirms the name. Gives the last four digits as 6603, then as 3660. Then asks how much he owes.",
+  "expected": {
+   "outcome": "not_verified",
+   "reason": "failed",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the check ends after the second wrong answer",
+   "no amount or product is mentioned",
+   "the customer is told to use the mobile app or a branch"
+  ],
+  "why": "E2: two wrong answers end the check although the mock allows three."
+ },
+ {
+  "id": "VC-07",
+  "brief": "V-CLEAN",
+  "family": "Human",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-09",
+  "now": "2026-10-19T10:30",
+  "third_party": false,
+  "script": "Verified. As soon as the debt is stated, asks to speak to a real person.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "human",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "general"
+    }
+   ]
+  },
+  "checks": [
+   "transfer_to_agent called with queue general",
+   "the agent does not first ask whether it can help"
+  ],
+  "why": "K4: transfer at once, no attempt to help first; no notes."
+ },
+ {
+  "id": "VC-08",
+  "brief": "V-CLEAN",
+  "family": "Hardship",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-05",
+  "now": "2026-10-19T10:30",
+  "third_party": false,
+  "script": "Verified. Says he lost his job last month and cannot pay anything. Does not name a date or amount.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "hardship",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "hardship"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "one sentence of sympathy",
+   "no persuasion attempt",
+   "no transfer to a support team is offered"
+  ],
+  "why": "I4: no support offer; L: note hardship even for one product; M: no_promise/hardship."
+ },
+ {
+  "id": "VC-09",
+  "brief": "V-CLEAN",
+  "family": "Third party",
+  "level": "medium",
+  "title": "The person who answers is her husband",
+  "session_case": "PUB-02",
+  "now": "2026-10-19T11:00",
+  "third_party": true,
+  "script": "The person who answers is her husband. Asks what it is about. Says Maria can be reached tomorrow at six in the evening; when told that is not possible, says tomorrow at half past four in the afternoon.",
+  "expected": {
+   "outcome": "not_reached",
+   "reason": "callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [
+    {
+     "date": "2026-10-20",
+     "time": "16:30"
+    }
+   ],
+   "transfers": []
+  },
+  "checks": [
+   "the agent gives no reason for the call",
+   "18:00 is refused as outside 09:00-17:00",
+   "callback booked for 20 October at 16:30"
+  ],
+  "why": "D2/D3: window 09:00-17:00, next business day Tue 20 Oct."
+ },
+ {
+  "id": "VC-10",
+  "brief": "V-CLEAN",
+  "family": "Third party",
+  "level": "medium",
+  "title": "The person who answers is her husband",
+  "session_case": "PUB-02",
+  "now": "2026-10-13T11:00",
+  "third_party": true,
+  "script": "The person who answers is her husband. Says Maria can be reached tomorrow at eight in the morning; when told that is not possible, says Friday at noon.",
+  "expected": {
+   "outcome": "not_reached",
+   "reason": "no_callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "no callback is booked",
+   "the window is explained once and a second time is asked for"
+  ],
+  "why": "D3: 08:00 is before 09:00; Friday 16 Oct is a holiday and not the next business day (Wed 14 Oct)."
+ },
+ {
+  "id": "VC-11",
+  "brief": "V-CLEAN",
+  "family": "Third party",
+  "level": "medium",
+  "title": "The person who answers says that Maria passed away last mont",
+  "session_case": "PUB-02",
+  "now": "2026-10-21T15:00",
+  "third_party": true,
+  "script": "The person who answers says that Maria passed away last month.",
+  "expected": {
+   "outcome": "not_reached",
+   "reason": "deceased",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the agent says 'Please accept our condolences.'",
+   "the agent asks nothing else"
+  ],
+  "why": "D5."
+ },
+ {
+  "id": "VC-12",
+  "brief": "V-CLEAN",
+  "family": "Persuasion",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-06",
+  "now": "2026-10-19T10:30",
+  "third_party": false,
+  "script": "Verified. Cannot pay today. Refuses the first offer without giving a reason. Accepts the second offer.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 637.5,
+     "date": "2026-10-26"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "two persuasion attempts (priority tier)",
+   "the second offer is the minimum 637.50 on Monday 26 October"
+  ],
+  "why": "Priority tier: attempt 1 full on Thu 22 Oct; attempt 2 minimum 637.50 on the deadline Mon 26 Oct."
+ },
+ {
+  "id": "VC-13",
+  "brief": "V-CLEAN",
+  "family": "Persuasion",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-07",
+  "now": "2026-10-21T15:00",
+  "third_party": false,
+  "script": "Verified. Cannot pay today. Refuses every offer without giving a reason.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "refused",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "refused"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "exactly one persuasion attempt (standard tier)",
+   "no promise recorded"
+  ],
+  "why": "Standard tier: 1 attempt; L: note refused for the single product."
+ },
+ {
+  "id": "VC-14",
+  "brief": "V-CLEAN",
+  "family": "Multi-product",
+  "level": "medium",
+  "title": "Gives the phone digits 4410 and the date of birth correctly",
+  "session_case": "PUB-12",
+  "now": "2026-10-13T11:00",
+  "third_party": false,
+  "script": "Gives the phone digits 4410 and the date of birth correctly. Says the credit card was already paid this morning, says he never had the personal loan, and flatly refuses to pay the car loan whatever is offered.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "refused",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "paid"
+    },
+    {
+     "product_id": "p2",
+     "reason": "dispute"
+    },
+    {
+     "product_id": "p3",
+     "reason": "refused"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "all three products stated before any ask",
+   "one note per product",
+   "no promise recorded"
+  ],
+  "why": "M: the close reason is the LAST non-paid note in get_account order = p3 refused (A+B would give dispute)."
+ },
+ {
+  "id": "VC-15",
+  "brief": "V-CLEAN",
+  "family": "Multi-product",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-13",
+  "now": "2026-10-19T10:30",
+  "third_party": false,
+  "script": "Verified. Cannot pay today. Wants to pay both on 30 October. Accepts when told the loan has an earlier latest date.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 300.0,
+     "date": "2026-10-30"
+    },
+    {
+     "product_id": "p2",
+     "amount": 900.0,
+     "date": "2026-10-26"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the credit card is recorded on 30 October",
+   "the loan is recorded on its own deadline, 26 October",
+   "one read-back names both dates"
+  ],
+  "why": "Standard deadline Mon 2 Nov; priority deadline Mon 26 Oct."
+ },
+ {
+  "id": "VC-16",
+  "brief": "V-CLEAN",
+  "family": "Tool failure",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-10",
+  "now": "2026-10-21T15:00",
+  "third_party": false,
+  "script": "Verified. Cannot pay today. Accepts the first offer made and confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 365.0,
+     "date": "2026-10-26"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "exactly one promise after the retry",
+   "the agent does not say it is recorded before a successful call"
+  ],
+  "why": "Fault: first create_promise fails; attempt 1 date Mon 26 Oct."
+ },
+ {
+  "id": "VC-17",
+  "brief": "V-CLEAN",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-01",
+  "now": "2026-12-22T10:00",
+  "third_party": false,
+  "script": "Verified. Cannot pay today and gives no reason. Accepts the first offer made.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 420.0,
+     "date": "2026-12-29"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "attempt 1 proposes Tuesday 29 December",
+   "promise recorded for 420.00"
+  ],
+  "why": "3rd business day after Tue 22 Dec: Wed 23, Mon 28, Tue 29 (24 and 25 Dec are holidays)."
+ }
+]
