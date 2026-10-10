@@ -212,11 +212,26 @@ def rule_config_enums(api, cfg, E):
                 bad = sorted(u for u in used if u not in en)
                 if bad:
                     E.append(f"R1 enums: {name}.{va} values {bad} used in outcomes are not in {en}")
+        used_args = []
+        if t.get("role") == "record":
+            R = t["record"]
+            used_args += [R.get("item_arg")] + [c.get("arg") for c in R.get("clamp", [])] + re.findall(r"\{(\w+)\}", R.get("confirm", ""))
+        if t.get("role") == "note":
+            used_args += [t["note"].get("item_arg"), t["note"].get("reason_arg")]
+        if t.get("role") == "flag" and t["flag"].get("value_arg"):
+            used_args.append(t["flag"]["value_arg"])
+        for a_ in used_args:
+            if a_ and a_ not in props:
+                E.append(f"R1 enums: tools.{name} ({t.get('role')}) uses argument {a_!r}, which is not a field of {name} (fields: {', '.join(props)})")
         for f, info in (t.get("fields") or {}).items():
             if f not in props and t.get("role") not in ("fetch", "close"):
                 E.append(f"R1 enums: tools.{name}.fields.{f} is not a field of {name} (fields: {', '.join(props)})")
     for nname, n in cfg.get("flow", {}).get("nodes", {}).items():
         v = n.get("verify")
+        if v:
+            for a_ in v.get("args", {}).values():
+                if a_ and a_ not in tool_props(api, v["tool"]):
+                    E.append(f"R1 enums: verify args use {a_!r}, which is not a field of {v['tool']}")
         if v and v.get("args", {}).get("field"):
             props = tool_props(api, v["tool"])
             en = props.get(v["args"]["field"], {}).get("enum")

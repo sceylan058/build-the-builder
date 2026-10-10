@@ -136,8 +136,13 @@ def write_bundle(files, inputs_dir, out):
 def make_guard(workdir, T):
     root = str(workdir.resolve())
 
+    # the SDK spills large tool outputs of this very session to ~/.claude/projects/<key of the work folder>/.../tool-results/
+    spill = str(pathlib.Path.home() / ".claude" / "projects") + os.sep + re.sub(r"[^A-Za-z0-9]", "-", root) + os.sep
+
     def inside(p):
         if not p:
+            return True
+        if str(p).startswith(spill) and "/tool-results/" in str(p):
             return True
         q = pathlib.Path(p)
         q = (workdir / q) if not q.is_absolute() else q
@@ -266,15 +271,26 @@ def counts(wf):
     return f"{len(wf['nodes'])} nodes, {tools} model tools, {pre} engine actions"
 
 
-def retry(fn, T, what, tries=3):
+HARD_STOP = 29 * 60   # keep retrying Freya through outages until this point of the run
+
+
+def transient(ex):
+    """A platform outage, not a problem with our workflow: 5xx, 429, timeouts, connection errors."""
+    s = str(ex)
+    return bool(re.search(r"-> (5\d\d|429)\b", s)) or any(k in s for k in ("timed out", "Timeout", "Connection", "URLError", "reset by peer", "Temporary failure"))
+
+
+def retry(fn, T, what, tries=8):
+    """Retry Freya calls through outages with growing back-off, never past HARD_STOP. Non-transient errors raise at once."""
     for i in range(tries):
         try:
             return fn()
         except Exception as ex:
             T.line(f"{what} attempt {i + 1} failed: {str(ex)[:200]}")
-            if i == tries - 1:
+            wait = min(15 * (2 ** i), 120)
+            if not transient(ex) or i == tries - 1 or T.elapsed() + wait > HARD_STOP:
                 raise
-            time.sleep(10 * (i + 1))
+            time.sleep(wait)
 
 
 # --------------------------------------------------------------------------------------------------- main
@@ -354,7 +370,9 @@ async def run(a):
                 T.line(f"[dry-run] Freya validation: {json.dumps(r)[:200]} ({time.time() - s4:.1f}s)")
             except Exception as ex:
                 T.line(f"[dry-run] Freya validation FAILED: {str(ex)[:600]}")
-                if T.elapsed() < NO_NEW_ROUND_AFTER:
+                if transient(ex):
+                    T.line("[dry-run] the validator is unavailable (platform outage), not a config problem: continuing without it")
+                elif T.elapsed() < NO_NEW_ROUND_AFTER:
                     rnd += 1
                     await writer.ask("Freya's validator rejected the workflow compiled from config.json:\n" + str(ex)[:3000] +
                                      "\nFix config.json, run the self-checks, reply 'config ready'.", f"repair {rnd} (validator)",
