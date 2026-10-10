@@ -1,0 +1,466 @@
+[
+ {
+  "id": "VR-01",
+  "brief": "V-RAW",
+  "family": "Effective date",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-01",
+  "now": "2026-10-14T11:00",
+  "third_party": false,
+  "script": "Verified. Cannot pay today and gives no reason. Refuses every offer without a reason.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "refused",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "refused"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "exactly one persuasion attempt (6 days late is EARLY before 19 October)",
+   "the word 'debt' is never said"
+  ],
+  "why": "Before 19 Oct: 6 days = EARLY, 1 attempt; note REF; NP/REF."
+ },
+ {
+  "id": "VR-02",
+  "brief": "V-RAW",
+  "family": "Effective date",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-01",
+  "now": "2026-10-20T11:00",
+  "third_party": false,
+  "script": "Verified. Cannot pay today. Refuses the first offer without a reason. Accepts the second offer.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 126.0,
+     "date": "2026-10-30"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "two persuasion attempts (6 days late is LATE from 19 October)",
+   "the second offer is the minimum 126.00 on Friday 30 October"
+  ],
+  "why": "From 19 Oct: 6 days = LATE; attempt 2 = floor on the 7th business day (26 Oct holiday) = Fri 30 Oct."
+ },
+ {
+  "id": "VR-03",
+  "brief": "V-RAW",
+  "family": "Memo override",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-08",
+  "now": "2026-10-20T11:00",
+  "third_party": false,
+  "script": "Verified. Cannot pay today. Wants to pay the full amount on 10 November. Accepts the latest possible date when offered.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 180.0,
+     "date": "2026-11-04"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the latest date offered is Wednesday 4 November",
+   "promise recorded for 4 November"
+  ],
+  "why": "Memo \u00a71: EARLY deadline = 10th business day = Wed 4 Nov (the extract's 12th would be Fri 6 Nov)."
+ },
+ {
+  "id": "VR-04",
+  "brief": "V-RAW",
+  "family": "Memo override",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-07",
+  "now": "2026-10-14T11:00",
+  "third_party": false,
+  "script": "Verified. Cannot pay today. Wants to pay the full amount on 5 November. Accepts the latest possible date when offered.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 540.0,
+     "date": "2026-10-29"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the latest date offered is Thursday 29 October",
+   "promise recorded for 29 October"
+  ],
+  "why": "Memo \u00a71: 10th business day after Wed 14 Oct = Thu 29 Oct (26 Oct holiday)."
+ },
+ {
+  "id": "VR-05",
+  "brief": "V-RAW",
+  "family": "Cancelled holiday",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-04",
+  "now": "2026-11-09T10:30",
+  "third_party": false,
+  "script": "Verified. Cannot pay today. Wants to pay the full amount on Wednesday 11 November. Confirms at the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 1250.0,
+     "date": "2026-11-11"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "11 November is accepted as a business day",
+   "promise recorded for 11 November"
+  ],
+  "why": "Memo \u00a73: 11 Nov is a normal business day; within the LATE deadline (Wed 18 Nov)."
+ },
+ {
+  "id": "VR-06",
+  "brief": "V-RAW",
+  "family": "Wording",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-08",
+  "now": "2026-10-15T11:00",
+  "third_party": false,
+  "script": "Verified. Can pay the full amount today. Confirms at the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 180.0,
+     "date": "2026-10-15"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the word 'debt' is never said",
+   "the card is named 'Visa card ending 5512'"
+  ],
+  "why": "Mail: never say debt; code list: spoken product names."
+ },
+ {
+  "id": "VR-07",
+  "brief": "V-RAW",
+  "family": "Code list",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-06",
+  "now": "2026-10-20T11:00",
+  "third_party": false,
+  "script": "Verified. Says the full amount is too much. Accepts the minimum payment on the date the agent offers.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 637.5,
+     "date": "2026-10-23"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the card is named 'Visa card ending 1903'",
+   "minimum offered once, with the note that the rest stays overdue"
+  ],
+  "why": "Attempt 1 with floor on the last business day of this week = Fri 23 Oct."
+ },
+ {
+  "id": "VR-08",
+  "brief": "V-RAW",
+  "family": "Third party",
+  "level": "medium",
+  "title": "The person who answers is her husband",
+  "session_case": "PUB-02",
+  "now": "2026-10-21T11:00",
+  "third_party": true,
+  "script": "The person who answers is her husband. Asks what the call is about. Says Maria can be reached tomorrow at eleven in the morning.",
+  "expected": {
+   "outcome": "not_reached",
+   "reason": "callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [
+    {
+     "date": "2026-10-22",
+     "time": "11:00"
+    }
+   ],
+   "transfers": []
+  },
+  "checks": [
+   "the agent gives no reason for the call",
+   "callback booked for 22 October at 11:00"
+  ],
+  "why": "\u00a74.2."
+ },
+ {
+  "id": "VR-09",
+  "brief": "V-RAW",
+  "family": "Identity",
+  "level": "medium",
+  "title": "Confirms the name",
+  "session_case": "PUB-03",
+  "now": "2026-10-20T11:00",
+  "third_party": false,
+  "script": "Confirms the name. Gives date of birth 12 July 1991, then 21 August 1992, then 21 July 1990.",
+  "expected": {
+   "outcome": "not_verified",
+   "reason": "failed",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the check ends after the third wrong answer",
+   "no amount or product disclosed"
+  ],
+  "why": "\u00a75.2."
+ },
+ {
+  "id": "VR-10",
+  "brief": "V-RAW",
+  "family": "Hardship",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-05",
+  "now": "2026-10-21T11:00",
+  "third_party": false,
+  "script": "Verified. Says he lost his job and cannot pay anything. Does not want to be transferred.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "hardship",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "hardship"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "one sentence of sympathy",
+   "support team offered once",
+   "no persuasion attempt"
+  ],
+  "why": "\u00a710 + \u00a713: note HSH, NP/HSH."
+ },
+ {
+  "id": "VR-11",
+  "brief": "V-RAW",
+  "family": "Restructuring",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-09",
+  "now": "2026-10-21T11:00",
+  "third_party": false,
+  "script": "Verified. Says he cannot pay this amount and wants lower instalments.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "restructuring",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "restructuring"
+    }
+   ]
+  },
+  "checks": [
+   "transfer_to_agent called with queue restructuring",
+   "no notes are written"
+  ],
+  "why": "\u00a712."
+ },
+ {
+  "id": "VR-12",
+  "brief": "V-RAW",
+  "family": "Multi-product",
+  "level": "medium",
+  "title": "Gives the date of birth correctly and the phone digits 4410",
+  "session_case": "PUB-12",
+  "now": "2026-10-20T11:00",
+  "third_party": false,
+  "script": "Gives the date of birth correctly and the phone digits 4410. Will pay the credit card tomorrow. Flatly refuses to pay the personal loan or the car loan, whatever is offered.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 510.0,
+     "date": "2026-10-21"
+    }
+   ],
+   "notes": [
+    {
+     "product_id": "p2",
+     "reason": "refused"
+    },
+    {
+     "product_id": "p3",
+     "reason": "refused"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "two persuasion attempts on the car loan (7 days late is LATE from 19 October)",
+   "one 'refused' note each for the loan and the car"
+  ],
+  "why": "From 19 Oct the 7-day car loan is LATE (2 attempts)."
+ },
+ {
+  "id": "VR-13",
+  "brief": "V-RAW",
+  "family": "Multi-product",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-11",
+  "now": "2026-10-14T11:00",
+  "third_party": false,
+  "script": "Verified. Cannot pay today. Agrees to pay all three this Friday. Confirms once.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 220.0,
+     "date": "2026-10-16"
+    },
+    {
+     "product_id": "p2",
+     "amount": 640.0,
+     "date": "2026-10-16"
+    },
+    {
+     "product_id": "p3",
+     "amount": 75.0,
+     "date": "2026-10-16"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the vehicle finance agreement is named with its code-list name",
+   "one read-back for all three"
+  ],
+  "why": "All within their deadlines."
+ },
+ {
+  "id": "VR-14",
+  "brief": "V-RAW",
+  "family": "Multi-product",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-13",
+  "now": "2026-10-19T10:30",
+  "third_party": false,
+  "script": "Verified. Cannot pay today. Wants to pay both on 30 October. Accepts when told the loan has an earlier latest date.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 300.0,
+     "date": "2026-10-30"
+    },
+    {
+     "product_id": "p2",
+     "amount": 900.0,
+     "date": "2026-10-29"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the Visa card is recorded on 30 October",
+   "the personal finance loan is recorded on its deadline, 29 October"
+  ],
+  "why": "Card EARLY deadline Tue 3 Nov; loan LATE deadline = 7th business day after Mon 19 Oct = Thu 29 Oct."
+ },
+ {
+  "id": "VR-15",
+  "brief": "V-RAW",
+  "family": "Tool failure",
+  "level": "medium",
+  "title": "Verified",
+  "session_case": "PUB-10",
+  "now": "2026-10-23T10:00",
+  "third_party": false,
+  "script": "Verified. Cannot pay today. Accepts the first offer and confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 365.0,
+     "date": "2026-10-30"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "exactly one promise after the retry",
+   "attempt 1 proposes Friday 30 October (today is the last business day of this week)"
+  ],
+  "why": "\u00a79 attempt 1 on a Friday moves to next week."
+ }
+]
