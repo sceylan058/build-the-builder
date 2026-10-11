@@ -1,0 +1,14 @@
+PASS PUB-01 Happy path       2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 0884b372-4b03-4247-9d73-46a3c6d38831
+PASS PUB-02 Third party      2026-10-14T11:00 | schedule_callback > close_call | call 137eac53-d3c5-4606-b86d-c57f84322430
+PASS PUB-03 Identity         2026-10-14T11:00 | verify > verify > verify > close_call | call 7374fda0-b307-462f-b220-ad6cd2d0e161
+PASS PUB-04 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call f44404a4-af31-4e04-9e28-68eff6438091
+PASS PUB-05 Hardship         2026-10-14T11:00 | verify > verify > get_account > close_call | call 800d166e-cf17-42b9-b816-e0dafa6bc708
+PASS PUB-06 Amounts          2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 336a9e54-3ab1-482d-baf3-3593b13c0699
+PASS PUB-07 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call c5d3da65-1e17-4733-a231-e9884f57d64e
+PASS PUB-08 Already paid     2026-10-14T11:00 | verify > verify > get_account > close_call | call a3ac1c50-5d90-4a36-94dd-73e6a0c35362
+PASS PUB-09 Restructuring    2026-10-14T11:00 | verify > verify > get_account > transfer_to_agent > close_call | call dcbb64a2-24f9-4f61-9bbc-2f5a57810fbb
+PASS PUB-10 Tool failure     2026-10-14T11:00 | verify > verify > get_account > promise > promise > close_call | call a0a43a67-b431-4faf-a2b1-16f6c466d851
+-- rep 1/1: 10/10 passed, simulation 56cdb226-5868-4aa8-aa29-6cb9e3f838d6 completed, 186s
+
+per family: Already paid 1/1, Amounts 1/1, Dates 2/2, Happy path 1/1, Hardship 1/1, Identity 1/1, Restructuring 1/1, Third party 1/1, Tool failure 1/1
+10 / 10 passed (every rep must pass). median slowest turn 13s, worst 27s
