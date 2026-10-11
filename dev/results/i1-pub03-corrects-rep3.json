@@ -1,0 +1,66 @@
+{
+ "final": [
+  {
+   "id": "PUB-03",
+   "family": "Identity",
+   "passes": 2,
+   "runs": 3,
+   "pass": false,
+   "reason": "outcome ('not_verified', 'declined'), expected ('not_verified', 'failed')"
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "PUB-03",
+    "family": "Identity",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "outcome ('not_verified', 'declined'), expected ('not_verified', 'failed')",
+     "conversation: The conversation failed to meet two success criteria. First, the identity check did not end after a third wrong answer; it ended because the agent reached the 'max_turns_exceeded' limit (20 turns) for the identity node while struggling to get a full date from the user. According to system events, only one 'verify_identity' call was actually made (after Message 5). Second, the assistant failed to i"
+    ],
+    "call_id": "134be755-3b7e-416a-aaf0-4ff45fcd7cef",
+    "tools": [
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ],
+  [
+   {
+    "id": "PUB-03",
+    "family": "Identity",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "4173e558-a420-414f-b6ab-dcaba1314819",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ],
+  [
+   {
+    "id": "PUB-03",
+    "family": "Identity",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "8ee14080-47b0-494a-9790-d557c310e9cf",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}
