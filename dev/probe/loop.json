@@ -1,0 +1,109 @@
+{
+ "initial_node": "talk",
+ "system_prompt": "You are a test assistant. Speak English.",
+ "global_nodes": {},
+ "test_variables": {
+  "customer_id": "c_test"
+ },
+ "nodes": {
+  "talk": {
+   "name": "talk",
+   "node_type": "conversation",
+   "on_enter": {
+    "type": "tts",
+    "text": "Probe ready."
+   },
+   "on_enter_first_entry_only": true,
+   "task_message": "Reply with exactly: 'turn {{turns_seen}}, intent {{last_intent}}'. No tool calls.",
+   "extraction_schema": [
+    {
+     "name": "intent",
+     "type": "string",
+     "enum_values": [
+      "yes",
+      "no",
+      "other"
+     ],
+     "description": "yes if the user agrees, no if the user refuses, other otherwise",
+     "min_confidence": 0.5
+    }
+   ],
+   "max_node_turns": 20,
+   "max_turn_transition": "bye",
+   "transitions": [
+    {
+     "target_node": "interp",
+     "description": "always",
+     "condition": {
+      "operator": "always"
+     }
+    }
+   ]
+  },
+  "interp": {
+   "name": "interp",
+   "node_type": "code",
+   "passthrough": true,
+   "passthrough_default_transition": "talk",
+   "on_enter": {
+    "type": "silent"
+   },
+   "pre_actions": [
+    {
+     "type": "function",
+     "function": {
+      "name": "code_exec",
+      "handler": "__function__:code_exec",
+      "parameters": {
+       "type": "object",
+       "properties": {
+        "code": {
+         "type": "string",
+         "default": "try:\n    vars['turns_seen'] = str(int(vars.get('turns_seen') or 0) + 1)\n    vars['last_intent'] = str(vars.get('intent') or 'none')\nexcept Exception as e:\n    vars['turns_seen'] = 'err ' + str(e)\n"
+        },
+        "timeout_ms": {
+         "type": "number",
+         "default": 10000
+        }
+       }
+      }
+     }
+    }
+   ],
+   "transitions": [
+    {
+     "target_node": "talk",
+     "description": "always",
+     "condition": {
+      "operator": "always"
+     }
+    }
+   ]
+  },
+  "bye": {
+   "name": "bye",
+   "node_type": "end_call",
+   "on_enter": {
+    "type": "silent"
+   },
+   "disable_inactivity_monitor": true,
+   "transitions": [],
+   "terminal": {
+    "type": "function",
+    "function": {
+     "name": "probe_end",
+     "handler": "__function__:end_call",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "message_mode": {
+        "type": "string",
+        "default": "none"
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

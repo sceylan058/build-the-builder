@@ -467,15 +467,17 @@ try:
         LD = ITEMS.get('ladder')
         if LD:
             steps = []
+            offers = []
             for k, st in enumerate(T.get('ladder', [])):
                 d = rule_date(st.get('date', 'limit'), today, limit)
                 if limit is not None and d is not None and d > limit:
                     d = limit
-                steps.append(LD['step'].format(k=k + 1, text=st['text'].format(date=(d_say(d) if d else ''), **ctx)))
+                offers.append(st['text'].format(date=(d_say(d) if d else ''), **ctx))
+                steps.append(LD['step'].format(k=k + 1, text=offers[-1]))
             nst = len(steps)
             text = text + '\n' + LD['header'].format(n=nst, s=('' if nst == 1 else 's')) + '\n' + '\n'.join(steps) + '\n' + LD['footer'].format(n=nst)
         facts.append(text)
-        rec = dict(label=label, tier=T.get('name', ''))
+        rec = dict(label=label, tier=T.get('name', ''), offers=(offers if LD else []))
         for k, v in f.items():
             rec[k] = d_iso(v) if isinstance(v, datetime.date) else v
         pf[iid] = rec
@@ -520,6 +522,7 @@ try:
     vars['item_count'] = str(len(ids))
     S = ITEMS['summary']
     vars[ITEMS['summary_var']] = S['single'].format(line=says[0]) if len(ids) == 1 else S['multi'].format(count=len(ids), lines=' '.join(says))
+    vars['offer_state'] = 'CODE STATE: nothing refused yet; follow the OFFER LIST of each item.'
     vars[STATE] = 'ok' if ids else 'empty'
 except Exception as ex:
     vars[STATE] = 'error'
@@ -527,6 +530,84 @@ except Exception as ex:
     vars['calendar_facts'] = ''
     vars[ITEMS['summary_var']] = ''
 '''
+
+
+# offer engine: runs after every customer turn of a converse step with offer_state; code counts attempts, never the model.
+OFFER_CODE = r"""
+try:
+    pf = ifacts()
+    ids = iids()
+    book = load_json(vars.get('offer_book'), dict())
+    turn = str(vars.get(NODE + '.total_turns') or '')
+    if turn and book.get('_turn') == turn:
+        raise StopIteration
+    book['_turn'] = turn
+    now, today = today_now()
+    intent = str(vars.get('turn_intent') or '').strip().lower()
+    try:
+        pos = int(str(vars.get('turn_item') or '1').strip()) - 1
+    except Exception:
+        pos = 0
+    pos = min(max(pos, 0), max(len(ids) - 1, 0))
+    iid = ids[pos] if ids else ''
+    it = book.setdefault(iid, dict(refusals=0, hardship=False))
+    msgs = []
+    if intent == 'refuse':
+        it['refusals'] += 1
+    elif intent == 'hardship':
+        it['hardship'] = True
+    elif intent in ('off_topic', 'question'):
+        msgs.append('The last customer message was small talk or a question: it uses NO persuasion attempt. Answer a question briefly, then repeat your last offer or question.')
+    f = pf.get(iid, dict())
+    offers = f.get('offers') or []
+    if iid:
+        name = str(f.get('label', iid))
+        if it['hardship']:
+            msgs.append('HARDSHIP for ' + name + ': make NO offer for it. Only the hardship path of the rules (sympathy once, the support offer once). If the customer names a date or amount themselves, handle it normally.')
+        elif offers:
+            k = it['refusals']
+            if k < len(offers):
+                msgs.append('For ' + name + ': refusals counted by code = ' + str(k) + '. If you make an offer for it now, it must be offer ' + str(k + 1) + ': ' + offers[k] + '.')
+            else:
+                msgs.append('For ' + name + ': all ' + str(len(offers)) + ' offers are refused (counted by code). Make NO other offer: it is refused.')
+    dp = str(vars.get('turn_date') or '').strip()
+    if dp and dp.lower() not in ('none', 'null'):
+        r = resolve_date(dp, today)
+        if r == 'vague':
+            msgs.append('The customer gave a vague period ("' + dp + '"): ask once for the exact day; if none, propose the deadline.')
+        elif isinstance(r, datetime.date):
+            if r < today:
+                msgs.append('The customer\'s date "' + dp + '" resolves to ' + d_say(r) + ', which is in the past: ask which day they mean.')
+            else:
+                notes = []
+                for k2 in ids:
+                    lim = pf[k2].get(LIMIT) if LIMIT else None
+                    late = bool(lim) and r > datetime.date.fromisoformat(lim)
+                    notes.append(str(pf[k2].get('label', k2)) + (': TOO LATE, offer ' + d_say(datetime.date.fromisoformat(lim)) if late else ': OK'))
+                biz = '' if is_biz(r) else ' It is NOT a business day: offer ' + d_say(next_biz(r, False)) + ' instead.'
+                msgs.append('The customer\'s date "' + dp + '" = ' + d_say(r) + ' (' + d_iso(r) + ').' + biz + ' Per item: ' + '; '.join(notes) + '.')
+    ap = str(vars.get('turn_amount') or '').strip()
+    if ap and ap.lower() not in ('none', 'null'):
+        v = num(ap.replace(',', ''))
+        if v is None:
+            v = words_to_number(ap)
+        if v is not None and f:
+            lo, hi = f.get(FLOOR_FIELD), f.get(FULL_FIELD)
+            where = ''
+            if lo is not None and v < lo:
+                where = ' This is BELOW the minimum ' + money(lo) + ': say it cannot be recorded and offer the minimum once.'
+            elif hi is not None and v > hi:
+                where = ' This is more than the full amount ' + money(hi) + '.'
+            elif lo is not None:
+                where = ' This is acceptable (from ' + money(lo) + ' to ' + money(hi) + ').'
+            msgs.append('The customer\'s amount "' + ap + '" = ' + money(v) + '.' + where)
+    vars['offer_book'] = json.dumps(book)
+    vars['offer_state'] = 'CODE STATE (computed by code; follow it exactly): ' + ' '.join(msgs) if msgs else 'CODE STATE: no change.'
+except StopIteration:
+    pass
+except Exception as ex:
+    vars['offer_state'] = 'CODE STATE: unavailable (' + str(ex)[:60] + '); follow the OFFER LIST.'
+"""
 
 
 # end_<hint>: outcome from the ledger by ordered rules, then the closing line.
@@ -988,7 +1069,7 @@ class Gen:
             if n["type"] == "clock":
                 known |= {"today_facts", "today_iso"} | {w["var"] for w in c.get("clock", {}).get("windows", [])}
             if n["type"] == "compute":
-                known |= {c["items"]["facts_var"], c["items"]["summary_var"], "calendar_facts", "item_count"}
+                known |= {c["items"]["facts_var"], c["items"]["summary_var"], "calendar_facts", "item_count", "offer_state"}
             if n["type"] == "fetch":
                 known |= {m["var"] for m in n["map"]}
             known |= {x["name"] for x in n.get("extract", [])}
@@ -1190,6 +1271,29 @@ class Gen:
             node["extraction_schema"] = n["extract"]
         return node
 
+    def with_offer_state(self, name, n):
+        os_ = n["offer_state"]
+        ex = [
+            {"name": "turn_intent", "type": "string", "min_confidence": 0.5,
+             "enum_values": ["accept", "refuse", "propose", "too_much", "hardship", "question", "off_topic", "paid", "dispute", "other"],
+             "description": os_.get("intent_description", "What the customer's LAST message does: accept (agrees to the last offer or read-back), refuse (says no to paying or to the offer without proposing anything), propose (names their own date or amount), too_much (says the amount is too much), hardship (mentions illness, a death in the family or losing their job), question (asks something), off_topic (only small talk, nothing about the offer), paid (says it is already paid), dispute (says it is not theirs), other.")},
+            {"name": "turn_item", "type": "string", "min_confidence": 0.5, "enum_values": ["1", "2", "3"],
+             "description": "Which item, by its position in the order the agent listed them (1, 2 or 3), the customer's last message is about; if unclear, the item the agent is currently discussing."},
+            {"name": "turn_date", "type": "string", "min_confidence": 0.5,
+             "description": "The payment date the customer states as THEIR payment date, in their own words, after any correction (the last value wins). Join pieces said over consecutive messages. Empty if none. Never a date of an unrelated event (a wedding, a trip)."},
+            {"name": "turn_amount", "type": "string", "min_confidence": 0.5,
+             "description": "The amount the customer offers to pay, in their own words, after any correction (the last value wins). Join pieces said over consecutive messages (for example 'five hundred' then 'and ten'). Empty if none."}]
+        task = n["task"] + "\n\n{{offer_state}}\nThe CODE STATE above is computed by code after every customer message. When it names the next offer, the counted refusals or a resolved date or amount, follow it; never count refusals yourself. Never offer, accept or read back a value that may be incomplete: ask for the rest."
+        return dict(n, task=task, extract=list(n.get("extract", [])) + ex,
+                    routes=list(n.get("routes", [])) + [{"to": name + "_turn", "when": "always", "description": "always"}])
+
+    def offer_node(self, name, n):
+        os_ = n["offer_state"]
+        it = self.cfg["items"]
+        code = (self.lib() + "\nNODE = " + repr(name) + "\nLIMIT = " + repr(it.get("limit_field", "")) +
+                "\nFLOOR_FIELD = " + repr(os_.get("floor_field", "")) + "\nFULL_FIELD = " + repr(os_.get("full_field", "")) + "\n" + OFFER_CODE)
+        self.nodes[name + "_turn"] = self.code_node(name + "_turn", code, [always(name)])
+
     @staticmethod
     def enter(e):
         if not e:
@@ -1224,7 +1328,10 @@ class Gen:
                 c["flow"]["nodes"][name] = dict(n, task=n["task"] + "\n\n{{today_facts}}")
         for name, n in c["flow"]["nodes"].items():
             typ = n["type"]
-            if typ == "converse":
+            if typ == "converse" and n.get("offer_state"):
+                self.nodes[name] = self.converse(name, self.with_offer_state(name, n))
+                self.offer_node(name, n)
+            elif typ == "converse":
                 self.nodes[name] = self.converse(name, n)
             elif typ == "verify":
                 v, tool = n["verify"], n["verify"]["tool"]

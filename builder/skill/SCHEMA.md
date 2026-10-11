@@ -57,7 +57,7 @@ A target is a node name or `end:<hint>`. Each hint creates an `end_<hint>` node,
 
 | `type` | Required | Optional |
 |---|---|---|
-| `converse` | `task` | `enter` (`{"tts": text}` or `{"llm": prompt}`), `tools`, `tool_overrides` (`{tool: {description, fields}}`), `extract` (Freya extraction_schema items), `routes`, `turns` (default 20), `overflow` (target when the turn cap is reached), `first_entry_only` (default true) |
+| `converse` | `task` | `offer_state` (`{floor_field, full_field}` from `items.fields`: per-turn code engine for negotiation steps), `enter` (`{"tts": text}` or `{"llm": prompt}`), `tools`, `tool_overrides` (`{tool: {description, fields}}`), `extract` (Freya extraction_schema items), `routes`, `turns` (default 20), `overflow` (target when the turn cap is reached), `first_entry_only` (default true) |
 | `verify` | `task`, `verify: {tool, questions: [{field, ask, kind: date\|digits\|text}], args: {field, answer}, response: {verified, ok?, all_verified?, wrong_left?, hint?, swap_hint?}, on_pass, on_fail}` | the same as converse |
 | `clock` | `next` | `routes`. It writes `{{today_facts}}` and one variable per `clock.windows[]` entry. |
 | `fetch` | `tool`, `map: [{path: "data.x", var}]`, `ok_field`, `next`, `fail` | `retries` (default 2), `description` |

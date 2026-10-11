@@ -68,3 +68,11 @@ Each entry: what changed, why, and the evidence (a command and its result).
 ### C5 Calls that do not end
 - Finding: the "open" third-party calls had ended in 4–10 s (`assistant-ended-call`, close_call before end_call). Freya's judging stage lagged, and our dev timeout closed the simulation before the verdicts. No generator defect.
 - Fix: dev/run_dev.py hard timeout raised to 40 min per 10 cases (minimum 20 min).
+
+### C2 + C3 Speech robustness and hardship as a code state
+- Root cause: our own prompt rule ("small talk or a question back is a non-answer: move to the next offer") made the model escalate the offer ladder while the customer was only chatting. This recorded the floor instead of the full amount (PUB-04 0/3 in pieces and talkative). The model also counted attempts itself and lost the hardship state.
+- Fix (gen.py, generic): a converse node with `offer_state` gets:
+  - per-turn extraction: `turn_intent` enum, `turn_item` position, the customer's own date and amount in their words (last value wins, pieces joined, never an unrelated event's date);
+  - an automatic per-turn code node (always transition → `<node>_turn` → back), verified with a live probe. It counts refusals only on `refuse`, makes small talk and questions explicit no-attempt turns, sets a hardship flag that removes every offer for that item, and resolves the date and amount against `now`, the limits and the floor.
+  - Its `CODE STATE` is injected into the prompt. The non-answer rule was removed from the example config and SKILL.md.
+- Evidence: `dev/tests/test_offer_engine.py` (small talk uses no attempt; refusal counting; hardship blocks offers; dates and amounts resolved, too-late, non-business day, below-floor, vague). check.py OK on A/B.
