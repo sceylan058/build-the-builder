@@ -8,3 +8,4 @@
 | style-A-pieces | 9 / 10 | median slowest turn 6s, worst 30s | PUB-05  |
 | style-A-corrects | 6 / 10 | median slowest turn 21s, worst 43s | PUB-01 PUB-04 PUB-05 PUB-06  |
 | style-A-talkative | 5 / 10 | median slowest turn 8s, worst 10s | PUB-04 PUB-05 PUB-06 PUB-09 PUB-10  |
+| x20-rep (reps 3) | 0 / 1 | median slowest turn 3s, worst 11s | X20  |
