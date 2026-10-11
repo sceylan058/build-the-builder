@@ -1,0 +1,374 @@
+{
+ "final": [
+  {
+   "id": "VR-01",
+   "family": "Effective date",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-02",
+   "family": "Effective date",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-03",
+   "family": "Memo override",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-04",
+   "family": "Memo override",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-05",
+   "family": "Cancelled holiday",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-06",
+   "family": "Wording",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-07",
+   "family": "Code list",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-08",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-09",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-10",
+   "family": "Hardship",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: The assistant met the sympathy and support team offer criteria in message 8. However, it failed the 'no persuasion attempt' criterion. After the user explicitly stated in message 7 that they lost their job and 'cannot pay anything', the assistant attempted to persuade the user to commit to a payment plan in message 10 ('We can set up a payment plan instead. When would you be able to make a payment"
+  },
+  {
+   "id": "VR-11",
+   "family": "Restructuring",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-12",
+   "family": "Multi-product",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "outcome (None, None), expected ('promise', None)"
+  },
+  {
+   "id": "VR-13",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-14",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-15",
+   "family": "Tool failure",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "VR-01",
+    "family": "Effective date",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "bf454a12-b021-4963-98e8-861980f3ba1d",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-02",
+    "family": "Effective date",
+    "now": "2026-10-20T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "e7cf4d49-7b12-4058-ab4d-429c7853c6b5",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-03",
+    "family": "Memo override",
+    "now": "2026-10-20T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "33d5a360-0dbb-436c-9f78-cc74d975e126",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-04",
+    "family": "Memo override",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "26048692-0e6a-4b93-9a48-6d4fc10c9da2",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-05",
+    "family": "Cancelled holiday",
+    "now": "2026-11-09T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "0366213f-3371-4952-a8f4-513be4bae2bd",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-06",
+    "family": "Wording",
+    "now": "2026-10-15T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "a44a94cc-cf2a-4adb-b1f2-879506dfe5de",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-07",
+    "family": "Code list",
+    "now": "2026-10-20T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "608e33e0-3dde-4b20-8278-42c11d4eda81",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-08",
+    "family": "Third party",
+    "now": "2026-10-21T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "f5583d92-3c92-44d4-9657-f78577ee80e2",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-09",
+    "family": "Identity",
+    "now": "2026-10-20T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "cc86f71c-ef5f-4990-aa40-1289ebbd4a4a",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-10",
+    "family": "Hardship",
+    "now": "2026-10-21T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The assistant met the sympathy and support team offer criteria in message 8. However, it failed the 'no persuasion attempt' criterion. After the user explicitly stated in message 7 that they lost their job and 'cannot pay anything', the assistant attempted to persuade the user to commit to a payment plan in message 10 ('We can set up a payment plan instead. When would you be able to make a payment"
+    ],
+    "call_id": "5bbcbf43-6274-4300-9077-8a15328e69b9",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-11",
+    "family": "Restructuring",
+    "now": "2026-10-21T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "793933e1-b2bf-4cf7-bc53-7a1699092cee",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-12",
+    "family": "Multi-product",
+    "now": "2026-10-20T11:00",
+    "pass": false,
+    "failed": [
+     "outcome (None, None), expected ('promise', None)",
+     "notes [], expected [('p2', 'refused'), ('p3', 'refused')]",
+     "the call was not closed with close_call",
+     "conversation: The assistant successfully made two persuasion attempts for the car loan (vehicle finance agreement) at [Message 14] and [Message 16]. However, the assistant failed to call the 'add_note' function for either the personal loan or the car loan despite the customer's repeated refusals to pay ([Message 11], [Message 13], [Message 15], [Message 17]). System events show that only one promise was created"
+    ],
+    "call_id": "2821c06b-3891-4aa3-bbcc-2516069177f8",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise"
+    ],
+    "ended": "customer-ended-call"
+   },
+   {
+    "id": "VR-13",
+    "family": "Multi-product",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "4de4a508-e472-4270-bda1-c2d03c3b8d42",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-14",
+    "family": "Multi-product",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "c7cc1103-17c6-4e76-93df-d9ee218f01f9",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-15",
+    "family": "Tool failure",
+    "now": "2026-10-23T10:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "825861ad-3d9a-4e8f-8d90-10cbb1a80aa9",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

@@ -1,7 +1,7 @@
 {
  "workflow_id": "fca15556-711f-4bbe-bdb7-7632e83a5c87",
  "agent_id": "292ae78f-f433-422d-be01-9f51c98a6705",
- "updated_at": "2026-10-11T07:03:46.841Z",
+ "updated_at": "2026-10-11T07:14:37.901Z",
  "workflow": {
   "nodes": {
    "close": {
@@ -1170,7 +1170,7 @@
      {
       "name": "turn_hardship",
       "type": "string",
-      "description": "yes if the customer's LAST message mentions any of these (the brief's hardship list): illness, a death in the family or job loss. Also yes when the same message refuses to pay. Otherwise no.",
+      "description": "yes ONLY if the customer's LAST message names one of these situations from the brief's hardship list: illness, a death in the family or job loss. A refusal, 'I cannot pay', or money being tight WITHOUT one of these situations is no.",
       "enum_values": [
        "yes",
        "no"

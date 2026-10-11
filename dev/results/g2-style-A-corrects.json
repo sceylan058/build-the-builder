@@ -1,0 +1,249 @@
+{
+ "final": [
+  {
+   "id": "PUB-01",
+   "family": "Happy path",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-02",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-03",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-04",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-05",
+   "family": "Hardship",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: The assistant failed the 'no persuasion attempt' and 'no plan offered' criteria. Although the user stated they had no money and had lost their job in [Message 9] and [Message 11], the assistant attempted to persuade them to commit to a payment on a later date in [Message 12]. This solicitation for a future payment also constitutes the offer of a payment arrangement/plan. Other criteria were met: t"
+  },
+  {
+   "id": "PUB-06",
+   "family": "Amounts",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: - The agent failed the criterion to offer the minimum payment only once; it was offered in Message 8 and then repeated in Message 10. - In Message 10, the agent hallucinated that the customer said '600.87' when the customer actually stated the correct amount of 637.50, causing the agent to redundantly re-offer the minimum payment. - The note regarding the rest remaining overdue was only included i"
+  },
+  {
+   "id": "PUB-07",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-08",
+   "family": "Already paid",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-09",
+   "family": "Restructuring",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-10",
+   "family": "Tool failure",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: The conversation did not meet all success criteria. 1. Exactly one promise in the ledger: This criterion was met. The first attempt to create a promise failed with a 'service unavailable' error (nothing recorded), but the second attempt (the retry) succeeded, resulting in exactly one promise. 2. 'Recorded' before successful call: This criterion was not met. The agent used the word 'recorded' in Me"
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "PUB-01",
+    "family": "Happy path",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "b9041335-74a9-41a2-a99a-0dfdc1e59e14",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-02",
+    "family": "Third party",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "55adbba9-2ee5-4c03-b194-82c13c8b2920",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-03",
+    "family": "Identity",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "1efe9d76-d474-4ac6-b055-4e9ceeb2aa62",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-04",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "e479ad83-160a-41fd-bb5a-7b49d506caaa",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-05",
+    "family": "Hardship",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The assistant failed the 'no persuasion attempt' and 'no plan offered' criteria. Although the user stated they had no money and had lost their job in [Message 9] and [Message 11], the assistant attempted to persuade them to commit to a payment on a later date in [Message 12]. This solicitation for a future payment also constitutes the offer of a payment arrangement/plan. Other criteria were met: t"
+    ],
+    "call_id": "7b34c994-68e6-497e-a974-f630e814c6b6",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-06",
+    "family": "Amounts",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: - The agent failed the criterion to offer the minimum payment only once; it was offered in Message 8 and then repeated in Message 10. - In Message 10, the agent hallucinated that the customer said '600.87' when the customer actually stated the correct amount of 637.50, causing the agent to redundantly re-offer the minimum payment. - The note regarding the rest remaining overdue was only included i"
+    ],
+    "call_id": "9f244391-6a3b-4d1d-8ea7-84deffa56d9f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-07",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "dcf4fb56-2059-4183-8c79-b432783bdffa",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-08",
+    "family": "Already paid",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "2a46fe60-971a-49f6-8f8e-2d7f3e8109dc",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-09",
+    "family": "Restructuring",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "6780720a-c74a-4899-9be4-66f00d08f80e",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-10",
+    "family": "Tool failure",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The conversation did not meet all success criteria. 1. Exactly one promise in the ledger: This criterion was met. The first attempt to create a promise failed with a 'service unavailable' error (nothing recorded), but the second attempt (the retry) succeeded, resulting in exactly one promise. 2. 'Recorded' before successful call: This criterion was not met. The agent used the word 'recorded' in Me"
+    ],
+    "call_id": "5ad2d983-9daf-452b-8c88-87285168dda1",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

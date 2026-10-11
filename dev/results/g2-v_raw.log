@@ -1,0 +1,24 @@
+PASS VR-01 Effective date   2026-10-14T11:00 | verify > verify > get_account > add_note > close_call | call bf454a12-b021-4963-98e8-861980f3ba1d
+PASS VR-02 Effective date   2026-10-20T11:00 | verify > verify > get_account > promise > close_call | call e7cf4d49-7b12-4058-ab4d-429c7853c6b5
+PASS VR-03 Memo override    2026-10-20T11:00 | verify > verify > get_account > promise > close_call | call 33d5a360-0dbb-436c-9f78-cc74d975e126
+PASS VR-04 Memo override    2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 26048692-0e6a-4b93-9a48-6d4fc10c9da2
+PASS VR-05 Cancelled holiday 2026-11-09T10:30 | verify > verify > get_account > promise > close_call | call 0366213f-3371-4952-a8f4-513be4bae2bd
+PASS VR-06 Wording          2026-10-15T11:00 | verify > verify > get_account > promise > close_call | call a44a94cc-cf2a-4adb-b1f2-879506dfe5de
+PASS VR-07 Code list        2026-10-20T11:00 | verify > verify > get_account > promise > close_call | call 608e33e0-3dde-4b20-8278-42c11d4eda81
+PASS VR-08 Third party      2026-10-21T11:00 | schedule_callback > close_call | call f5583d92-3c92-44d4-9657-f78577ee80e2
+PASS VR-09 Identity         2026-10-20T11:00 | verify > verify > verify > close_call | call cc86f71c-ef5f-4990-aa40-1289ebbd4a4a
+FAIL VR-10 Hardship         2026-10-21T11:00 | verify > verify > get_account > add_note > close_call | call 5bbcbf43-6274-4300-9077-8a15328e69b9
+       - conversation: The assistant met the sympathy and support team offer criteria in message 8. However, it failed the 'no persuasion attempt' criterion. After the user explicitly stated in message 7 that they lost their job and 'cannot pay anything', the assistant
+PASS VR-11 Restructuring    2026-10-21T11:00 | verify > verify > get_account > transfer_to_agent > close_call | call 793933e1-b2bf-4cf7-bc53-7a1699092cee
+FAIL VR-12 Multi-product    2026-10-20T11:00 | verify > verify > get_account > promise | call 2821c06b-3891-4aa3-bbcc-2516069177f8
+       - outcome (None, None), expected ('promise', None)
+       - notes [], expected [('p2', 'refused'), ('p3', 'refused')]
+       - the call was not closed with close_call
+       - conversation: The assistant successfully made two persuasion attempts for the car loan (vehicle finance agreement) at [Message 14] and [Message 16]. However, the assistant failed to call the 'add_note' function for either the personal loan or the car loan desp
+PASS VR-13 Multi-product    2026-10-14T11:00 | verify > verify > get_account > promise > promise > promise > close_call | call 4de4a508-e472-4270-bda1-c2d03c3b8d42
+PASS VR-14 Multi-product    2026-10-19T10:30 | verify > verify > get_account > promise > promise > close_call | call c7cc1103-17c6-4e76-93df-d9ee218f01f9
+PASS VR-15 Tool failure     2026-10-23T10:00 | verify > verify > get_account > promise > promise > close_call | call 825861ad-3d9a-4e8f-8d90-10cbb1a80aa9
+-- rep 1/1: 13/15 passed, simulation b9ff661e-d950-4243-94eb-517fa5ab31f6 completed, 374s
+
+per family: Cancelled holiday 1/1, Code list 1/1, Effective date 2/2, Hardship 0/1, Identity 1/1, Memo override 2/2, Multi-product 2/3, Restructuring 1/1, Third party 1/1, Tool failure 1/1, Wording 1/1
+13 / 15 passed (every rep must pass). median slowest turn 7s, worst 38s

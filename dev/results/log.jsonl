@@ -9,3 +9,10 @@
 {"at": "2026-10-11 10:07:04", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/pub_A.json", "style": null, "reps": 1, "passed": 10, "total": 10, "failed": [], "median_slowest_s": 3.5}
 {"at": "2026-10-11 10:08:15", "agent": "71c4002e-5545-4d8d-8426-0e7b7cfe86ca", "cases": "dev/cases/pub_B.json", "style": null, "reps": 1, "passed": 3, "total": 3, "failed": [], "median_slowest_s": 5.5}
 {"at": "2026-10-11 10:12:24", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/ab_extended.json", "style": null, "reps": 1, "passed": 13, "total": 19, "failed": ["X03", "X10", "X12", "X13", "X14", "X20"], "median_slowest_s": 5.7}
+{"at": "2026-10-11 10:18:44", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/pub_A.json", "style": null, "reps": 1, "passed": 10, "total": 10, "failed": [], "median_slowest_s": 3.6}
+{"at": "2026-10-11 10:21:17", "agent": "71c4002e-5545-4d8d-8426-0e7b7cfe86ca", "cases": "dev/cases/pub_B.json", "style": null, "reps": 1, "passed": 3, "total": 3, "failed": [], "median_slowest_s": 10.7}
+{"at": "2026-10-11 10:25:50", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/ab_extended.json", "style": null, "reps": 1, "passed": 17, "total": 19, "failed": ["X10", "X20"], "median_slowest_s": 4.8}
+{"at": "2026-10-11 10:27:53", "agent": "71c4002e-5545-4d8d-8426-0e7b7cfe86ca", "cases": "dev/cases/ab_extended.json", "style": null, "reps": 1, "passed": 5, "total": 5, "failed": [], "median_slowest_s": 6.7}
+{"at": "2026-10-11 10:34:26", "agent": "e25a7405-6eb3-4a76-95e9-88d24ab06e16", "cases": "dev/cases/v_raw.json", "style": null, "reps": 1, "passed": 13, "total": 15, "failed": ["VR-10", "VR-12"], "median_slowest_s": 6.9}
+{"at": "2026-10-11 10:37:00", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/pub_A.json", "style": "pieces", "reps": 1, "passed": 10, "total": 10, "failed": [], "median_slowest_s": 6.1}
+{"at": "2026-10-11 10:40:34", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/pub_A.json", "style": "corrects", "reps": 1, "passed": 7, "total": 10, "failed": ["PUB-05", "PUB-06", "PUB-10"], "median_slowest_s": 7.9}

@@ -1,7 +1,7 @@
-PASS PUB-11 Multi-product    2026-10-14T11:00 | verify > verify > get_account > promise > promise > promise > close_call | call 25284883-b39e-4031-aa44-d6addeda5316
-PASS PUB-12 Multi-product    2026-10-14T11:00 | verify > verify > verify > get_account > promise > add_note > add_note > close_call | call 826fbabd-1191-46cc-8ff6-6a84dd2cdc73
-PASS PUB-13 Multi-product    2026-10-14T11:00 | verify > verify > get_account > promise > promise > close_call | call 462afc69-b2a4-4dcc-9f62-28a913e5fa8b
--- rep 1/1: 3/3 passed, simulation 14b3562f-8bdc-4458-8856-cd139684fdb8 completed, 63s
+PASS PUB-11 Multi-product    2026-10-14T11:00 | verify > verify > get_account > promise > promise > promise > close_call | call baf8ff5a-3b84-46b6-a903-1a96933cb439
+PASS PUB-12 Multi-product    2026-10-14T11:00 | verify > verify > verify > get_account > promise > add_note > add_note > close_call | call 8f96429b-8e01-4fec-b2e6-f3cbe8c75679
+PASS PUB-13 Multi-product    2026-10-14T11:00 | verify > verify > get_account > promise > promise > close_call | call c04e2ba7-9d20-49da-888f-0b9c7fd5a8f9
+-- rep 1/1: 3/3 passed, simulation c812e73e-b4e1-4d97-8681-afec0e13088f completed, 146s
 
 per family: Multi-product 3/3
-3 / 3 passed (every rep must pass). median slowest turn 5s, worst 6s
+3 / 3 passed (every rep must pass). median slowest turn 11s, worst 32s

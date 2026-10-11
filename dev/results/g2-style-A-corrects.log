@@ -1,0 +1,17 @@
+PASS PUB-01 Happy path       2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call b9041335-74a9-41a2-a99a-0dfdc1e59e14
+PASS PUB-02 Third party      2026-10-14T11:00 | schedule_callback > close_call | call 55adbba9-2ee5-4c03-b194-82c13c8b2920
+PASS PUB-03 Identity         2026-10-14T11:00 | verify > verify > verify > close_call | call 1efe9d76-d474-4ac6-b055-4e9ceeb2aa62
+PASS PUB-04 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call e479ad83-160a-41fd-bb5a-7b49d506caaa
+FAIL PUB-05 Hardship         2026-10-14T11:00 | verify > verify > get_account > close_call | call 7b34c994-68e6-497e-a974-f630e814c6b6
+       - conversation: The assistant failed the 'no persuasion attempt' and 'no plan offered' criteria. Although the user stated they had no money and had lost their job in [Message 9] and [Message 11], the assistant attempted to persuade them to commit to a payment on
+FAIL PUB-06 Amounts          2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 9f244391-6a3b-4d1d-8ea7-84deffa56d9f
+       - conversation: - The agent failed the criterion to offer the minimum payment only once; it was offered in Message 8 and then repeated in Message 10. - In Message 10, the agent hallucinated that the customer said '600.87' when the customer actually stated the co
+PASS PUB-07 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call dcf4fb56-2059-4183-8c79-b432783bdffa
+PASS PUB-08 Already paid     2026-10-14T11:00 | verify > verify > get_account > close_call | call 2a46fe60-971a-49f6-8f8e-2d7f3e8109dc
+PASS PUB-09 Restructuring    2026-10-14T11:00 | verify > verify > get_account > transfer_to_agent > close_call | call 6780720a-c74a-4899-9be4-66f00d08f80e
+FAIL PUB-10 Tool failure     2026-10-14T11:00 | verify > verify > get_account > promise > promise > close_call | call 5ad2d983-9daf-452b-8c88-87285168dda1
+       - conversation: The conversation did not meet all success criteria. 1. Exactly one promise in the ledger: This criterion was met. The first attempt to create a promise failed with a 'service unavailable' error (nothing recorded), but the second attempt (the retr
+-- rep 1/1: 7/10 passed, simulation ba444fd9-1423-4337-8b58-d31f285fbea4 completed, 199s
+
+per family: Already paid 1/1, Amounts 0/1, Dates 2/2, Happy path 1/1, Hardship 0/1, Identity 1/1, Restructuring 1/1, Third party 1/1, Tool failure 0/1
+7 / 10 passed (every rep must pass). median slowest turn 8s, worst 19s
