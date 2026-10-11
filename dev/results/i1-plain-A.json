@@ -1,0 +1,244 @@
+{
+ "final": [
+  {
+   "id": "PUB-01",
+   "family": "Happy path",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-02",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-03",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-04",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-05",
+   "family": "Hardship",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-06",
+   "family": "Amounts",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-07",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-08",
+   "family": "Already paid",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-09",
+   "family": "Restructuring",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-10",
+   "family": "Tool failure",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "PUB-01",
+    "family": "Happy path",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "7b0b1d07-8429-4cf0-9bd8-d6231e89443c",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-02",
+    "family": "Third party",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "a2fd7324-81ce-4ac5-865a-04572a57dc08",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-03",
+    "family": "Identity",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "d0dff538-9941-4f9f-a663-0ef8b5285678",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-04",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "bc189b27-cc29-40e0-90dc-df0a5dce6e7f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-05",
+    "family": "Hardship",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "f9fc78c0-ce2c-4b95-84d6-4f57ecdb6191",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-06",
+    "family": "Amounts",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "3419ebf2-cb7b-4927-a4e7-1100e5831aad",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-07",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "d344e81e-eeb3-4649-884c-3aa638885488",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-08",
+    "family": "Already paid",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "2716ab9f-9c89-44f2-8dc9-6d47abe47b6d",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-09",
+    "family": "Restructuring",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "63634e1b-1abf-410a-92f4-d60718d4afe6",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-10",
+    "family": "Tool failure",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "4c052503-f3b7-4fd9-9873-686389dbf139",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}
