@@ -1406,7 +1406,7 @@ class Gen:
              "enum_values": ["accept", "refuse", "propose", "too_much", "hardship", "question", "off_topic", "paid", "dispute", "other"],
              "description": "What the customer's LAST message does: accept (agrees to the last offer or read-back), refuse (says no to paying or to the offer without proposing anything), propose (names their own date or amount), too_much (says the amount is too much), hardship (mentions one of these, as the brief defines hardship: " + os_["hardship_triggers"] + "), question (asks something), off_topic (only small talk, nothing about the offer), paid (says it is already paid), dispute (says it is not theirs), other."},
             {"name": "turn_hardship", "type": "string", "min_confidence": 0.5, "enum_values": ["yes", "no"],
-             "description": "yes if the customer's LAST message mentions any of these (the brief's hardship list): " + os_["hardship_triggers"] + ". Also yes when the same message refuses to pay. Otherwise no."},
+             "description": "yes ONLY if the customer's LAST message names one of these situations from the brief's hardship list: " + os_["hardship_triggers"] + ". A refusal, 'I cannot pay', or money being tight WITHOUT one of these situations is no."},
             {"name": "turn_item", "type": "string", "min_confidence": 0.5, "enum_values": ["1", "2", "3"],
              "description": "Which item, by its position in the order the agent listed them (1, 2 or 3), the customer's last message is about; if unclear, the item the agent is currently discussing."},
             {"name": "turn_date", "type": "string", "min_confidence": 0.5,

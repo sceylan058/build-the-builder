@@ -1,66 +1,24 @@
-[06:46:06Z +   0.0s] START utc=2026-10-11T06:46:06+00:00 slot=dev-raw commit=265d773fc1f154995bcb7881d58980ec75ee5dcc (dirty) builder_model=claude-opus-5-5
-[06:46:06Z +   0.0s] args: briefs=['dev/briefs/v-raw'] api=dev/briefs/v-raw/openapi.json no_save=False practice_test=None
-[06:46:06Z +   0.0s] input 00_v-raw/1_mail.md sha256=793a237882ebfdc4 bytes=897
-[06:46:06Z +   0.0s] input 00_v-raw/2_policy_extract.md sha256=5594d058215a461b bytes=5826
-[06:46:06Z +   0.0s] input 00_v-raw/3_memo.md sha256=35f8609991961702 bytes=653
-[06:46:06Z +   0.0s] input 00_v-raw/4_codes.md sha256=c7fdafd0a20a9a60 bytes=1313
-[06:46:06Z +   0.0s] input 00_v-raw/openapi.json sha256=9a8410b12e5c82b6 bytes=10557
-[06:46:06Z +   0.0s] tool API dev/briefs/v-raw/openapi.json sha256=9a8410b12e5c82b6 paths=['add_note', 'close_call', 'create_promise', 'get_account', 'schedule_callback', 'transfer_to_agent', 'verify_identity'] server=https://freya-bank-mock.freyavoice.workers.dev/v1
-[06:46:06Z +   0.0s] [prepare] work folder ready (0.0s): brief_bundle.md 19457 chars
-[06:46:07Z +   0.8s] credentials: api_key
-[06:46:10Z +   3.7s] model call 1 [write config] model=claude-opus-5-5: Bash ls -la && cat skill/SKILL.md && ls skill
-[06:46:12Z +   6.2s] model call 2 [write config] model=claude-opus-5-5: Bash cat brief_bundle.md && ls -R inputs docs
-[06:46:14Z +   7.6s] model call 3 [write config] model=claude-opus-5-5: thinking
-[06:46:15Z +   8.7s] model call 4 [write config] model=claude-opus-5-5: Bash diff <(python3 -m json.tool openapi.json) <(python3 -m json.tool input
-[06:46:17Z +  10.9s] model call 5 [write config] model=claude-opus-5-5: Bash cat skill/example.config.json
-[06:46:18Z +  12.2s] model call 6 [write config] model=claude-opus-5-5: thinking
-[06:46:20Z +  13.7s] model call 7 [write config] model=claude-opus-5-5: Bash python3 -c "
-import json;d=json.load(open('skill/example.config.json')
-[06:46:23Z +  16.8s] model call 8 [write config] model=claude-opus-5-5: thinking
-[06:46:23Z +  16.8s] model call 9 [write config] model=claude-opus-5-5: says: I've read the brief, the API file, the schema and most of the example.
-[06:46:24Z +  17.9s] model call 10 [write config] model=claude-opus-5-5: Bash python3 -c "
-import json;d=json.load(open('skill/example.config.json')
-[06:46:27Z +  20.8s] model call 11 [write config] model=claude-opus-5-5: thinking
-[06:46:27Z +  20.8s] model call 12 [write config] model=claude-opus-5-5: says: Now checking how gen.py picks tiers, since the memo makes the band bou
-[06:46:28Z +  21.9s] model call 13 [write config] model=claude-opus-5-5: Bash wc -l skill/gen.py skill/check.py && grep -n "tier\|def rule_date\|'to
-[06:46:30Z +  24.0s] model call 14 [write config] model=claude-opus-5-5: Bash sed -n 100,200p skill/gen.py && sed -n 395,500p skill/gen.py
-[06:46:35Z +  29.0s] model call 15 [write config] model=claude-opus-5-5: thinking
-[06:46:35Z +  29.0s] model call 16 [write config] model=claude-opus-5-5: says: The schema has an undocumented `tiers.expr` that's evaluated with `tod
-[06:46:36Z +  29.9s] model call 17 [write config] model=claude-opus-5-5: Bash grep -n "provenance\|derived\|def \|bundle" skill/check.py | head -80
-[06:46:55Z +  48.7s] model call 18 [write config] model=claude-opus-5-5: thinking
-[06:46:55Z +  48.7s] model call 19 [write config] model=claude-opus-5-5: thinking
-[06:47:05Z +  58.7s] model call 20 [write config] model=claude-opus-5-5: Bash python3 - <<'EOF'
-import json
-c=json.load(open('skill/example.config.j
-[06:47:08Z +  61.6s] model call 21 [write config] model=claude-opus-5-5: thinking
-[06:47:08Z +  61.6s] model call 22 [write config] model=claude-opus-5-5: says: The assert only caught the occurrences I meant to keep: the rule itsel
-[06:47:17Z +  70.5s] model call 23 [write config] model=claude-opus-5-5: Bash python3 - <<'EOF'
-import json
-c=json.load(open('skill/example.config.j
-[06:47:19Z +  72.9s] model call 24 [write config] model=claude-opus-5-5: thinking
-[06:47:19Z +  72.9s] model call 25 [write config] model=claude-opus-5-5: says: Three quoted example phrases need provenance entries. Adding them, the
-[06:47:23Z +  77.4s] model call 26 [write config] model=claude-opus-5-5: Bash python3 - <<'EOF'
-import json
-c=json.load(open('config.json'))
-c['prov
-[06:47:31Z +  84.6s] model call 27 [write config] model=claude-opus-5-5: thinking
-[06:47:31Z +  84.6s] model call 28 [write config] model=claude-opus-5-5: thinking
-[06:47:32Z +  85.9s] model call 29 [write config] model=claude-opus-5-5: Bash python3 skill/gen.py config.json --selftest '[{"product_id":"p1","type
-[06:47:41Z +  94.9s] model call 30 [write config] model=claude-opus-5-5: thinking
-[06:47:41Z +  95.1s] model call 31 [write config] model=claude-opus-5-5: says: config ready
-[06:47:41Z +  95.1s] model session [write config] done: turns=14 duration=94s cost=$0.48 tokens in=28 out=9084 cache_read=366043
-[06:47:41Z +  95.1s] [write config] model stage took 94s, 31 model calls
-[06:47:41Z +  95.2s] [compile round 0] gen.py exit=0 (0.1s) wrote workflow.json: 23 nodes
-[06:47:42Z +  95.7s] [check round 0] check.py: OK (0.5s)
-[06:47:45Z +  98.8s] [dry-run] Freya validation: {"valid": true, "dryRun": true} (3.1s)
-[06:47:45Z +  99.4s] final workflow: 23 nodes, 7 model tools, 17 engine actions; check OK; repair rounds used: 0
-[06:47:51Z + 105.1s] [save] Freya workflow_id=2674e1a4-9e9e-4ac7-885a-d59fc560b757 agent_id=e25a7405-6eb3-4a76-95e9-88d24ab06e16 version=3 published=True agent model=experimental-5/experimental-5 matches AGENT_LLM=True (5.7s)
-[06:47:51Z + 105.1s] [save] live workflow: 23 nodes, 7 model tools, 17 engine actions
-[06:47:52Z + 105.6s] [export] submission/dev-raw.workflow.json sha256=6ecc7cfd072f0f9e (0.6s)
-[06:47:52Z + 105.6s] stage duration prepare: 0.0s
-[06:47:52Z + 105.6s] stage duration write: 95.1s
-[06:47:52Z + 105.6s] stage duration compile+check 0: 0.6s
-[06:47:52Z + 105.6s] stage duration dry-run: 3.1s
-[06:47:52Z + 105.6s] stage duration save: 5.7s
-[06:47:52Z + 105.6s] stage duration export: 0.6s
-[06:47:52Z + 105.6s] END utc=2026-10-11T06:47:52+00:00 total=106s
+[07:03:57Z +   0.0s] START utc=2026-10-11T07:03:57+00:00 slot=dev-raw commit=12b57f69dd83b96e0ba237ee3e2239899e469b1b (dirty) builder_model=claude-opus-5-5
+[07:03:57Z +   0.0s] args: briefs=['dev/briefs/v-raw'] api=dev/briefs/v-raw/openapi.json no_save=False practice_test=None
+[07:03:57Z +   0.0s] input 00_v-raw/1_mail.md sha256=793a237882ebfdc4 bytes=897
+[07:03:57Z +   0.0s] input 00_v-raw/2_policy_extract.md sha256=5594d058215a461b bytes=5826
+[07:03:57Z +   0.0s] input 00_v-raw/3_memo.md sha256=35f8609991961702 bytes=653
+[07:03:57Z +   0.0s] input 00_v-raw/4_codes.md sha256=c7fdafd0a20a9a60 bytes=1313
+[07:03:57Z +   0.0s] input 00_v-raw/openapi.json sha256=9a8410b12e5c82b6 bytes=10557
+[07:03:57Z +   0.0s] tool API dev/briefs/v-raw/openapi.json sha256=9a8410b12e5c82b6 paths=['add_note', 'close_call', 'create_promise', 'get_account', 'schedule_callback', 'transfer_to_agent', 'verify_identity'] server=https://freya-bank-mock.freyavoice.workers.dev/v1
+[07:03:57Z +   0.0s] [prepare] work folder ready (0.0s): brief_bundle.md 19457 chars
+[07:03:57Z +   0.0s] --reuse-config: no model stage; recompiling results/cfg-dev-raw.json (sha256=ee2e015d2e72e14c) with the current generator
+[07:03:57Z +   0.1s] [compile round 0] gen.py exit=0 (0.1s) wrote workflow.json: 23 nodes
+[07:03:57Z +   0.6s] [check round 0] check.py: OK (0.5s)
+[07:03:58Z +   1.3s] [dry-run] Freya validation: {"valid": true, "dryRun": true} (0.7s)
+[07:03:58Z +   1.3s] final workflow: 23 nodes, 7 model tools, 17 engine actions; check OK; repair rounds used: 0
+[07:04:02Z +   5.1s] [save] Freya workflow_id=2674e1a4-9e9e-4ac7-885a-d59fc560b757 agent_id=e25a7405-6eb3-4a76-95e9-88d24ab06e16 version=4 published=True agent model=experimental-5/experimental-5 matches AGENT_LLM=True (3.8s)
+[07:04:02Z +   5.1s] [save] live workflow: 23 nodes, 7 model tools, 17 engine actions
+[07:04:02Z +   5.6s] [export] submission/dev-raw.workflow.json sha256=a5427a3311f93ceb (0.5s)
+[07:04:02Z +   5.6s] stage duration prepare: 0.0s
+[07:04:02Z +   5.6s] stage duration write: 0.0s
+[07:04:02Z +   5.6s] stage duration compile+check 0: 0.6s
+[07:04:02Z +   5.6s] stage duration dry-run: 0.7s
+[07:04:02Z +   5.6s] stage duration save: 3.8s
+[07:04:02Z +   5.6s] stage duration export: 0.5s
+[07:04:02Z +   5.6s] END utc=2026-10-11T07:04:02+00:00 total=6s
