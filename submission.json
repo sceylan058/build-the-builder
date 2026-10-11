@@ -1,0 +1,10 @@
+{
+  "team": "Selim Ceylan",
+  "members": [{ "name": "Selim Ceylan", "email": "sceylan058@gmail.com" }],
+  "repo": "https://github.com/sceylan058/build-the-builder",
+  "commit": "FILL_AFTER_FINAL_PUSH",
+  "run_command": "python3 builder/build.py {case_folder} mock/openapi.json --slot final --mode workflow",
+  "workflow": "submission/final.workflow.json",
+  "trace": "traces/final.log",
+  "mock_url": "https://freya-statement-mock.selimfreya.workers.dev"
+}

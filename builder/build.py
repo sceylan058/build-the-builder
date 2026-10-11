@@ -27,6 +27,7 @@ if not os.environ.get("ANTHROPIC_API_KEY") and KEY_FILE.exists():
 NO_NEW_ROUND_AFTER = 20 * 60
 SAVE_BY = 25 * 60
 MAX_REPAIR_ROUNDS = 3
+BUNDLE_MAX_CHARS = 60_000   # larger text files are listed in the bundle, not pasted
 TEXT_EXT = {".md", ".txt", ".csv", ".tsv", ".json", ".yaml", ".yml", ".eml", ".html", ".htm", ".xml", ".log", ""}
 
 
@@ -133,7 +134,10 @@ def write_bundle(files, inputs_dir, out):
     for f in files:
         rel = f.relative_to(inputs_dir)
         txt = to_text(f)
-        if txt is None:
+        if txt is not None and len(txt) > BUNDLE_MAX_CHARS:
+            parts.append(f"\n\n===== FILE: inputs/{rel} =====\n(large file, {len(txt)} characters, not pasted here; "
+                         f"start with its first lines and search it with the Read tool: inputs/{rel})\n")
+        elif txt is None:
             parts.append(f"\n\n===== FILE: inputs/{rel} =====\n(binary file not converted; open it with the Read tool: inputs/{rel})\n")
         else:
             parts.append(f"\n\n===== FILE: inputs/{rel} =====\n{txt}")
@@ -287,6 +291,34 @@ def compile_and_check(workdir, T, rnd):
     return wf, errors
 
 
+def check_workflow(workdir, T, rnd):
+    """Workflow mode: validate the model-written workflow.json against the given or model-written openapi.json."""
+    wf_p, api_p = workdir / "workflow.json", workdir / "openapi.json"
+    if not wf_p.exists():
+        return None, ["workflow.json does not exist yet"]
+    if not api_p.exists():
+        return None, ["openapi.json does not exist yet: write it from the brief's integration documents (skill/WORKFLOW_SKILL.md step 1)"]
+    try:
+        wf = json.loads(wf_p.read_text())
+        wf = wf.get("workflow", wf)
+        api = json.loads(api_p.read_text())
+    except Exception as ex:
+        return None, [f"workflow.json or openapi.json is not valid JSON: {ex}"]
+    base = (workdir / "tool_base_url.txt").read_text().strip() if (workdir / "tool_base_url.txt").exists() else ""
+    errors = []
+    if base and (api.get("servers") or [{}])[0].get("url", "").rstrip("/") != base.rstrip("/"):
+        errors.append(f"openapi.json servers[0].url must be the tool base URL {base}")
+    t = time.time()
+    try:
+        errors += check.run_checks(wf, api, None, None)
+    except Exception as ex:
+        errors.append(f"check.py crashed on the workflow: {type(ex).__name__}: {ex}")
+    T.line(f"[check round {rnd}] check.py (workflow mode): {'OK' if not errors else str(len(errors)) + ' error(s)'} ({time.time() - t:.1f}s)")
+    for e in errors[:30]:
+        T.line(f"    {e}")
+    return wf, errors
+
+
 def counts(wf):
     tools = sum(len(n.get("tools", []) or []) for n in wf["nodes"].values())
     pre = sum(len(n.get("pre_actions", []) or []) for n in wf["nodes"].values())
@@ -319,14 +351,37 @@ def retry(fn, T, what, tries=8):
 
 async def run(a):
     os.chdir(ROOT)
-    *briefs, api_path = a.paths
-    if not briefs:
-        sys.exit("build.py: give at least one brief path and then the tool API file")
-    try:
+    def is_openapi(p):
+        try:
+            d = json.loads(pathlib.Path(p).read_text())
+            return isinstance(d, dict) and isinstance(d.get("paths"), dict)
+        except Exception:
+            return False
+    has_api = len(a.paths) >= 2 and is_openapi(a.paths[-1])
+    if a.mode == "auto":
+        a.mode = "config" if has_api else "workflow"
+    if a.mode == "workflow" and not has_api:
+        briefs, api_path, api = list(a.paths), None, None
+        if not a.tool_base_url:
+            f = ROOT / "mock" / "mock_url.txt"
+            a.tool_base_url = f.read_text().split()[0] if f.exists() and f.read_text().split() else ""
+        if not a.tool_base_url:
+            sys.exit("build.py: no tool API file: give --tool-base-url (or TOOL_BASE_URL, or mock/mock_url.txt)")
+    else:
+        *briefs, api_path = a.paths
+        if not briefs:
+            sys.exit("build.py: give at least one brief path and then the tool API file")
+        if not is_openapi(api_path):
+            sys.exit(f"build.py: {api_path} is not an OpenAPI file with 'paths' (the tool API file must be the last argument)")
         api = json.loads(pathlib.Path(api_path).read_text())
-        assert isinstance(api, dict) and isinstance(api.get("paths"), dict)
-    except Exception:
-        sys.exit(f"build.py: {api_path} is not an OpenAPI file with 'paths' (the tool API file must be the last argument)")
+    wf_mode = a.mode == "workflow"
+    src_name = "workflow.json" if wf_mode else "config.json"
+    check_fn = check_workflow if wf_mode else compile_and_check
+    write_prompt = ("Write workflow.json now (and openapi.json first if it does not exist), following skill/WORKFLOW_SKILL.md. "
+                    "Read brief_bundle.md, the docs/ files it names and any binary inputs it lists first. "
+                    "When skill/check.py passes, reply 'workflow ready'.") if wf_mode else \
+                   ("Write config.json now, following skill/SKILL.md. Read brief_bundle.md and openapi.json first. "
+                    "When the self-checks in SKILL.md pass, reply 'config ready'.")
     slot = a.slot or pathlib.Path(briefs[-1]).stem
     T = Trace(slot)
     stage_t = {}
@@ -336,7 +391,7 @@ async def run(a):
     except Exception:
         commit, dirty = "none", ""
     T.line(f"START utc={datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds')} slot={slot} commit={commit}{' (dirty)' if dirty else ''} builder_model={MODEL}")
-    T.line(f"args: briefs={briefs} api={api_path} no_save={a.no_save} practice_test={a.practice_test}")
+    T.line(f"args: mode={a.mode} briefs={briefs} api={api_path} no_save={a.no_save} practice_test={a.practice_test}")
 
     # ---- prepare the isolated work folder
     s = time.time()
@@ -345,8 +400,12 @@ async def run(a):
         shutil.rmtree(workdir)
     workdir.mkdir(parents=True)
     files = collect_inputs(briefs, workdir / "inputs", T)
-    shutil.copy2(api_path, workdir / "openapi.json")
-    T.line(f"tool API {api_path} sha256={sha256(api_path)[:16]} paths={sorted(p.strip('/') for p in api['paths'])} server={api.get('servers', [{}])[0].get('url')}")
+    if api_path:
+        shutil.copy2(api_path, workdir / "openapi.json")
+        T.line(f"tool API {api_path} sha256={sha256(api_path)[:16]} paths={sorted(p.strip('/') for p in api['paths'])} server={api.get('servers', [{}])[0].get('url')}")
+    else:
+        T.line(f"no tool API file: the model writes openapi.json from the brief's integration documents; tool base URL {a.tool_base_url}")
+    (workdir / "tool_base_url.txt").write_text(a.tool_base_url or "")
     write_bundle(files, workdir / "inputs", workdir / "brief_bundle.md")
     shutil.copytree(ROOT / "builder" / "skill", workdir / "skill", ignore=shutil.ignore_patterns("__pycache__"))
     shutil.copy2(ROOT / "builder" / "check.py", workdir / "skill" / "check.py")
@@ -365,8 +424,7 @@ async def run(a):
             T.line(f"--reuse-config: no model stage; recompiling {a.reuse_config} (sha256={sha256(a.reuse_config)[:16]}) with the current generator")
         else:
             await writer.start()
-            await writer.ask("Write config.json now, following skill/SKILL.md. Read brief_bundle.md and openapi.json first. "
-                             "When the self-checks in SKILL.md pass, reply 'config ready'.", "write config", SAVE_BY - 5 * 60 - T.elapsed())
+            await writer.ask(write_prompt, "write " + a.mode, SAVE_BY - 5 * 60 - T.elapsed())
         if writer.fatal and CREDENTIALS.startswith("api_key"):
             T.line(f"credentials: api_key -> claude_login ({writer.fatal[:80]})")
             await writer.stop()
@@ -374,15 +432,14 @@ async def run(a):
             globals()["CREDENTIALS"] = "claude_login (fallback)"
             writer = Writer(workdir, T)
             await writer.start()
-            await writer.ask("Write config.json now, following skill/SKILL.md. Read brief_bundle.md and openapi.json first. "
-                             "When the self-checks in SKILL.md pass, reply 'config ready'.", "write config (fallback)", SAVE_BY - 5 * 60 - T.elapsed())
+            await writer.ask(write_prompt, "write " + a.mode + " (fallback)", SAVE_BY - 5 * 60 - T.elapsed())
         stage_t["write"] = time.time() - s
         while True:
             s2 = time.time()
-            wf, errors = compile_and_check(workdir, T, rnd)
+            wf, errors = check_fn(workdir, T, rnd)
             stage_t[f"compile+check {rnd}"] = time.time() - s2
             if wf is not None:
-                cand = (not errors, -len(errors), wf, json.loads((workdir / "config.json").read_text()))
+                cand = (not errors, -len(errors), wf, json.loads((workdir / src_name).read_text()))
                 if best is None or cand[:2] > best[:2]:
                     best = cand
             if not errors:
@@ -398,8 +455,8 @@ async def run(a):
                 break
             rnd += 1
             s3 = time.time()
-            await writer.ask("The builder compiled and checked config.json and found these errors. Fix config.json for every one, "
-                             "run the self-checks again, then reply 'config ready'.\n\n" + "\n".join(errors[:60]),
+            await writer.ask(f"The builder checked {src_name} and found these errors. Fix {src_name} for every one, "
+                             "run the self-checks again, then reply 'ready'.\n\n" + "\n".join(errors[:60]),
                              f"repair {rnd}", max(60, SAVE_BY - 3 * 60 - T.elapsed()))
             stage_t[f"repair {rnd}"] = time.time() - s3
         # ---- stage 4: dry-run validation on Freya
@@ -415,12 +472,12 @@ async def run(a):
                     T.line("[dry-run] the validator is unavailable (platform outage), not a config problem: continuing without it")
                 elif T.elapsed() < NO_NEW_ROUND_AFTER and not a.reuse_config:
                     rnd += 1
-                    await writer.ask("Freya's validator rejected the workflow compiled from config.json:\n" + str(ex)[:3000] +
-                                     "\nFix config.json, run the self-checks, reply 'config ready'.", f"repair {rnd} (validator)",
+                    await writer.ask(f"Freya's validator rejected the workflow from {src_name}:\n" + str(ex)[:3000] +
+                                     f"\nFix {src_name}, run the self-checks, reply 'ready'.", f"repair {rnd} (validator)",
                                      max(60, SAVE_BY - 3 * 60 - T.elapsed()))
-                    wf, errors = compile_and_check(workdir, T, rnd)
+                    wf, errors = check_fn(workdir, T, rnd)
                     if wf is not None and not errors:
-                        best = (True, 0, wf, json.loads((workdir / "config.json").read_text()))
+                        best = (True, 0, wf, json.loads((workdir / src_name).read_text()))
             stage_t["dry-run"] = time.time() - s4
     finally:
         await writer.stop()
@@ -431,7 +488,7 @@ async def run(a):
         return 2
     ok, neg, wf, cfg = best
     (workdir / "final.workflow.json").write_text(json.dumps(wf, indent=1))
-    (workdir / "final.config.json").write_text(json.dumps(cfg, indent=1))
+    (workdir / ("final.source.json" if wf_mode else "final.config.json")).write_text(json.dumps(cfg, indent=1))
     T.line(f"final workflow: {counts(wf)}; check {'OK' if ok else 'FAILED with ' + str(-neg) + ' error(s)'}; repair rounds used: {rnd}")
     if a.no_save:
         T.line("--no-save: stopping after the dry run")
@@ -486,10 +543,16 @@ def main():
     ap.add_argument("--slot")
     ap.add_argument("--no-save", action="store_true")
     ap.add_argument("--practice-test", choices=["A", "B"])
+    ap.add_argument("--mode", choices=["auto", "config", "workflow"], default="auto",
+                    help="config: model writes a config compiled by gen.py; workflow: model writes the workflow JSON directly; "
+                         "auto: workflow when no tool API file is given (e.g. a case folder), else config")
+    ap.add_argument("--tool-base-url", default=os.environ.get("TOOL_BASE_URL", ""),
+                    help="workflow mode without a tool API file: servers[0].url of the openapi.json the model writes "
+                         "(default: first line of mock/mock_url.txt)")
     ap.add_argument("--reuse-config", help="skip the model: recompile this previously written config.json with the current generator, then run every later stage")
     a = ap.parse_args()
-    if len(a.paths) < 2:
-        ap.error("give at least one brief path and then the tool API file")
+    if len(a.paths) < 1 or (len(a.paths) < 2 and a.mode == "config"):
+        ap.error("give the brief path(s) and, in config mode, the tool API file last")
     sys.exit(asyncio.run(run(a)))
 
 

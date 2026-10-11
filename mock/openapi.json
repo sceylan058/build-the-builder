@@ -1,0 +1,395 @@
+{
+ "openapi": "3.0.3",
+ "info": {
+  "title": "Freya Bank statement-debt services (team mock)",
+  "version": "1.0",
+  "description": "Mock of the bank's IVR statement services, served from test-environment data. The service does not enforce the call flow; following the bank's rules is the agent's job."
+ },
+ "servers": [
+  {
+   "url": "https://freya-statement-mock.selimfreya.workers.dev"
+  }
+ ],
+ "paths": {
+  "/voice/v1/cards.list": {
+   "post": {
+    "summary": "List the customer's credit cards (cardNumber masked, cardNumberLast4, productName, status, isMainCard), validCardsCount and exitState.",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customerNo": {
+          "type": "string",
+          "description": "The 8-digit customer number from the call variable customerNumber. Never ask the caller for it."
+         }
+        },
+        "required": [
+         "customerNo"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "data.cards[], data.validCardsCount, data.exitState. Envelope: {data:{...}, result:{returnCode, code, message, type}}. returnCode '1' = success.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object"
+          },
+          "result": {
+           "type": "object"
+          }
+         }
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "Not found (no valid card / unknown customer). result.code e.g. FB_IVR_CHANNEL_102, result.message holds the text."
+     },
+     "500": {
+      "description": "Technical error. Nothing was done. Hand the caller to an agent."
+     }
+    }
+   }
+  },
+  "/voice/v1/cards.balance": {
+   "post": {
+    "summary": "Statement debt of one card: statementDate, lastPayDate, nextStatementDate, nextLastPayDate and per currency debtTL/debtUSD/debtEUR/debtGBP {statementPaymentStatus, statementDebt, minPayment, remainingDebt, remainingMinPayment, totalDebt, ...}.",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customerNo": {
+          "type": "string",
+          "description": "The 8-digit customer number from the call variable customerNumber. Never ask the caller for it."
+         },
+         "cardNumber": {
+          "type": "string",
+          "description": "The card's cardNumber exactly as returned by cards.list (masked)."
+         }
+        },
+        "required": [
+         "customerNo",
+         "cardNumber"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "data.* as described. Envelope: {data:{...}, result:{returnCode, code, message, type}}. returnCode '1' = success.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object"
+          },
+          "result": {
+           "type": "object"
+          }
+         }
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "Not found (no valid card / unknown customer). result.code e.g. FB_IVR_CHANNEL_102, result.message holds the text."
+     },
+     "500": {
+      "description": "Technical error. Nothing was done. Hand the caller to an agent."
+     }
+    }
+   }
+  },
+  "/voice/v1/statement.week.get": {
+   "post": {
+    "summary": "Current statement week/day and dates of one card, and joint-statement relation (relationType, relatedCardNumber, relatedCardProductName).",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customerNo": {
+          "type": "string",
+          "description": "The 8-digit customer number from the call variable customerNumber. Never ask the caller for it."
+         },
+         "cardNumber": {
+          "type": "string",
+          "description": "The card's cardNumber exactly as returned by cards.list (masked)."
+         }
+        },
+        "required": [
+         "customerNo",
+         "cardNumber"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "data.statementWeek, data.statementDay, dates, relation fields. Envelope: {data:{...}, result:{returnCode, code, message, type}}. returnCode '1' = success.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object"
+          },
+          "result": {
+           "type": "object"
+          }
+         }
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "Not found (no valid card / unknown customer). result.code e.g. FB_IVR_CHANNEL_102, result.message holds the text."
+     },
+     "500": {
+      "description": "Technical error. Nothing was done. Hand the caller to an agent."
+     }
+    }
+   }
+  },
+  "/voice/v1/statement.week.decide": {
+   "post": {
+    "summary": "Check whether the card's statement can move to the requested week; returns the decision and the new dates.",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customerNo": {
+          "type": "string",
+          "description": "The 8-digit customer number from the call variable customerNumber. Never ask the caller for it."
+         },
+         "cardNumber": {
+          "type": "string",
+          "description": "The card's cardNumber exactly as returned by cards.list (masked)."
+         },
+         "newStatementWeek": {
+          "type": "integer",
+          "description": "The requested statement week number (1-4)."
+         }
+        },
+        "required": [
+         "customerNo",
+         "cardNumber",
+         "newStatementWeek"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "data.* decision fields. Envelope: {data:{...}, result:{returnCode, code, message, type}}. returnCode '1' = success.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object"
+          },
+          "result": {
+           "type": "object"
+          }
+         }
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "Not found (no valid card / unknown customer). result.code e.g. FB_IVR_CHANNEL_102, result.message holds the text."
+     },
+     "500": {
+      "description": "Technical error. Nothing was done. Hand the caller to an agent."
+     }
+    }
+   }
+  },
+  "/voice/v1/statement.week.change": {
+   "post": {
+    "summary": "Move the card's statement to the requested week. Call only after the caller confirmed.",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customerNo": {
+          "type": "string",
+          "description": "The 8-digit customer number from the call variable customerNumber. Never ask the caller for it."
+         },
+         "cardNumber": {
+          "type": "string",
+          "description": "The card's cardNumber exactly as returned by cards.list (masked)."
+         },
+         "newStatementWeek": {
+          "type": "integer",
+          "description": "The requested statement week number (1-4)."
+         }
+        },
+        "required": [
+         "customerNo",
+         "cardNumber",
+         "newStatementWeek"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "data.* result fields. Envelope: {data:{...}, result:{returnCode, code, message, type}}. returnCode '1' = success.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object"
+          },
+          "result": {
+           "type": "object"
+          }
+         }
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "Not found (no valid card / unknown customer). result.code e.g. FB_IVR_CHANNEL_102, result.message holds the text."
+     },
+     "500": {
+      "description": "Technical error. Nothing was done. Hand the caller to an agent."
+     }
+    }
+   }
+  },
+  "/voice/v1/contact.email.get": {
+   "post": {
+    "summary": "The e-mail address the bank has on file (data.ibanEmail / data.ttsEmail for reading aloud) and contact flags.",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customerNo": {
+          "type": "string",
+          "description": "The 8-digit customer number from the call variable customerNumber. Never ask the caller for it."
+         }
+        },
+        "required": [
+         "customerNo"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "data.ibanEmail, data.ttsEmail, data.exitState. Envelope: {data:{...}, result:{returnCode, code, message, type}}. returnCode '1' = success.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object"
+          },
+          "result": {
+           "type": "object"
+          }
+         }
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "Not found (no valid card / unknown customer). result.code e.g. FB_IVR_CHANNEL_102, result.message holds the text."
+     },
+     "500": {
+      "description": "Technical error. Nothing was done. Hand the caller to an agent."
+     }
+    }
+   }
+  },
+  "/voice/v1/statement.pdf.send": {
+   "post": {
+    "summary": "Send the last cut statement as PDF to the e-mail on file. Call only after the caller said yes to the read-back of the address.",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customerNo": {
+          "type": "string",
+          "description": "The 8-digit customer number from the call variable customerNumber. Never ask the caller for it."
+         }
+        },
+        "required": [
+         "customerNo"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "data.exitState DONE on success. Envelope: {data:{...}, result:{returnCode, code, message, type}}. returnCode '1' = success.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object"
+          },
+          "result": {
+           "type": "object"
+          }
+         }
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "Not found (no valid card / unknown customer). result.code e.g. FB_IVR_CHANNEL_102, result.message holds the text."
+     },
+     "500": {
+      "description": "Technical error. Nothing was done. Hand the caller to an agent."
+     }
+    }
+   }
+  }
+ }
+}
