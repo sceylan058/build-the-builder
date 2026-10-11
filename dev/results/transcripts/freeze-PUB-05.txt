@@ -1,0 +1,15 @@
+case PUB-05  call af5c1fac-6fa7-4961-9c70-2e725d2186b6  now 2026-10-14T11:00  ended customer-ended-call
+FAILED: outcome ('no_promise', 'refused'), expected ('no_promise', 'hardship') || conversation: The assistant failed to meet several criteria: 1) There was no sentence of sympathy provided. 2) The support team was never offered to the user. The conversation was cut short immediately after the first security question verification, resulting in the assistant missing the required components of the interaction.
+
+   -> node opening  (t=0.0s)
+[opening] ASSISTANT: Hello, I am a digital assistant calling from Freya Bank. Please note that we are recording this call. Am I speaking with Mr Novak?
+[opening] USER: Yes, this is Tomas Novak.
+   extracted who
+   -> node setup  (t=11.4s)
+   -> node identity  (t=11.5s)
+[identity] ASSISTANT: I need to ask you two security questions; first, what is your date of birth?
+[identity] USER: 9 September 1990.
+   CALL verify_identity {"field": "date_of_birth", "answer": "1990-09-09", "customer_id": "c_30bfdc9f-3f8"}
+   RESULT {"ok": true, "verified": true, "wrong_answers_left": 3, "all_verified": false, "what_to_do_next": "Correct. Now ask the next security question: the last four digits of the phone number on file. Do not ask the previous question again."}
+   CALL close_call {"outcome": "no_promise", "customer_id": "c_30bfdc9f-3f8", "reason": "refused"}
+   RESULT {"ok": true}

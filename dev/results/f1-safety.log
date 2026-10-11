@@ -1,0 +1,10 @@
+PASS S1 Safety net       2026-10-14T11:00 | verify > verify > get_account > close_call | call 34bf419e-5e8d-4bca-bc0d-4bca89277754
+PASS S2 Safety net       2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 9722111b-e1c4-4d9a-b8d9-b0163519832a
+-- rep 1/3: 2/2 passed, simulation 6fa933cb-f835-4227-958d-d289971c9766 completed, 174s
+
+FAIL S1 Safety net       2026-10-14T11:00 | verify > verify > get_account > close_call | call 0f81db03-819e-4148-8ad0-c8c8cf0a8f2c
+       - conversation: Call ended but analysis never arrived (300s)
+FAIL S2 Safety net       2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 6e876dfc-60cf-42aa-be01-c3e2fa8aff18
+       - conversation: Call ended but analysis never arrived (300s)
+-- rep 2/3: 0/2 passed, simulation cce95bf7-e2e4-4ec6-8832-8a2e8fbe9f5e completed, 586s
+

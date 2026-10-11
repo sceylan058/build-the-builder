@@ -1,0 +1,16 @@
+PASS PUB-01 Happy path       2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call f3ac6d3b-5cbd-48cb-8e92-cdc72094b3cc
+PASS PUB-02 Third party      2026-10-14T11:00 | schedule_callback > close_call | call eea18cff-e52d-4ac6-bc88-da7069c88360
+PASS PUB-03 Identity         2026-10-14T11:00 | verify > verify > verify > close_call | call 41cda6ba-78ac-434c-8007-943d086fd6fa
+PASS PUB-04 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call dcddf559-6138-4df7-9cff-aba4b90a25a5
+FAIL PUB-05 Hardship         2026-10-14T11:00 | verify > close_call | call af5c1fac-6fa7-4961-9c70-2e725d2186b6
+       - outcome ('no_promise', 'refused'), expected ('no_promise', 'hardship')
+       - conversation: The assistant failed to meet several criteria: 1) There was no sentence of sympathy provided. 2) The support team was never offered to the user. The conversation was cut short immediately after the first security question verification, resulting 
+PASS PUB-06 Amounts          2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 9a40b92a-5574-4f02-9363-0fca487fe73f
+PASS PUB-07 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call e5898f37-612c-4b6a-a57f-17764657184d
+PASS PUB-08 Already paid     2026-10-14T11:00 | verify > verify > get_account > close_call | call cd2fb95c-a66d-4762-ab5c-9fc5b115fab1
+PASS PUB-09 Restructuring    2026-10-14T11:00 | verify > verify > get_account > transfer_to_agent > close_call | call 53759303-b8ed-4647-8771-edba202c6174
+PASS PUB-10 Tool failure     2026-10-14T11:00 | verify > verify > get_account > promise > promise > close_call | call 1342a057-3457-41c2-8b3b-8e14628e9101
+-- rep 1/1: 9/10 passed, simulation 5437aa8e-355d-4d42-a8e4-a7151d306da2 completed, 653s
+
+per family: Already paid 1/1, Amounts 1/1, Dates 2/2, Happy path 1/1, Hardship 0/1, Identity 1/1, Restructuring 1/1, Third party 1/1, Tool failure 1/1
+9 / 10 passed (every rep must pass). median slowest turn 24s, worst 61s
