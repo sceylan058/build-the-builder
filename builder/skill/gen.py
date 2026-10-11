@@ -162,6 +162,113 @@ def rule_date(rule, today, limit=None):
         return add_biz(today, int(m.group(1)))
     return limit
 
+NUMW = {'zero': 0, 'oh': 0, 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10,
+        'eleven': 11, 'twelve': 12, 'thirteen': 13, 'fourteen': 14, 'fifteen': 15, 'sixteen': 16, 'seventeen': 17, 'eighteen': 18, 'nineteen': 19,
+        'twenty': 20, 'thirty': 30, 'forty': 40, 'fifty': 50, 'sixty': 60, 'seventy': 70, 'eighty': 80, 'ninety': 90}
+ORDW = {'first': 1, 'second': 2, 'third': 3, 'fourth': 4, 'fifth': 5, 'sixth': 6, 'seventh': 7, 'eighth': 8, 'ninth': 9, 'tenth': 10, 'eleventh': 11,
+        'twelfth': 12, 'thirteenth': 13, 'fourteenth': 14, 'fifteenth': 15, 'sixteenth': 16, 'seventeenth': 17, 'eighteenth': 18, 'nineteenth': 19,
+        'twentieth': 20, 'thirtieth': 30}
+
+def words_to_number(s):
+    """'five hundred and ten', 'two thousand one hundred twenty-five point one', 'four hundred fifty five euros and fifty cents' -> float, else None."""
+    t = str(s).lower().replace(',', '')
+    m = re.search(r'-?\d+(?:\.\d+)?', t)
+    if m and not re.search(r'[a-z]', re.sub(r'(euros?|dollars?|pounds?|eur|usd|gbp|cents?|and|\s)', '', t)):
+        return float(m.group(0))
+    t = t.replace('-', ' ')
+    cents = 0.0
+    mcs = list(re.finditer(r'(?:euros?|dollars?|pounds?|and)\s+((?:[a-z]+\s+)*?)cents?', t))
+    mc = mcs[-1] if mcs else None
+    if mc and ' point ' not in t:
+        cv = words_to_number(mc.group(1))
+        if cv is not None and cv < 100:
+            cents = cv / 100.0
+            t = t[:mc.start()]
+    whole, _, frac = t.partition(' point ')
+    total, cur, seen = 0, 0, False
+    for w in re.findall(r'[a-z]+|\d+', whole):
+        if w.isdigit():
+            cur += int(w); seen = True
+        elif w in NUMW:
+            cur += NUMW[w]; seen = True
+        elif w == 'hundred':
+            cur = (cur or 1) * 100; seen = True
+        elif w == 'thousand':
+            total += (cur or 1) * 1000; cur = 0; seen = True
+        elif w in ('and', 'euro', 'euros', 'dollar', 'dollars', 'pound', 'pounds', 'a'):
+            continue
+    if not seen:
+        return None
+    val = float(total + cur)
+    if frac:
+        digits = ''.join(str(NUMW[w]) for w in re.findall(r'[a-z]+', frac) if w in NUMW and NUMW[w] < 10) or ''.join(re.findall(r'\d', frac))
+        if digits:
+            val += float('0.' + digits)
+    return round(val + cents, 2)
+
+def resolve_date(phrase, today):
+    """A customer's date phrase -> date (anchored on today), 'vague', or None. Never uses the real clock."""
+    m = re.search(r'(\d{4})-(\d{2})-(\d{2})', str(phrase or ''))
+    t = ' ' + str(phrase or '').lower().replace(',', ' ').replace('-', ' ') + ' '
+    t = re.sub(r'\s+', ' ', t)
+    if m:
+        try:
+            return datetime.date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+        except Exception:
+            return None
+    if re.search(r'\b(day after tomorrow)\b', t):
+        return today + datetime.timedelta(days=2)
+    if re.search(r'\b(today|now|right away|this afternoon|this morning|tonight)\b', t):
+        return today
+    if re.search(r'\btomorrow\b', t):
+        return today + datetime.timedelta(days=1)
+    names = [n.lower() for n in DOW]
+    for k, n in enumerate(names):
+        mm = re.search(r'\b(next|this|coming|on)?\s*' + n + r'\b', t)
+        if mm:
+            first = today - datetime.timedelta(days=(today.weekday() - CAL['week_start']) % 7)
+            day = first + datetime.timedelta(days=(k - CAL['week_start']) % 7)
+            if mm.group(1) == 'next':
+                return day + datetime.timedelta(days=7)
+            if mm.group(1) == 'this':
+                return day
+            return day if day >= today else day + datetime.timedelta(days=7)
+    if re.search(r'\b(next week|end of the month|end of month|next month|when .* paid|salary|payday|soon|later|some time|sometime|week after)\b', t):
+        return 'vague'
+    mon = None
+    for i, mn in enumerate(MON):
+        if re.search(r'\b' + mn.lower()[:3] + r'[a-z]*\b', t):
+            mon = i + 1
+            break
+    day = None
+    md = re.search(r'\b(\d{1,2})(?:st|nd|rd|th)?\b', t)
+    if md:
+        day = int(md.group(1))
+    else:
+        words = re.findall(r'[a-z]+', t)
+        for i, w in enumerate(words):
+            if w in ORDW:
+                day = ORDW[w] + (NUMW.get(words[i - 1], 0) if i and words[i - 1] in ('twenty', 'thirty') else 0)
+                break
+            if w in ('twenty', 'thirty') and i + 1 < len(words) and words[i + 1] in ORDW:
+                continue
+    if day is None:
+        return None
+    y, mth = today.year, (mon or today.month)
+    if not mon and day < today.day:
+        mth = today.month % 12 + 1
+        y = today.year + (1 if today.month == 12 else 0)
+    try:
+        d = datetime.date(y, mth, day)
+    except Exception:
+        return None
+    if mon and d < today:
+        try:
+            d = datetime.date(y + 1, mth, day)
+        except Exception:
+            return None
+    return d
+
 def money(x):
     try:
         v = float(x)
@@ -646,6 +753,8 @@ try:
         a = C['arg']
         if C['type'] == 'number':
             v = num(str(b.get(a)).replace(',', ''))
+            if v is None:
+                v = words_to_number(b.get(a))
             if v is not None and f and C.get('max_field') and f.get(C['max_field']) is not None and v > f[C['max_field']]:
                 v = f[C['max_field']]
             if v is not None:
@@ -653,7 +762,16 @@ try:
                 shown[a] = money(v)
         elif C['type'] == 'date':
             try:
-                dd = datetime.date.fromisoformat(str(b.get(a) or '')[:10])
+                _now, _today = today_now()
+                raw = str(b.get(a) or '')
+                try:
+                    dd = datetime.date.fromisoformat(raw[:10])
+                except Exception:
+                    dd = resolve_date(raw, _today)
+                    if not isinstance(dd, datetime.date):
+                        raise ValueError('unresolved date')
+                if dd < _today:
+                    dd = _today if is_biz(_today) else next_biz(_today, False)
                 if f:
                     if C.get('business_day') and not is_biz(dd):
                         dd = next_biz(dd, False)
@@ -1082,8 +1200,28 @@ class Gen:
             return {"type": "llm", "prompt": e["llm"]}
         raise SystemExit(f"config error: enter must be {{\"tts\": text}} or {{\"llm\": prompt}}, got {json.dumps(e)}")
 
+    def after_clock(self):
+        N, start = self.cfg["flow"]["nodes"], self.cfg["flow"]["start"]
+        seen, todo, out = set(), [(start, False)], set()
+        while todo:
+            x, clocked = todo.pop()
+            if x.startswith("end:") or x not in N or (x, clocked) in seen:
+                continue
+            seen.add((x, clocked))
+            n = N[x]
+            clocked = clocked or n["type"] == "clock"
+            if clocked and n["type"] in ("converse", "verify"):
+                out.add(x)
+            todo += [(t, clocked) for t in self._targets(n)]
+        return out
+
     def build(self):
         c = self.cfg
+        dated = self.after_clock()
+        for name in dated:
+            n = c["flow"]["nodes"][name]
+            if "{{today_facts}}" not in n["task"]:
+                c["flow"]["nodes"][name] = dict(n, task=n["task"] + "\n\n{{today_facts}}")
         for name, n in c["flow"]["nodes"].items():
             typ = n["type"]
             if typ == "converse":

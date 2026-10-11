@@ -133,7 +133,7 @@ def main():
         made = call(lambda: freya.create_personas([spec[c["id"]] for c in new]), "create personas")["personas"]
         store.update({key[c["id"]]: p["id"] for c, p in zip(new, made)}); json.dump(store, open(STORE, "w"), indent=1)
     pids = {c["id"]: store[key[c["id"]]] for c in cases}
-    limit_s = max(8, 20 * len(cases) / 10) * 60
+    limit_s = max(20, 40 * len(cases) / 10) * 60   # judging can lag far behind the calls
     reps, waits = [], []
     for rep in range(a.reps):
         sessions = {}

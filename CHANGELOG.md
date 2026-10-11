@@ -52,3 +52,19 @@ Each entry: what changed, why, and the evidence (a command and its result).
   - Reproducibility: 356/373 fields identical.
   - Fake host and schema drift both pass.
   - Fixes: outage-aware retries; validator 5xx not sent to the model; spilled tool output allowed by the guard; `dev/tools/sim.py` with a hard timeout.
+
+## Phase C
+
+### C1 Dates anchored on `now`
+- Root cause: the record step had no today in its prompt, and the date clamp had no lower bound. The model used the real clock ("today" = Sat 10 Oct), and the clamp moved that to Mon 12 Oct, a past date (PUB-01 in the runner check, VC-01).
+- Fix (gen.py):
+  - `resolve_date()` resolves a customer's phrase (today, tomorrow, the day after tomorrow, this/next <weekday> by the brief's week start, "the 30th", "30 October", ordinals in words, vague → "vague") against `now`, never the clock.
+  - `words_to_number()` normalises amounts in words.
+  - The record pre-hook resolves non-ISO dates and worded amounts in code and never sends a date before today.
+  - Every converse/verify step after a clock gets `{{today_facts}}` automatically.
+- Evidence: `dev/tests/test_resolver.py` passes (21 days + month and year ends × relative phrases; day numbers and words; 10 amount phrases). check.py tests 32 OK.
+- Not done: dates are still read from the conversation by the dialogue model and only validated and clamped in the hook. A per-turn extraction plus code agreement store was not built.
+
+### C5 Calls that do not end
+- Finding: the "open" third-party calls had ended in 4–10 s (`assistant-ended-call`, close_call before end_call). Freya's judging stage lagged, and our dev timeout closed the simulation before the verdicts. No generator defect.
+- Fix: dev/run_dev.py hard timeout raised to 40 min per 10 cases (minimum 20 min).
