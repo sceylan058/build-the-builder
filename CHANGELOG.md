@@ -180,3 +180,9 @@ Failure review:
 - VR-02: the judge counts the "pay today?" question as an offer. VR-10: the scripted step spoke the fixed line, then the model-written record step asked about a payment plan (its task still carries the full offer ladders through `{{item_facts}}`; the next generic fix is `item_facts_plain` for record steps; not applied because the gate was already measured).
 
 **Decision:** merged; `freeze-2` tagged; `freeze-1` remains the fallback tag.
+
+## improve-2 -> freeze-3
+- Finding: fresh model builds at freeze-2 did NOT write `hardship_script` (the gate used configs I migrated by hand), so the scripted hardship step was never reached by a real build.
+- Change: `hardship_script` is required (clear error with the field's shape; SKILL.md has an explicit bullet). Reference configs and tests updated; the legacy model-written hardship step is unreachable.
+- Evidence: one fresh model build (V-CLEAN, `--no-save`): field written ({"say": sympathy only, "accept_queue": "" because that brief offers no support, ...}), check.py OK, 0 repair rounds, 172 s. Unit tests 56 + 5 OK, leak scan clean.
+- Not re-run on freeze-3: the gate suites and a V-RAW / multi-product fresh build (the Claude login hit its session limit until 19:00 Istanbul).

@@ -1,6 +1,6 @@
 # RUNBOOK: final run at 20:00 Istanbul (17:00 UTC)
 
-Repo: https://github.com/sceylan058/build-the-builder (currently PUBLIC). Working copy: `~/Desktop/build-the-builder`. Builder code = tag `freeze-2` (fallback: `freeze-1`, `e57be25`). The clean-clone rehearsal below was run at `freeze-1`; see the freeze-2 note at the end.
+Repo: https://github.com/sceylan058/build-the-builder (currently PUBLIC). Working copy: `~/Desktop/build-the-builder`. Builder code = tag `freeze-3` (fallbacks: `freeze-2`, then `freeze-1` = `e57be25`). The clean-clone rehearsal below was run at `freeze-1`; see the freeze-2 note at the end.
 Do not change builder logic during the run. Hidden-brief content never goes into code, config examples or prompts.
 
 ## What the rehearsal proved (clean clone at freeze-1, both briefs in parallel, no manual step)
@@ -104,3 +104,6 @@ Trace extras: `traces/<slot>.jsonl` (raw messages) and `traces/<slot>.console.lo
 
 ## Note on freeze-2
 `freeze-2` = freeze-1 + the scripted hardship step, the open-offer wording and the stage-based safety-net outcome (CHANGELOG.md has the gate table). The rehearsal numbers above were measured at freeze-1. To fall back: `git checkout freeze-1` (or tag the final run from it); nothing else changes.
+
+## Note on freeze-3
+`freeze-3` = freeze-2 + `offer_state.hardship_script` is REQUIRED (generation fails without it, so a fresh model build writes the scripted hardship step). Verified once on a fresh build at the improve-2 branch: model wrote the field, check.py OK, 0 repair rounds, 172 s (V-CLEAN, `--no-save`). The gate suites were measured at freeze-2/improve-1 on migrated configs; V-RAW and the multi-product path were not re-built at freeze-3. If a hidden build fails with `missing 'hardship_script'` after the repair rounds, fall back to `freeze-2`.
