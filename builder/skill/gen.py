@@ -1407,6 +1407,10 @@ class Gen:
     # ------------------------------------------------------------------ nodes by type
     def converse(self, name, n, auto=()):
         n = dict(n, _name=name)
+        roles = {self.cfg["tools"][t]["role"] for t in n.get("tools", [])}
+        if roles & {"record", "note"} and not n.get("offer_state"):
+            n["task"] = n["task"] + ("\n\nTHIS STEP ONLY RECORDS. Never ask for a date or an amount, never make or repeat an offer, never ask how much or when "
+                                     "the customer can pay. Record exactly what was already confirmed; for every item without a confirmed promise, only call the note tool with its reason.")
         node = {"name": name, "node_type": "conversation", "task_message": n["task"],
                 "tools": [self.build_tool(t, n) for t in n.get("tools", [])],
                 "transitions": list(auto) + self.routes(n), "on_enter": self.enter(n.get("enter")),
