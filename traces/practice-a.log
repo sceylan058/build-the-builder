@@ -1,20 +1,20 @@
-[08:23:48Z +   0.0s] START utc=2026-10-11T08:23:48+00:00 slot=practice-a commit=332778e6b1e541c4ee9137c5f50e8a588e9170c0 (dirty) builder_model=claude-opus-5-5
-[08:23:48Z +   0.0s] args: briefs=['briefs/brief-a.md'] api=tools/openapi.json no_save=False practice_test=None
-[08:23:48Z +   0.0s] input 00_brief-a.md sha256=d57c049c89aec461 bytes=10174
-[08:23:48Z +   0.0s] tool API tools/openapi.json sha256=9a8410b12e5c82b6 paths=['add_note', 'close_call', 'create_promise', 'get_account', 'schedule_callback', 'transfer_to_agent', 'verify_identity'] server=https://freya-bank-mock.freyavoice.workers.dev/v1
-[08:23:48Z +   0.0s] [prepare] work folder ready (0.0s): brief_bundle.md 10213 chars
-[08:23:48Z +   0.0s] --reuse-config: no model stage; recompiling results/cfg-practice-a.json (sha256=e2ada21887d69655) with the current generator
-[08:23:48Z +   0.1s] [compile round 0] gen.py exit=0 (0.1s) wrote workflow.json: 29 nodes
-[08:23:49Z +   0.7s] [check round 0] check.py: OK (0.6s)
-[08:23:50Z +   1.9s] [dry-run] Freya validation: {"valid": true, "dryRun": true} (1.3s)
-[08:23:50Z +   1.9s] final workflow: 29 nodes, 7 model tools, 22 engine actions; check OK; repair rounds used: 0
-[08:23:55Z +   7.2s] [save] Freya workflow_id=fca15556-711f-4bbe-bdb7-7632e83a5c87 agent_id=292ae78f-f433-422d-be01-9f51c98a6705 version=23 published=True agent model=experimental-5/experimental-5 matches AGENT_LLM=True (5.2s)
-[08:23:55Z +   7.2s] [save] live workflow: 29 nodes, 7 model tools, 22 engine actions
-[08:23:56Z +   7.7s] [export] submission/practice-a.workflow.json sha256=e59dd7b8dd991466 (0.6s)
-[08:23:56Z +   7.7s] stage duration prepare: 0.0s
-[08:23:56Z +   7.7s] stage duration write: 0.0s
-[08:23:56Z +   7.7s] stage duration compile+check 0: 0.6s
-[08:23:56Z +   7.7s] stage duration dry-run: 1.3s
-[08:23:56Z +   7.7s] stage duration save: 5.2s
-[08:23:56Z +   7.7s] stage duration export: 0.6s
-[08:23:56Z +   7.7s] END utc=2026-10-11T08:23:56+00:00 total=8s
+[09:08:20Z +   0.0s] START utc=2026-10-11T09:08:20+00:00 slot=practice-a commit=3391a9b894d0cfe1ee95a4b12815ceee4b838c7e (dirty) builder_model=claude-opus-5-5
+[09:08:20Z +   0.0s] args: briefs=['briefs/brief-a.md'] api=tools/openapi.json no_save=False practice_test=None
+[09:08:20Z +   0.0s] input 00_brief-a.md sha256=d57c049c89aec461 bytes=10174
+[09:08:20Z +   0.0s] tool API tools/openapi.json sha256=9a8410b12e5c82b6 paths=['add_note', 'close_call', 'create_promise', 'get_account', 'schedule_callback', 'transfer_to_agent', 'verify_identity'] server=https://freya-bank-mock.freyavoice.workers.dev/v1
+[09:08:20Z +   0.0s] [prepare] work folder ready (0.0s): brief_bundle.md 10213 chars
+[09:08:20Z +   0.0s] --reuse-config: no model stage; recompiling results/cfg-practice-a.json (sha256=e2ada21887d69655) with the current generator
+[09:08:20Z +   0.1s] [compile round 0] gen.py exit=0 (0.1s) wrote workflow.json: 29 nodes
+[09:08:21Z +   0.6s] [check round 0] check.py: OK (0.5s)
+[09:08:21Z +   1.5s] [dry-run] Freya validation: {"valid": true, "dryRun": true} (0.8s)
+[09:08:21Z +   1.5s] final workflow: 29 nodes, 7 model tools, 22 engine actions; check OK; repair rounds used: 0
+[09:08:28Z +   7.7s] [save] Freya workflow_id=fca15556-711f-4bbe-bdb7-7632e83a5c87 agent_id=292ae78f-f433-422d-be01-9f51c98a6705 version=24 published=True agent model=experimental-5/experimental-5 matches AGENT_LLM=True (6.2s)
+[09:08:28Z +   7.7s] [save] live workflow: 29 nodes, 7 model tools, 22 engine actions
+[09:08:28Z +   8.3s] [export] submission/practice-a.workflow.json sha256=c703790a1722a8d1 (0.6s)
+[09:08:28Z +   8.3s] stage duration prepare: 0.0s
+[09:08:28Z +   8.3s] stage duration write: 0.0s
+[09:08:28Z +   8.3s] stage duration compile+check 0: 0.6s
+[09:08:28Z +   8.3s] stage duration dry-run: 0.8s
+[09:08:28Z +   8.3s] stage duration save: 6.2s
+[09:08:28Z +   8.3s] stage duration export: 0.6s
+[09:08:28Z +   8.3s] END utc=2026-10-11T09:08:28+00:00 total=8s
