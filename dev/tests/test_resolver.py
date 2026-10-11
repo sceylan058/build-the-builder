@@ -36,6 +36,7 @@ class Resolver(unittest.TestCase):
         self.assertEqual(R("2026-10-23", t), D(2026, 10, 23))
         self.assertEqual(R("on the 2nd of January", D(2026, 12, 24)), D(2027, 1, 2))
         self.assertEqual(R("Monday the 26th", t), D(2026, 10, 26))
+        self.assertEqual(R("the 27th, sorry, the 30th", t), D(2026, 10, 30))
         self.assertEqual(R("Friday the thirtieth", t), D(2026, 10, 30))
         self.assertIsNone(R("whenever", t))
 
@@ -48,6 +49,8 @@ class Amounts(unittest.TestCase):
         for s, want in cases.items():
             self.assertEqual(W(s), want, s)
         self.assertIsNone(W("no idea"))
+        self.assertEqual(W("six hundred and forty, sorry I mean six hundred and thirty seven dollars and fifty cents"), 637.5)
+        self.assertEqual(W("five hundred, no wait, five hundred and ten"), 510)
 
 
 if __name__ == "__main__":

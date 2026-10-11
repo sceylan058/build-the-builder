@@ -79,3 +79,24 @@ class Engine(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Routes(unittest.TestCase):
+    def test_hardship_routes_in_same_turn(self):
+        v = start(); turn(v, 0, turn_intent="refuse", turn_item="1")
+        turn(v, 1, turn_intent="refuse", turn_hardship="yes", turn_item="1")
+        self.assertEqual(v["route_hardship"], "yes")
+        tr = WF["nodes"]["negotiate_turn"]["transitions"]
+        self.assertEqual(tr[0]["target_node"], "negotiate_hardship")
+        turn(v, 2, turn_intent="refuse", turn_hardship="yes", turn_item="1")
+        self.assertEqual(v["route_hardship"], "no")          # only on the first mention for that item
+
+    def test_hardship_step_has_no_offer_list(self):
+        n = WF["nodes"]["negotiate_hardship"]
+        self.assertIn("{{item_facts_plain}}", n["task_message"]); self.assertNotIn("{{item_facts}}", n["task_message"])
+        self.assertNotIn("offer_state", n["task_message"])
+
+    def test_instruction_text_is_not_a_statement(self):
+        ex = [x for x in WF["nodes"]["negotiate"]["extraction_schema"] if x["name"] == "turn_intent"][0]
+        self.assertIn("system note", ex["description"]); self.assertIn("is other", ex["description"])
+        self.assertIn("not a statement of fact", WF["nodes"]["negotiate"]["task_message"])

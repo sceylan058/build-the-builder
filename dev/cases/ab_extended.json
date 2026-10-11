@@ -271,7 +271,7 @@
    "transfers": []
   },
   "checks": [
-   "attempt 1 proposes Friday 23 October (today is the last business day of this week)",
+   "after the customer declines paying today, the first offer is the full amount on Friday 23 October (today is the last business day of this week)",
    "promise for 180.00"
   ],
   "why": "Rule 30 on a Friday."
