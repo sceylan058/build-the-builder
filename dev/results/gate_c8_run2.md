@@ -6,3 +6,4 @@
 | abx-B | 5 / 5 | median slowest turn 7s, worst 26s |  |
 | v_raw | 13 / 15 | median slowest turn 7s, worst 38s | VR-10 VR-12  |
 | style-A-pieces | 10 / 10 | median slowest turn 6s, worst 16s |  |
+| style-A-corrects | 7 / 10 | median slowest turn 8s, worst 19s | PUB-05 PUB-06 PUB-10  |
