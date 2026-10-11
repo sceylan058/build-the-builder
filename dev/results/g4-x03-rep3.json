@@ -1,0 +1,60 @@
+{
+ "final": [
+  {
+   "id": "X03",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 3,
+   "pass": false,
+   "reason": "conversation: The agent failed to meet the success criterion of asking 'once' for another time, as it asked twice: once in Message 4 ('Would another time work for her?') and again in Message 6 ('Would any of those times work?'). The agent correctly followed the 'no callback' requirement, as indicated by the 'close_call' API arguments and the absence of any booking function call. The call also ended properly wit"
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "X03",
+    "family": "Third party",
+    "now": "2026-10-16T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The agent failed to meet the success criterion of asking 'once' for another time, as it asked twice: once in Message 4 ('Would another time work for her?') and again in Message 6 ('Would any of those times work?'). The agent correctly followed the 'no callback' requirement, as indicated by the 'close_call' API arguments and the absence of any booking function call. The call also ended properly wit"
+    ],
+    "call_id": "041562be-7251-497f-8d21-95f9b8108f32",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ],
+  [
+   {
+    "id": "X03",
+    "family": "Third party",
+    "now": "2026-10-16T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The agent successfully ensured that no callback was booked (confirmed by the 'close_call' API call with reason 'no_callback'), but it failed the criterion to ask for another time only once. The agent asked for an alternative time in Message 4 and then asked again in Message 6 after the user's second suggestion was also outside the allowed window. The call ended correctly as the agent hung up once "
+    ],
+    "call_id": "a052395d-85fd-4daa-bd8d-a163ab341437",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ],
+  [
+   {
+    "id": "X03",
+    "family": "Third party",
+    "now": "2026-10-16T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "cbdb489b-bd45-4c0a-ab31-0905a0992ddf",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

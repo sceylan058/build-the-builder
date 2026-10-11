@@ -27,3 +27,5 @@
 {"at": "2026-10-11 11:32:25", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/ab_extended.json", "style": null, "reps": 3, "passed": 0, "total": 1, "failed": ["X20"], "median_slowest_s": 2.9}
 {"at": "2026-10-11 11:47:39", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/ab_extended.json", "style": null, "reps": 1, "passed": 18, "total": 19, "failed": ["X03"], "median_slowest_s": 6.5}
 {"at": "2026-10-11 11:52:36", "agent": "e25a7405-6eb3-4a76-95e9-88d24ab06e16", "cases": "dev/cases/v_raw.json", "style": null, "reps": 1, "passed": 13, "total": 15, "failed": ["VR-01", "VR-10"], "median_slowest_s": 3.8}
+{"at": "2026-10-11 11:55:25", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/pub_A.json", "style": null, "reps": 1, "passed": 9, "total": 10, "failed": ["PUB-05"], "median_slowest_s": 8.3}
+{"at": "2026-10-11 11:58:55", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/ab_extended.json", "style": null, "reps": 3, "passed": 0, "total": 1, "failed": ["X03"], "median_slowest_s": 2.2}

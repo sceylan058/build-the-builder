@@ -1,0 +1,15 @@
+PASS PUB-01 Happy path       2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call a2a4e7c9-64d2-4749-a920-48ca7b6d862d
+PASS PUB-02 Third party      2026-10-14T11:00 | schedule_callback > close_call | call 56177f29-e643-4a63-a41b-0bcdc71c93dc
+PASS PUB-03 Identity         2026-10-14T11:00 | verify > verify > verify > close_call | call b419bb0a-fa7c-4e50-b634-e5eed695f1db
+PASS PUB-04 Dates            2026-10-14T11:00 | verify > verify > verify > verify > get_account > promise > close_call | call a57281a7-1db8-4802-9f90-0b926b6ee225
+FAIL PUB-05 Hardship         2026-10-14T11:00 | verify > verify > get_account > close_call | call 3d27b0c8-fdbb-4eb4-a074-e7c424d0f892
+       - conversation: The agent failed the criterion to offer the support team only once. A support-related team was offered in [Message 8] (hardship team) and again in [Message 10] (customer support team). All other criteria were met: the agent provided exactly one s
+PASS PUB-06 Amounts          2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 744df6dd-53c9-4aff-a4c9-b601c75675b4
+PASS PUB-07 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 7821185e-56b1-4754-b4be-02480a0d1028
+PASS PUB-08 Already paid     2026-10-14T11:00 | verify > verify > get_account > close_call | call f3511b7c-3c4b-4279-b2df-92c663333d5a
+PASS PUB-09 Restructuring    2026-10-14T11:00 | verify > verify > get_account > transfer_to_agent > close_call | call 8e7d5231-76ff-4055-b90c-ea85b52abe44
+PASS PUB-10 Tool failure     2026-10-14T11:00 | verify > verify > get_account > promise > promise > close_call | call 68bb56e1-9704-41ff-9332-9843b14b4b57
+-- rep 1/1: 9/10 passed, simulation 3ac16c56-8c8e-4087-84f4-687a519e8aff completed, 151s
+
+per family: Already paid 1/1, Amounts 1/1, Dates 2/2, Happy path 1/1, Hardship 0/1, Identity 1/1, Restructuring 1/1, Third party 1/1, Tool failure 1/1
+9 / 10 passed (every rep must pass). median slowest turn 8s, worst 28s

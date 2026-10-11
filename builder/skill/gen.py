@@ -1466,7 +1466,7 @@ class Gen:
               "task": ("The customer has just mentioned a hardship (" + os_["hardship_triggers"] + "). Apply ONLY the hardship rule of the brief below: "
                        "one short sentence of sympathy, then the offer the brief's hardship rule describes (connecting the customer with the team it names), once. "
                        "Make NO payment offer, propose no amount and no date, and never mention a payment plan, a discount, a waiver, an arrangement or any new terms. If the customer accepts the support offer, use the transfer tool. If the customer declines, "
-                       "follow the brief's rule for a declined hardship. Only if the customer volunteers an amount or a date themselves may you go back "
+                       "follow the brief's rule for a declined hardship at once. Your FIRST message in this step already made the offer: never make it again, in any wording. Only if the customer volunteers an amount or a date themselves may you go back "
                        "to the conversation to record it.\n\nThe brief's rules (for reference; the offer lists are removed here):\n" +
                        n["task"].replace("{{" + it["facts_var"] + "}}", "{{item_facts_plain}}")),
               "enter": {"llm": "Say one short sentence of sympathy. Then offer, once, only what the brief's hardship rule offers (for example connecting the customer with the team the brief names). Never mention a payment plan, a discount, a waiver, an arrangement or any new terms."},

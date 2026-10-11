@@ -1,0 +1,13 @@
+FAIL X03 Third party      2026-10-16T11:00 | close_call | call 041562be-7251-497f-8d21-95f9b8108f32
+       - conversation: The agent failed to meet the success criterion of asking 'once' for another time, as it asked twice: once in Message 4 ('Would another time work for her?') and again in Message 6 ('Would any of those times work?'). The agent correctly followed th
+-- rep 1/3: 0/1 passed, simulation 9c3e34cd-e3f5-4c7b-9d66-b63f875ff2e6 completed, 73s
+
+FAIL X03 Third party      2026-10-16T11:00 | close_call | call a052395d-85fd-4daa-bd8d-a163ab341437
+       - conversation: The agent successfully ensured that no callback was booked (confirmed by the 'close_call' API call with reason 'no_callback'), but it failed the criterion to ask for another time only once. The agent asked for an alternative time in Message 4 and
+-- rep 2/3: 0/1 passed, simulation 186747cc-0c00-4ce6-b639-23bad8cf4c70 completed, 70s
+
+PASS X03 Third party      2026-10-16T11:00 | close_call | call cbdb489b-bd45-4c0a-ab31-0905a0992ddf
+-- rep 3/3: 1/1 passed, simulation e21f06ca-f5c6-4065-a48d-ebb77d63c6fd completed, 54s
+
+per family: Third party 0/1
+0 / 1 passed (every rep must pass). median slowest turn 2s, worst 5s

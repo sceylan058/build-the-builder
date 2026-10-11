@@ -135,3 +135,5 @@ Each entry: what changed, why, and the evidence (a command and its result).
 ### Gate run 4 → record-step persuasion
 - Root cause (VR-01, VR-10): after a refusal or a declined hardship offer, the flow enters the record step to write notes. There the model asked "when could you pay, and how much?", which is a persuasion attempt (the judge counts it). The model-written entry prompt said "only a tool call", and the model ignored it.
 - Fix (gen.py, generic): every step holding record or note tools gets "THIS STEP ONLY RECORDS. Never ask for a date or an amount, never make or repeat an offer… for every item without a confirmed promise, only call the note tool."
+- PUB-05 (gate run 4): the hardship step offered the support team a second time after the decline. Fix: its task now says the first message already made the offer, never repeat it, and a decline goes straight to the brief's declined-hardship rule.
+- X03: the third-party step (model-written prompt, unchanged by Phase C apart from the appended date facts) asked a second time; 2 of 3 failed. Open, classed (c).
