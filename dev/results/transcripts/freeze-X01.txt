@@ -1,0 +1,16 @@
+case X01  call fdc10fa7-0f56-4b2d-ae86-5f9700df5a59  now 2026-10-14T11:00  ended assistant-ended-call
+FAILED: conversation: no verdict
+
+   -> node opening  (t=0.0s)
+[opening] ASSISTANT: Hello, I am a digital assistant calling from Freya Bank. Please note that we are recording this call. Am I speaking with Ms Costa?
+[opening] USER: No, this is not Maria Costa. I do not know who that is.
+   extracted who
+   -> node end_wrong_number  (t=5.5s)
+   -> node farewell  (t=5.7s)
+[farewell] ASSISTANT: I apologise for the inconvenience. Thank you, goodbye.
+   -> node close  (t=5.8s)
+   CALL api_call {"reason": "wrong_number", "outcome": "not_reached", "customer_id": "c_09e901be-fc5"}
+   RESULT {"ok": true}
+   -> node hang_up  (t=5.9s)
+   CALL end_call {"message_mode": "none"}
+   RESULT {"status": "success", "message": "Call ended"}
