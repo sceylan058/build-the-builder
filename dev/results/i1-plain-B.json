@@ -1,0 +1,86 @@
+{
+ "final": [
+  {
+   "id": "PUB-11",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-12",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-13",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "PUB-11",
+    "family": "Multi-product",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "9cbb83f4-9be1-4f50-86e9-3bbf49e1899a",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-12",
+    "family": "Multi-product",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "14055d5a-dc16-4777-a878-6093e5851d96",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-13",
+    "family": "Multi-product",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "3f4eafda-5b73-45cb-b74a-616078887c3b",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}
