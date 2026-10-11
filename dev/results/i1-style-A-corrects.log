@@ -1,0 +1,17 @@
+PASS PUB-01 Happy path       2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 06f046c9-b910-4b6c-80d9-027a250608c6
+PASS PUB-02 Third party      2026-10-14T11:00 | schedule_callback > close_call | call 5e8cf341-f9b9-41a4-906a-45aec6081990
+FAIL PUB-03 Identity         2026-10-14T11:00 | close_call | call 4c3e7c1f-890c-431b-b812-5dafb0cf9fb1
+       - outcome ('not_verified', 'declined'), expected ('not_verified', 'failed')
+       - conversation: - The verification process did not end after the third wrong answer; instead, the agent continued to prompt for the birth year until it hit the 20-turn limit for the identity node, as seen in the system events. - The agent failed to instruct the 
+PASS PUB-04 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 2867086d-aaf0-46be-acae-eb98f5eb83e5
+PASS PUB-05 Hardship         2026-10-14T11:00 | verify > verify > get_account > close_call | call 5f9a1a13-47ea-4c68-b3fd-470ca2d97cbc
+FAIL PUB-06 Amounts          2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 1bbc60a0-c4ff-42a3-a75f-c78f839844e2
+       - conversation: The agent failed to satisfy all criteria because the minimum payment was offered more than once. While the agent correctly avoided asking 'how much' the user could pay ([Message 6]) and successfully recorded a promise for 637.50 on Friday 16 Octo
+PASS PUB-07 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call a8adb092-d33b-42be-8b5a-680e92ccc59c
+PASS PUB-08 Already paid     2026-10-14T11:00 | verify > verify > get_account > close_call | call 7fbff0fe-16f7-43df-aa19-dee7995bb481
+PASS PUB-09 Restructuring    2026-10-14T11:00 | verify > verify > get_account > transfer_to_agent > close_call | call 5010bf85-7ebf-4891-9060-a9fd69712773
+PASS PUB-10 Tool failure     2026-10-14T11:00 | verify > verify > get_account > promise > promise > close_call | call b8ec2da8-6f3c-480e-ae14-4696ead8854a
+-- rep 1/1: 8/10 passed, simulation 37ec8b48-5415-493c-8efd-c4c0b3d56d91 completed, 218s
+
+per family: Already paid 1/1, Amounts 0/1, Dates 2/2, Happy path 1/1, Hardship 1/1, Identity 0/1, Restructuring 1/1, Third party 1/1, Tool failure 1/1
+8 / 10 passed (every rep must pass). median slowest turn 15s, worst 23s

@@ -1,0 +1,13 @@
+FAIL PUB-03 Identity         2026-10-14T11:00 | verify > close_call | call 134be755-3b7e-416a-aaf0-4ff45fcd7cef
+       - outcome ('not_verified', 'declined'), expected ('not_verified', 'failed')
+       - conversation: The conversation failed to meet two success criteria. First, the identity check did not end after a third wrong answer; it ended because the agent reached the 'max_turns_exceeded' limit (20 turns) for the identity node while struggling to get a f
+-- rep 1/3: 0/1 passed, simulation b8279b36-30e5-4bd6-956f-5a18893042fc completed, 104s
+
+PASS PUB-03 Identity         2026-10-14T11:00 | verify > verify > verify > close_call | call 4173e558-a420-414f-b6ab-dcaba1314819
+-- rep 2/3: 1/1 passed, simulation a8d1ae9e-242e-45a9-ae89-d5e56dde2f52 completed, 52s
+
+PASS PUB-03 Identity         2026-10-14T11:00 | verify > verify > verify > close_call | call 8ee14080-47b0-494a-9790-d557c310e9cf
+-- rep 3/3: 1/1 passed, simulation 04c19ede-5f6d-4792-8688-becd35d106f0 completed, 62s
+
+per family: Identity 0/1
+0 / 1 passed (every rep must pass). median slowest turn 4s, worst 8s

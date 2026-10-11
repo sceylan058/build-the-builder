@@ -1,0 +1,245 @@
+{
+ "final": [
+  {
+   "id": "PUB-01",
+   "family": "Happy path",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-02",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-03",
+   "family": "Identity",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "outcome ('not_verified', 'declined'), expected ('not_verified', 'failed')"
+  },
+  {
+   "id": "PUB-04",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-05",
+   "family": "Hardship",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-06",
+   "family": "Amounts",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: The agent failed to satisfy all criteria because the minimum payment was offered more than once. While the agent correctly avoided asking 'how much' the user could pay ([Message 6]) and successfully recorded a promise for 637.50 on Friday 16 October ([Message 16]), the minimum payment offer was repeated. It was first offered in [Message 8] with the required note about the rest staying overdue, but"
+  },
+  {
+   "id": "PUB-07",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-08",
+   "family": "Already paid",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-09",
+   "family": "Restructuring",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-10",
+   "family": "Tool failure",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "PUB-01",
+    "family": "Happy path",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "06f046c9-b910-4b6c-80d9-027a250608c6",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-02",
+    "family": "Third party",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "5e8cf341-f9b9-41a4-906a-45aec6081990",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-03",
+    "family": "Identity",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "outcome ('not_verified', 'declined'), expected ('not_verified', 'failed')",
+     "conversation: - The verification process did not end after the third wrong answer; instead, the agent continued to prompt for the birth year until it hit the 20-turn limit for the identity node, as seen in the system events. - The agent failed to instruct the customer to use the bank's app or visit a branch, simply ending the call with a goodbye message. - While no amount or product was disclosed, the other two"
+    ],
+    "call_id": "4c3e7c1f-890c-431b-b812-5dafb0cf9fb1",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-04",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "2867086d-aaf0-46be-acae-eb98f5eb83e5",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-05",
+    "family": "Hardship",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "5f9a1a13-47ea-4c68-b3fd-470ca2d97cbc",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-06",
+    "family": "Amounts",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The agent failed to satisfy all criteria because the minimum payment was offered more than once. While the agent correctly avoided asking 'how much' the user could pay ([Message 6]) and successfully recorded a promise for 637.50 on Friday 16 October ([Message 16]), the minimum payment offer was repeated. It was first offered in [Message 8] with the required note about the rest staying overdue, but"
+    ],
+    "call_id": "1bbc60a0-c4ff-42a3-a75f-c78f839844e2",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-07",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "a8adb092-d33b-42be-8b5a-680e92ccc59c",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-08",
+    "family": "Already paid",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "7fbff0fe-16f7-43df-aa19-dee7995bb481",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-09",
+    "family": "Restructuring",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "5010bf85-7ebf-4891-9060-a9fd69712773",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-10",
+    "family": "Tool failure",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "b8ec2da8-6f3c-480e-ae14-4696ead8854a",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

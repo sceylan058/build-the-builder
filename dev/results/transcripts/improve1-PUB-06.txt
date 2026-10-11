@@ -1,0 +1,74 @@
+case PUB-06  call 1bbc60a0-c4ff-42a3-a75f-c78f839844e2  now 2026-10-14T11:00  ended assistant-ended-call
+FAILED: conversation: The agent failed to satisfy all criteria because the minimum payment was offered more than once. While the agent correctly avoided asking 'how much' the user could pay ([Message 6]) and successfully recorded a promise for 637.50 on Friday 16 October ([Message 16]), the minimum payment offer was repeated. It was first offered in [Message 8] with the required note about the rest staying overdue, but
+
+   -> node opening  (t=0.0s)
+[opening] ASSISTANT: Hello, I am a digital assistant calling from Freya Bank. Please note that we are recording this call. Am I speaking with Ms Nair?
+[opening] USER: Yes, this is Priya Nair.
+   extracted who
+   -> node setup  (t=2.5s)
+   -> node identity  (t=7.0s)
+[identity] ASSISTANT: I need to ask you two security questions; first, what is your date of birth?
+[identity] USER: My date of birth is seventeen May nineteen eighty six.
+   CALL verify_identity {"field": "date_of_birth", "answer": "1986-05-17", "customer_id": "c_7c047482-2b5"}
+   RESULT {"ok": true, "verified": true, "wrong_answers_left": 3, "all_verified": false, "what_to_do_next": "Correct. Now ask the next security question: the last four digits of the phone number on file. Do not ask the previous question again."}
+[identity] ASSISTANT: Thank you. What are the last four digits of the phone number we have on file for you?
+[identity] USER: The last four digits are fifteen zero two.
+   CALL verify_identity {"field": "phone_last4", "answer": "1502", "customer_id": "c_7c047482-2b5"}
+   RESULT {"ok": true, "verified": true, "wrong_answers_left": 3, "all_verified": true, "what_to_do_next": "Identity verified."}
+   -> node fetch_account  (t=37.1s)
+   CALL api_call {"customer_id": "c_7c047482-2b5"}
+   RESULT {"ok": true, "products": [{"product_id": "p1", "type": "credit_card", "card_last4": "1903", "past_due": 2125.1, "days_late": 12, "minimum_payment": 637.5}]}
+   -> node compute_facts  (t=37.4s)
+   -> node negotiate  (t=38.6s)
+[negotiate] ASSISTANT: Thank you, your identity is confirmed. I am calling from the collections team about a late payment. Your credit card ending 1903 has a past-due amount of 2,125.10 and is 12 days late. Can you make this payment today?
+[negotiate] USER: That full amount is too much for me to pay right now.
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=45.4s)
+   -> node negotiate  (t=46.9s)
+[negotiate] ASSISTANT: I understand. Could you pay the minimum amount of 637.50 on Friday 16 October, with the rest staying overdue?
+[negotiate] USER: I can pay six hundred, sorry, six hundred thirty-seven fifty this Friday.
+   extracted turn_date
+   extracted turn_amount
+   extracted turn_intent
+   extracted turn_item
+   -> node negotiate_turn  (t=55.3s)
+   -> node negotiate  (t=58.8s)
+[negotiate] ASSISTANT: For your credit card ending 1903, you would be paying 687.00 on Friday 16 October. Do you confirm?
+[negotiate] USER: No, I thought we said six hundred thirty
+   extracted turn_amount
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=72.1s)
+   -> node negotiate  (t=74.3s)
+[negotiate] ASSISTANT: I am sorry, but 630.00 is below the minimum amount. Can you pay 637.50 on Friday 16 October instead?
+[negotiate] USER: Yes, I can pay the six hundred thirty-seven fifty this Friday.
+   extracted turn_date
+   extracted turn_amount
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=86.5s)
+   -> node negotiate  (t=87.9s)
+[negotiate] ASSISTANT: For your credit card ending 1903, you would be paying 637.50 on Friday 16 October. Do you confirm?
+[negotiate] USER: Yes, I confirm.
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=94.4s)
+   -> node negotiate  (t=96.8s)
+   -> node record  (t=105.0s)
+   CALL create_promise {"date": "2026-10-16", "amount": 637.5, "product_id": "p1", "customer_id": "c_7c047482-2b5"}
+   RESULT {"ok": true, "promise_id": "pr1", "what_to_do_next": "The promise for credit card ending 1903 IS recorded: 637.50 on Friday 16 October 2026. When you tell the customer, use exactly this amount and date. Every product is handled. Now tell the customer in one or two sentences what was recorded, then call transition_to_end_done."}
+[record] ASSISTANT: Your promise to pay 637.50 on Friday 16 October 2026 has been recorded.
+   -> node end_done  (t=118.6s)
+   -> node farewell  (t=121.3s)
+   -> node close  (t=125.1s)
+   CALL api_call {"outcome": "promise", "customer_id": "c_7c047482-2b5"}
+   RESULT {"ok": true}
+   -> node hang_up  (t=125.3s)
+   CALL end_call {"message_mode": "none"}
+[hang_up] ASSISTANT: You will receive a text message confirming this promise. Thank you for your time, Ms Nair. Goodbye.
+   RESULT {"status": "success", "message": "Call ended"}

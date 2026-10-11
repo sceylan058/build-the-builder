@@ -1,0 +1,437 @@
+{
+ "final": [
+  {
+   "id": "X01",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X02",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X03",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X04",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X05",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X06",
+   "family": "Opening",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X07",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X09",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X10",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X11",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X12",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X13",
+   "family": "Persuasion",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X14",
+   "family": "Persuasion",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X15",
+   "family": "Amounts",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X16",
+   "family": "Amounts",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X17",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X18",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X19",
+   "family": "Hardship",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X20",
+   "family": "Adversarial",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "X01",
+    "family": "Third party",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "17aa1db0-e95f-4202-a6b3-88dbdaf9b841",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X02",
+    "family": "Third party",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "927e3f9d-4e2f-4a67-a7f4-27dbb1c03686",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X03",
+    "family": "Third party",
+    "now": "2026-10-16T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "c57f5686-6f06-428b-bd99-f3a7e835817a",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X04",
+    "family": "Third party",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "183437ca-37fd-4e79-b2f8-185c09a177a7",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X05",
+    "family": "Third party",
+    "now": "2026-10-23T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "074e860e-5d32-4cd3-8d88-d2e10701ca2d",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X06",
+    "family": "Opening",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "ceeb99ec-18ab-4ec1-bd81-4197dd634be5",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X07",
+    "family": "Identity",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "260280a7-1872-43b5-b587-3521f1a3f3e9",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X09",
+    "family": "Identity",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "69510c21-5764-4ad0-9aa4-3d51807d4671",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X10",
+    "family": "Dates",
+    "now": "2026-10-16T09:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "9f052ed2-c42b-4725-9548-46a2cb07bcc0",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X11",
+    "family": "Dates",
+    "now": "2026-10-16T18:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "3f8e5084-c12e-4722-834d-d45d06e14c1f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X12",
+    "family": "Dates",
+    "now": "2026-12-24T10:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "09f38ca5-63ab-49af-a3a2-ee23c6b82de6",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X13",
+    "family": "Persuasion",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "40bdbc51-b44f-48fd-9906-4390331507ce",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X14",
+    "family": "Persuasion",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "0cc20b08-d551-4006-8259-4733eb201c14",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X15",
+    "family": "Amounts",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "ef8ce592-08a2-43d2-a10c-b4ee34472920",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X16",
+    "family": "Amounts",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "abca3bf7-0b7b-484d-88cf-0e9f36a2a825",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X17",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "842c7a95-ce61-42f7-99c9-89051fd4e4bf",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X18",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "2fad82af-936d-4598-a570-1bcf557a94a6",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X19",
+    "family": "Hardship",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "c091d9b1-80e9-4da1-8dda-14e8037c0114",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X20",
+    "family": "Adversarial",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "966556af-8718-49b2-bde2-5d2294b6e78f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

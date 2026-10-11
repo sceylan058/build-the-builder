@@ -1,0 +1,408 @@
+{
+ "final": [
+  {
+   "id": "VC-01",
+   "family": "Happy path",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-02",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-03",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-04",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-05",
+   "family": "Amounts",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-06",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-07",
+   "family": "Human",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-08",
+   "family": "Hardship",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-09",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-10",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-11",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-12",
+   "family": "Persuasion",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-13",
+   "family": "Persuasion",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-14",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-15",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-16",
+   "family": "Tool failure",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-17",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "VC-01",
+    "family": "Happy path",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "c1dcc6fb-d923-4cce-80f9-f2ebdf5f5f68",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-02",
+    "family": "Dates",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "33e748ee-df3e-491c-bbe6-0ab90bb39ab4",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-03",
+    "family": "Dates",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "26f49256-b3a7-425c-a021-27d5d67f2102",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-04",
+    "family": "Dates",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "4688fc9f-cfb2-4683-a68c-c9c121a81862",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-05",
+    "family": "Amounts",
+    "now": "2026-10-21T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "438bd9e3-0097-4d5d-bf3b-7d7a79eb2a26",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-06",
+    "family": "Identity",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "11a95037-6cbe-4318-8d16-7c3bb8f4eaba",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-07",
+    "family": "Human",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "ec2a36ac-0df2-4dfe-ace1-031e7ae9e56d",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-08",
+    "family": "Hardship",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "fdf2144d-e310-4bbd-8443-9d7256e3885f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-09",
+    "family": "Third party",
+    "now": "2026-10-19T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "2a3d074f-c865-4278-9deb-c1ca9ce2b5c0",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-10",
+    "family": "Third party",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "1f6154b7-b74d-4521-9278-447f3447a42e",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-11",
+    "family": "Third party",
+    "now": "2026-10-21T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "5525562c-b7fd-4f94-a5dd-4493017c9a49",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-12",
+    "family": "Persuasion",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "3b87c645-7ce1-4d57-a884-4a27433210b2",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-13",
+    "family": "Persuasion",
+    "now": "2026-10-21T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "5a574cf8-4673-4379-af69-a068d4fd8648",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-14",
+    "family": "Multi-product",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "5c02c5c2-4f4d-4796-aa0e-b7a8817644e2",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-15",
+    "family": "Multi-product",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "2600ccd2-5a5c-4578-872d-bdb12a7cb807",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-16",
+    "family": "Tool failure",
+    "now": "2026-10-21T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "dbda77db-5df1-4b17-971b-269ee5971a98",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-17",
+    "family": "Dates",
+    "now": "2026-12-22T10:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "a5f144f1-5595-499b-bcee-ce0ec1995c7a",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}
