@@ -1,0 +1,44 @@
+case VC-03  call 7470e55d-8736-4197-9908-cbb942e8d08f  now 2026-10-13T11:00  ended customer-ended-call
+FAILED: outcome (None, None), expected ('promise', None) || promises [], expected [('p1', 540.0, '2026-10-19')] || the call was not closed with close_call
+
+   -> node opening  (t=0.0s)
+[opening] ASSISTANT: Good day, this is the automated assistant of Freya Bank. This call is being recorded for quality purposes. Am I speaking with Samuel Ortiz?
+[opening] USER: Yes, that is me.
+   extracted who
+   -> node setup  (t=15.1s)
+   -> node identity  (t=15.4s)
+[identity] ASSISTANT: I need to ask you two security questions; first, what are the last four digits of the phone number on file?
+[identity] USER: 7093.
+   CALL verify_identity {"field": "phone_last4", "answer": "7093", "customer_id": "c_0e8fac4a-3ca"}
+   RESULT {"ok": true, "verified": true, "wrong_answers_left": 3, "all_verified": false, "what_to_do_next": "Correct. Now ask the next security question: the date of birth. Do not ask the previous question again."}
+[identity] ASSISTANT: Thank you. What is your date of birth?
+[identity] USER: 5 December 1975.
+   CALL verify_identity {"field": "date_of_birth", "answer": "1975-12-05", "customer_id": "c_0e8fac4a-3ca"}
+   RESULT {"ok": true, "verified": true, "wrong_answers_left": 3, "all_verified": true, "what_to_do_next": "Identity verified."}
+   -> node fetch_account  (t=65.2s)
+   CALL api_call {"customer_id": "c_0e8fac4a-3ca"}
+   RESULT {"ok": true, "products": [{"product_id": "p1", "type": "personal_loan", "past_due": 540, "days_late": 5, "instalment_amount": 180}]}
+   -> node compute_facts  (t=65.2s)
+   -> node negotiate  (t=65.4s)
+[negotiate] ASSISTANT: Thank you, your identity is confirmed. I am calling about overdue payments. Your personal loan has an overdue amount of 540.00 and is 5 days overdue. Are you able to settle this today?
+[negotiate] USER: No, I cannot pay that today. I want to pay the full amount this Friday.
+   extracted turn_date
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=81.4s)
+   -> node negotiate  (t=81.6s)
+[negotiate] ASSISTANT: I'm sorry, this Friday 16 October is not a business day. Can you pay the 540.00 on Monday 19 October instead?
+[negotiate] USER: Yes, I can pay on Monday.
+   extracted turn_date
+   extracted turn_intent
+   extracted turn_item
+   -> node negotiate_turn  (t=129.8s)
+   -> node negotiate  (t=130.2s)
+[negotiate] ASSISTANT: For your personal loan, you have agreed to pay 540.00 on Monday 19 October. Is that correct?
+[negotiate] USER: Yes, I confirm.
+   extracted turn_intent
+   extracted turn_item
+   -> node negotiate_turn  (t=160.3s)
+   -> node negotiate  (t=160.6s)
+   -> node record  (t=174.6s)

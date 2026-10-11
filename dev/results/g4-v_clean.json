@@ -1,0 +1,423 @@
+{
+ "final": [
+  {
+   "id": "VC-01",
+   "family": "Happy path",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "outcome (None, None), expected ('promise', None)"
+  },
+  {
+   "id": "VC-02",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-03",
+   "family": "Dates",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "outcome (None, None), expected ('promise', None)"
+  },
+  {
+   "id": "VC-04",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-05",
+   "family": "Amounts",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-06",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-07",
+   "family": "Human",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-08",
+   "family": "Hardship",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "outcome ('transferred', 'restructuring'), expected ('no_promise', 'hardship')"
+  },
+  {
+   "id": "VC-09",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-10",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-11",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-12",
+   "family": "Persuasion",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "outcome (None, None), expected ('promise', None)"
+  },
+  {
+   "id": "VC-13",
+   "family": "Persuasion",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "outcome (None, None), expected ('no_promise', 'refused')"
+  },
+  {
+   "id": "VC-14",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-15",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-16",
+   "family": "Tool failure",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-17",
+   "family": "Dates",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "outcome (None, None), expected ('promise', None)"
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "VC-01",
+    "family": "Happy path",
+    "now": "2026-10-13T11:00",
+    "pass": false,
+    "failed": [
+     "outcome (None, None), expected ('promise', None)",
+     "promises [], expected [('p1', 420.0, '2026-10-13')]",
+     "the call was not closed with close_call",
+     "conversation: The agent failed to satisfy the third criterion. While the name question included both first and last name (Message 0) and the phone digits were asked before the date of birth (Message 2 and 4), the agent never said 'A confirmation will be sent to you by text message.' after the payment promise was confirmed. The conversation ended immediately after the user's confirmation in Message 9."
+    ],
+    "call_id": "cd1b294a-93d5-499a-8a84-4a6c73c734e2",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account"
+    ],
+    "ended": "customer-ended-call"
+   },
+   {
+    "id": "VC-02",
+    "family": "Dates",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "cf06ebb3-1482-42cf-9f94-6cab1ab65220",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-03",
+    "family": "Dates",
+    "now": "2026-10-13T11:00",
+    "pass": false,
+    "failed": [
+     "outcome (None, None), expected ('promise', None)",
+     "promises [], expected [('p1', 540.0, '2026-10-19')]",
+     "the call was not closed with close_call"
+    ],
+    "call_id": "7470e55d-8736-4197-9908-cbb942e8d08f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account"
+    ],
+    "ended": "customer-ended-call"
+   },
+   {
+    "id": "VC-04",
+    "family": "Dates",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "ebfa6a9d-80fc-452d-93d7-830d40a83be2",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-05",
+    "family": "Amounts",
+    "now": "2026-10-21T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "9c689b31-6d37-4b59-b066-534ea5ef0197",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-06",
+    "family": "Identity",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "6a0b23f3-ecd6-4351-bf62-dd1a3a74cd0b",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-07",
+    "family": "Human",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "f5619b78-4375-447c-ad44-c4ddcfebbc7e",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-08",
+    "family": "Hardship",
+    "now": "2026-10-19T10:30",
+    "pass": false,
+    "failed": [
+     "outcome ('transferred', 'restructuring'), expected ('no_promise', 'hardship')",
+     "notes [], expected [('p1', 'hardship')]",
+     "transfers [{'queue': 'restructuring'}], expected []",
+     "conversation: The assistant offered to transfer the customer to the Hardship Team in Message 8, which violates the success criterion stating that no transfer to a support team should be offered. While the assistant did express sympathy as required, the inclusion of the transfer offer results in a failure."
+    ],
+    "call_id": "e0c7c463-8b37-4141-8784-e50e6d4180a0",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-09",
+    "family": "Third party",
+    "now": "2026-10-19T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "06d79274-090b-4320-bf83-c4b1f70e02e5",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-10",
+    "family": "Third party",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "aea1296e-8f7b-443a-ac39-9280fe1d7e0a",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-11",
+    "family": "Third party",
+    "now": "2026-10-21T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "750d9fa7-fa36-4ccf-ad94-79d3437fc455",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-12",
+    "family": "Persuasion",
+    "now": "2026-10-19T10:30",
+    "pass": false,
+    "failed": [
+     "outcome (None, None), expected ('promise', None)",
+     "promises [], expected [('p1', 637.5, '2026-10-26')]",
+     "the call was not closed with close_call"
+    ],
+    "call_id": "a6a9cd87-7a99-4245-b43c-65a1837d64db",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account"
+    ],
+    "ended": "customer-ended-call"
+   },
+   {
+    "id": "VC-13",
+    "family": "Persuasion",
+    "now": "2026-10-21T15:00",
+    "pass": false,
+    "failed": [
+     "outcome (None, None), expected ('no_promise', 'refused')",
+     "notes [], expected [('p1', 'refused')]",
+     "the call was not closed with close_call"
+    ],
+    "call_id": "d31246e1-7083-46d0-901c-d90912e4df73",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account"
+    ],
+    "ended": "customer-ended-call"
+   },
+   {
+    "id": "VC-14",
+    "family": "Multi-product",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "4feb2224-c3d9-4623-9aae-67aaf3e09802",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-15",
+    "family": "Multi-product",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "92024cd5-9ad4-47e7-a0bc-be27bf3f5872",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-16",
+    "family": "Tool failure",
+    "now": "2026-10-21T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "f56340c6-439e-4cd7-ae01-34d5bf0bd5de",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-17",
+    "family": "Dates",
+    "now": "2026-12-22T10:00",
+    "pass": false,
+    "failed": [
+     "outcome (None, None), expected ('promise', None)",
+     "promises [], expected [('p1', 420.0, '2026-12-29')]",
+     "the call was not closed with close_call"
+    ],
+    "call_id": "c39cad03-5628-4bcb-9820-b9547f9bf197",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account"
+    ],
+    "ended": "customer-ended-call"
+   }
+  ]
+ ]
+}

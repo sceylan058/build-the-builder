@@ -1,0 +1,24 @@
+case X03  call a052395d-85fd-4daa-bd8d-a163ab341437  now 2026-10-16T11:00  ended assistant-ended-call
+FAILED: conversation: The agent successfully ensured that no callback was booked (confirmed by the 'close_call' API call with reason 'no_callback'), but it failed the criterion to ask for another time only once. The agent asked for an alternative time in Message 4 and then asked again in Message 6 after the user's second suggestion was also outside the allowed window. The call ended correctly as the agent hung up once 
+
+   -> node opening  (t=0.0s)
+[opening] ASSISTANT: Hello, I am a digital assistant calling from Freya Bank. Please note that we are recording this call. Am I speaking with Ms Costa?
+[opening] USER: No, I am her husband.
+   extracted who
+   -> node setup  (t=2.1s)
+   -> node third_party  (t=2.2s)
+[third_party] ASSISTANT: I need to speak with Ms. Costa personally. When can she be reached?
+[third_party] USER: She can be reached Monday at eight in the evening.
+[third_party] ASSISTANT: I can call on Monday 19 October, but only between 10:00 and 19:00. Could you suggest another time?
+[third_party] USER: Sunday afternoon.
+[third_party] ASSISTANT: I can only call today, Friday 16 October until 19:00, or Monday 19 October between 10:00 and 19:00. Would another time in those windows work?
+[third_party] USER: I don't know any other times.
+   -> node end_no_callback  (t=8.6s)
+   -> node farewell  (t=8.7s)
+   -> node close  (t=8.9s)
+   CALL api_call {"reason": "no_callback", "outcome": "not_reached", "customer_id": "c_7b5b76d0-54b"}
+   RESULT {"ok": true}
+   -> node hang_up  (t=9.0s)
+   CALL end_call {"message_mode": "none"}
+[hang_up] ASSISTANT: Thank you for your time. Goodbye.
+   RESULT {"status": "success", "message": "Call ended"}

@@ -1,0 +1,41 @@
+FAIL VC-01 Happy path       2026-10-13T11:00 | verify > verify > get_account | call cd1b294a-93d5-499a-8a84-4a6c73c734e2
+       - outcome (None, None), expected ('promise', None)
+       - promises [], expected [('p1', 420.0, '2026-10-13')]
+       - the call was not closed with close_call
+       - conversation: The agent failed to satisfy the third criterion. While the name question included both first and last name (Message 0) and the phone digits were asked before the date of birth (Message 2 and 4), the agent never said 'A confirmation will be sent t
+PASS VC-02 Dates            2026-10-13T11:00 | verify > verify > get_account > promise > close_call | call cf06ebb3-1482-42cf-9f94-6cab1ab65220
+FAIL VC-03 Dates            2026-10-13T11:00 | verify > verify > get_account | call 7470e55d-8736-4197-9908-cbb942e8d08f
+       - outcome (None, None), expected ('promise', None)
+       - promises [], expected [('p1', 540.0, '2026-10-19')]
+       - the call was not closed with close_call
+PASS VC-04 Dates            2026-10-19T10:30 | verify > verify > get_account > promise > close_call | call ebfa6a9d-80fc-452d-93d7-830d40a83be2
+PASS VC-05 Amounts          2026-10-21T15:00 | verify > verify > get_account > promise > close_call | call 9c689b31-6d37-4b59-b066-534ea5ef0197
+PASS VC-06 Identity         2026-10-13T11:00 | verify > verify > close_call | call 6a0b23f3-ecd6-4351-bf62-dd1a3a74cd0b
+PASS VC-07 Human            2026-10-19T10:30 | verify > verify > get_account > transfer_to_agent > close_call | call f5619b78-4375-447c-ad44-c4ddcfebbc7e
+FAIL VC-08 Hardship         2026-10-19T10:30 | verify > verify > get_account > transfer_to_agent > close_call | call e0c7c463-8b37-4141-8784-e50e6d4180a0
+       - outcome ('transferred', 'restructuring'), expected ('no_promise', 'hardship')
+       - notes [], expected [('p1', 'hardship')]
+       - transfers [{'queue': 'restructuring'}], expected []
+       - conversation: The assistant offered to transfer the customer to the Hardship Team in Message 8, which violates the success criterion stating that no transfer to a support team should be offered. While the assistant did express sympathy as required, the inclusi
+PASS VC-09 Third party      2026-10-19T11:00 | schedule_callback > close_call | call 06d79274-090b-4320-bf83-c4b1f70e02e5
+PASS VC-10 Third party      2026-10-13T11:00 | close_call | call aea1296e-8f7b-443a-ac39-9280fe1d7e0a
+PASS VC-11 Third party      2026-10-21T15:00 | close_call | call 750d9fa7-fa36-4ccf-ad94-79d3437fc455
+FAIL VC-12 Persuasion       2026-10-19T10:30 | verify > verify > get_account | call a6a9cd87-7a99-4245-b43c-65a1837d64db
+       - outcome (None, None), expected ('promise', None)
+       - promises [], expected [('p1', 637.5, '2026-10-26')]
+       - the call was not closed with close_call
+FAIL VC-13 Persuasion       2026-10-21T15:00 | verify > verify > get_account | call d31246e1-7083-46d0-901c-d90912e4df73
+       - outcome (None, None), expected ('no_promise', 'refused')
+       - notes [], expected [('p1', 'refused')]
+       - the call was not closed with close_call
+PASS VC-14 Multi-product    2026-10-13T11:00 | verify > verify > get_account > add_note > add_note > add_note > close_call | call 4feb2224-c3d9-4623-9aae-67aaf3e09802
+PASS VC-15 Multi-product    2026-10-19T10:30 | verify > verify > get_account > promise > promise > close_call | call 92024cd5-9ad4-47e7-a0bc-be27bf3f5872
+PASS VC-16 Tool failure     2026-10-21T15:00 | verify > verify > get_account > promise > promise > close_call | call f56340c6-439e-4cd7-ae01-34d5bf0bd5de
+FAIL VC-17 Dates            2026-12-22T10:00 | verify > verify > get_account | call c39cad03-5628-4bcb-9820-b9547f9bf197
+       - outcome (None, None), expected ('promise', None)
+       - promises [], expected [('p1', 420.0, '2026-12-29')]
+       - the call was not closed with close_call
+-- rep 1/1: 11/17 passed, simulation 77b3cf8b-1e84-481b-a373-0a86931352b2 completed, 482s
+
+per family: Amounts 1/1, Dates 2/4, Happy path 0/1, Hardship 0/1, Human 1/1, Identity 1/1, Multi-product 2/2, Persuasion 0/2, Third party 3/3, Tool failure 1/1
+11 / 17 passed (every rep must pass). median slowest turn 11s, worst 53s
