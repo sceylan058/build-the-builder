@@ -10,3 +10,5 @@
 | talkative | B | 1/3 | PUB-12 (2/3): outcome ('no_promise', 'refused'), expected ('promise', None); PUB-13 (2/3): promises [('p1', 300.0, '2026-10-30')], expected [('p1', 300.0, '2026-10-30'), ('p2', 900.0, '2026-10-23')] | 9 s |
 | asks_back | A | 9/10 | PUB-06 (1/3): promises [('p1', 637.5, '2026-10-23')], expected [('p1', 637.5, '2026-10-16')] | 8 s |
 | asks_back | B | 1/3 | PUB-12 (1/3): conversation: The conversation failed to meet the security question criteria: the date of birth question was repeated in [Message 4] despite the requirement tha; PUB-13 (2/3): promises [('p1', 300.0, '2026-10-23'), ('p2', 900.0, '2026-10-23')], expected [('p1', 300.0, '2026-10-30'), ('p2', 900.0, '2026-10-23')] | 7 s |
+| in_words | A | 8/10 | PUB-04 (2/3): promises [('p1', 1000.0, '2026-10-23')], expected [('p1', 1250.0, '2026-10-23')]; PUB-05 (1/3): outcome ('no_promise', 'refused'), expected ('no_promise', 'hardship') | 4 s |
+| in_words | B | 3/3 |  | 5 s |
