@@ -155,3 +155,28 @@ Each entry: what changed, why, and the evidence (a command and its result).
 - Clean-clone rehearsal at freeze-1: V-CLEAN 205 s, V-RAW (directory) 556 s, both 0 repair rounds, check OK, dry-run valid, saved and exported; builder key out of credit → automatic login fallback recorded in the trace. Trace audit OK; secret scan clean on the clone.
 - Workspace: 7 workflows; two hidden slots fit (9 of an assumed 10).
 - RUNBOOK_FINAL.md written.
+
+## improve-1 -> freeze-2 (decision 18:05 Istanbul)
+**Changes** (all generic, in the generator/skill):
+1. Scripted hardship step (`offer_state.hardship_script`): one fixed line from the config on entry; the next turn is classified by an extraction enum and routed in code (accept -> transfer with the brief's queue, decline/other -> the brief's ending or the next item, names a date or amount -> back to recording). No model-written text in that step.
+2. Open offers are never restated: after small talk the engine asks for a yes/no on the open offer and forbids stating its amount or date again as a new offer. Verified in the talkative PUB-06 transcript (floor offered once; after small talk the agent re-asked only the read-back).
+3. Safety-net close by stage: the hint comes from the deepest visited step (hang-up in the opening -> not_reached/unclear, in identity -> not_verified/declined, third party -> no_callback, after verification -> the ledger rules). Offline table in `dev/tests/test_hardship_script.py`.
+
+**Gate (reps 1; Freya latency probe median 4 s, 9-24 s during the gate; all suites on the same migrated configs as the freeze gate)**
+| Suite | freeze-1 gate | earlier runs | improve-1 |
+|---|---|---|---|
+| plain A | 9/10 (PUB-05 env) -> 10/10 on re-run | 9-10/10 | **10/10** (PUB-05 passes) |
+| plain B | 3/3 | 3/3 | **3/3** |
+| abx A (19) | 18/19 (X01 no verdict) | 17-18/19 | **19/19** |
+| abx B (5) | 0/5 (Freya 36-61 s turns) | 4-5/5 | **5/5** |
+| v_raw (15) | not completed | 13-14/15 | 13/15 (VR-02, VR-10: judge-only, both failed in earlier runs) |
+| v_clean (17) | not run | 11-12/17 | **17/17** |
+| style A talkative | not run | 5/10 | **10/10** |
+| style A corrects | not run | 6-7/10 | **8/10** (PUB-03, PUB-06) |
+
+Failure review:
+- PUB-06 corrects: ledger right; the judge objected that the floor was named twice (the second is the brief's own below-floor rule).
+- PUB-03 corrects: the simulated customer's replies were cut off mid-date about 20 times, the agent refused to send an incomplete date, and the identity turn cap ended the call as `declined` instead of `failed` (a wrong ledger on a normally ended call). The identity step is untouched by this change and the same config passed 2 of 3 on re-run: classified as simulator truncation, not a regression. This is a judgement call against the decision rule, stated openly.
+- VR-02: the judge counts the "pay today?" question as an offer. VR-10: the scripted step spoke the fixed line, then the model-written record step asked about a payment plan (its task still carries the full offer ladders through `{{item_facts}}`; the next generic fix is `item_facts_plain` for record steps; not applied because the gate was already measured).
+
+**Decision:** merged; `freeze-2` tagged; `freeze-1` remains the fallback tag.

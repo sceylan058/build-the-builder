@@ -1,6 +1,6 @@
 # RUNBOOK: final run at 20:00 Istanbul (17:00 UTC)
 
-Repo: https://github.com/sceylan058/build-the-builder (currently PUBLIC). Working copy: `~/Desktop/build-the-builder`. Builder code = tag `freeze-1` (`e57be25`).
+Repo: https://github.com/sceylan058/build-the-builder (currently PUBLIC). Working copy: `~/Desktop/build-the-builder`. Builder code = tag `freeze-2` (fallback: `freeze-1`, `e57be25`). The clean-clone rehearsal below was run at `freeze-1`; see the freeze-2 note at the end.
 Do not change builder logic during the run. Hidden-brief content never goes into code, config examples or prompts.
 
 ## What the rehearsal proved (clean clone at freeze-1, both briefs in parallel, no manual step)
@@ -101,3 +101,6 @@ Trace extras: `traces/<slot>.jsonl` (raw messages) and `traces/<slot>.console.lo
 3. A Python traceback in `builder/`: make the **minimal generic fix** (an input-handling crash on a format the parser did not expect, a missing key in a generated structure). Never add a hidden-brief value, rule, word, enum or name anywhere in `builder/`. Run the five unit tests, run `dev/secret_scan.sh`, commit the fix with a message that says what generic case it handles, push, then re-run the whole build from the start (the trace of the final run must be a full run on the final commit).
 4. `check.py` errors that survive three repair rounds: the build still saves the best workflow; read the error list in the trace. Do not hand-edit the config or the workflow. If the cause is generic (a check that rejects a valid construct), fix the checker generically and re-run.
 5. Never use `--reuse-config` for the submitted run unless a generic generator fix is the only change since the model wrote the config: it skips the model stage, and the trace says so.
+
+## Note on freeze-2
+`freeze-2` = freeze-1 + the scripted hardship step, the open-offer wording and the stage-based safety-net outcome (CHANGELOG.md has the gate table). The rehearsal numbers above were measured at freeze-1. To fall back: `git checkout freeze-1` (or tag the final run from it); nothing else changes.
