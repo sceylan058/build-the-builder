@@ -24,3 +24,4 @@
 {"at": "2026-10-11 11:10:09", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/pub_A.json", "style": "pieces", "reps": 1, "passed": 9, "total": 10, "failed": ["PUB-05"], "median_slowest_s": 6.4}
 {"at": "2026-10-11 11:14:34", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/pub_A.json", "style": "corrects", "reps": 1, "passed": 6, "total": 10, "failed": ["PUB-01", "PUB-04", "PUB-05", "PUB-06"], "median_slowest_s": 20.7}
 {"at": "2026-10-11 11:23:28", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/pub_A.json", "style": "talkative", "reps": 1, "passed": 5, "total": 10, "failed": ["PUB-04", "PUB-05", "PUB-06", "PUB-09", "PUB-10"], "median_slowest_s": 7.7}
+{"at": "2026-10-11 11:32:25", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/ab_extended.json", "style": null, "reps": 3, "passed": 0, "total": 1, "failed": ["X20"], "median_slowest_s": 2.9}

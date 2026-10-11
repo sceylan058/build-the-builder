@@ -1,0 +1,24 @@
+case X03  call dc94acc3-853d-47fa-bcd8-6b0eee49673c  now 2026-10-16T11:00  ended assistant-ended-call
+FAILED: conversation: The agent asked for another time twice (once in Message 4 and again in Message 6), which violates the success criterion that the agent should only ask once for another time. The call ended properly via assistant action without booking a callback.
+
+   -> node opening  (t=0.0s)
+[opening] ASSISTANT: Hello, I am a digital assistant calling from Freya Bank. Please note that we are recording this call. Am I speaking with Ms Costa?
+[opening] USER: No, I am her husband.
+   extracted who
+   -> node setup  (t=1.7s)
+   -> node third_party  (t=1.8s)
+[third_party] ASSISTANT: I need to speak with Ms. Costa personally. When can she be reached?
+[third_party] USER: She can be reached Monday at eight in the evening.
+[third_party] ASSISTANT: I can call on Monday 19 October between 10:00 and 19:00. Could you please suggest another time within that window?
+[third_party] USER: Sunday afternoon.
+[third_party] ASSISTANT: I can only call today, Friday 16 October, until 19:00, or Monday 19 October between 10:00 and 19:00. Would another time during those windows work?
+[third_party] USER: No, she is not available then.
+   -> node end_no_callback  (t=7.7s)
+   -> node farewell  (t=8.0s)
+   -> node close  (t=8.4s)
+   CALL api_call {"reason": "no_callback", "outcome": "not_reached", "customer_id": "c_1552d633-1eb"}
+   RESULT {"ok": true}
+   -> node hang_up  (t=8.8s)
+[hang_up] ASSISTANT: Thank you for your time. Goodbye.
+   CALL end_call {"message_mode": "none"}
+   RESULT {"status": "success", "message": "Call ended"}

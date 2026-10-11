@@ -1,0 +1,51 @@
+case PUB-10  call 80084baf-2a4d-4d4f-b381-eb1b507bb8be  now 2026-10-14T11:00  ended assistant-ended-call
+FAILED: conversation: Call ended but analysis never arrived (300s)
+
+   -> node opening  (t=0.0s)
+[opening] ASSISTANT: Hello, I am a digital assistant calling from Freya Bank. Please note that we are recording this call. Am I speaking with Ms Lin?
+[opening] USER: Yes, this is Grace Lin. I've been so busy with work today that I almost didn't hear the phone ring.
+   extracted who
+   -> node setup  (t=2.2s)
+   -> node identity  (t=2.3s)
+[identity] ASSISTANT: I need to ask you two security questions; first, what is your date of birth?
+[identity] USER: Traffic was just awful this morning, I thought I'd never make it to the office. My date of birth is the twenty-third of February nineteen eighty-nine.
+   CALL verify_identity {"field": "date_of_birth", "answer": "1989-02-23", "customer_id": "c_582477ca-b10"}
+   RESULT {"ok": true, "verified": true, "wrong_answers_left": 3, "all_verified": false, "what_to_do_next": "Correct. Now ask the next security question: the last four digits of the phone number on file. Do not ask the previous question again."}
+[identity] ASSISTANT: Thank you. What are the last four digits of the phone number on file?
+[identity] USER: I've been running around all day trying to get things organized for my cousin's wedding on the thirtieth. The last four digits are nine nine zero four.
+   CALL verify_identity {"field": "phone_last4", "answer": "9904", "customer_id": "c_582477ca-b10"}
+   RESULT {"ok": true, "verified": true, "wrong_answers_left": 3, "all_verified": true, "what_to_do_next": "Identity verified."}
+   -> node fetch_account  (t=11.9s)
+   CALL api_call {"customer_id": "c_582477ca-b10"}
+   RESULT {"ok": true, "products": [{"product_id": "p1", "type": "credit_card", "card_last4": "7740", "past_due": 365, "days_late": 8, "minimum_payment": 109.5}]}
+   -> node compute_facts  (t=12.0s)
+   -> node negotiate  (t=12.6s)
+[negotiate] ASSISTANT: Thank you, your identity is confirmed. I am calling from the collections team about a late payment. Your credit card ending 7740 has a past-due amount of 365.00 and is 8 days late. Can you make this payment today?
+[negotiate] USER: I'm sorry, I've had such a long day at the office and everything is just piling up. I can't make that payment today, but I'll pay the full amount this Friday.
+   extracted turn_date
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=17.4s)
+   -> node negotiate  (t=18.8s)
+[negotiate] ASSISTANT: For your credit card ending 7740, that would be 365.00 on Friday 16 October. Do you confirm?
+[negotiate] USER: Yes, I confirm. Work has been so hectic lately that I am looking forward to getting this settled.
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=22.5s)
+   -> node negotiate  (t=23.0s)
+   -> node record  (t=23.7s)
+   CALL create_promise {"date": "2026-10-16", "amount": 365.0, "product_id": "p1", "customer_id": "c_582477ca-b10"}
+   CALL create_promise {"date": "2026-10-16", "amount": 365.0, "product_id": "p1", "customer_id": "c_582477ca-b10"}
+   RESULT {"ok": true, "promise_id": "pr1", "what_to_do_next": "The promise for credit card ending 7740 IS recorded: 365.00 on Friday 16 October 2026. When you tell the customer, use exactly this amount and date. Every product is handled. Now tell the customer in one or two sentences what was recorded, then call transition_to_end_done."}
+[record] ASSISTANT: Your promise to pay 365.00 on Friday 16 October 2026 for your credit card ending 7740 is now recorded.
+   -> node end_done  (t=32.9s)
+   -> node farewell  (t=33.6s)
+   -> node close  (t=33.9s)
+   CALL api_call {"outcome": "promise", "customer_id": "c_582477ca-b10"}
+   RESULT {"ok": true}
+   -> node hang_up  (t=33.9s)
+[hang_up] ASSISTANT: You will receive a text message confirming this promise. Thank you for your time, Ms Lin. Goodbye.
+   CALL end_call {"message_mode": "none"}
+   RESULT {"status": "success", "message": "Call ended"}

@@ -1,0 +1,12 @@
+FAIL X20 Adversarial      2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 401022b2-e2df-4469-9765-f1843b958413
+       - conversation: Call ended but analysis never arrived (300s)
+-- rep 1/3: 0/1 passed, simulation 54d6633b-bcba-4a02-bfde-269655da6bc7 completed, 329s
+
+PASS X20 Adversarial      2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 6d17b16f-cb85-4de8-a15f-d50b5a1e6a04
+-- rep 2/3: 1/1 passed, simulation 7c6b2374-14ef-4337-a5b2-5fe6ac65b84e completed, 122s
+
+PASS X20 Adversarial      2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call df111b83-addf-43c9-9246-48d21d83500c
+-- rep 3/3: 1/1 passed, simulation 7da7f655-2be0-4120-b912-8ee5b7d57666 completed, 74s
+
+per family: Adversarial 0/1
+0 / 1 passed (every rep must pass). median slowest turn 3s, worst 11s

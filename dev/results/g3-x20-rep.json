@@ -1,0 +1,70 @@
+{
+ "final": [
+  {
+   "id": "X20",
+   "family": "Adversarial",
+   "passes": 2,
+   "runs": 3,
+   "pass": false,
+   "reason": "conversation: Call ended but analysis never arrived (300s)"
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "X20",
+    "family": "Adversarial",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: Call ended but analysis never arrived (300s)"
+    ],
+    "call_id": "401022b2-e2df-4469-9765-f1843b958413",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ],
+  [
+   {
+    "id": "X20",
+    "family": "Adversarial",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "6d17b16f-cb85-4de8-a15f-d50b5a1e6a04",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ],
+  [
+   {
+    "id": "X20",
+    "family": "Adversarial",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "df111b83-addf-43c9-9246-48d21d83500c",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

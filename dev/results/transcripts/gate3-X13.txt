@@ -1,0 +1,62 @@
+case X13  call ac56d0a4-2a74-4058-a83c-1934905cc4dd  now 2026-10-19T10:30  ended assistant-ended-call
+FAILED: conversation: The agent made three persuasion attempts instead of two, and the second offer was for 2,100.00 on Friday 23 October 2026 rather than the required installment. The offer for 700.00 on Thursday 29 October was actually the third offer made during the call.
+
+   -> node opening  (t=0.0s)
+[opening] ASSISTANT: Hello, I am a digital assistant calling from Freya Bank. Please note that we are recording this call. Am I speaking with Mr Ionescu?
+[opening] USER: Yes, this is Victor Ionescu.
+   extracted who
+   -> node setup  (t=5.0s)
+   -> node identity  (t=5.2s)
+[identity] ASSISTANT: I need to ask you two security questions; first, what is your date of birth?
+[identity] USER: 11 August 1981.
+   CALL verify_identity {"field": "date_of_birth", "answer": "1981-08-11", "customer_id": "c_0945e409-944"}
+   RESULT {"ok": true, "verified": true, "wrong_answers_left": 3, "all_verified": false, "what_to_do_next": "Correct. Now ask the next security question: the last four digits of the phone number on file. Do not ask the previous question again."}
+[identity] ASSISTANT: Thank you. What are the last four digits of the phone number we have on file for you?
+[identity] USER: 5560.
+   CALL verify_identity {"field": "phone_last4", "answer": "5560", "customer_id": "c_0945e409-944"}
+   RESULT {"ok": true, "verified": true, "wrong_answers_left": 3, "all_verified": true, "what_to_do_next": "Identity verified."}
+   -> node fetch_account  (t=35.0s)
+   CALL api_call {"customer_id": "c_0945e409-944"}
+   RESULT {"ok": true, "products": [{"product_id": "p1", "type": "personal_loan", "past_due": 2100, "days_late": 28, "instalment_amount": 700}]}
+   -> node compute_facts  (t=35.0s)
+   -> node negotiate  (t=35.3s)
+[negotiate] ASSISTANT: Thank you, your identity is confirmed. I am calling from the collections team about a late payment. Your personal loan has a past-due amount of 2,100.00 and is 28 days late. Can you make this payment today?
+[negotiate] USER: I cannot pay that today.
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=50.3s)
+   -> node negotiate  (t=53.5s)
+[negotiate] ASSISTANT: Could you pay 2,100.00 on Friday 23 October 2026?
+[negotiate] USER: No, I cannot do that.
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=66.7s)
+   -> node negotiate  (t=67.0s)
+[negotiate] ASSISTANT: Could you pay 700.00 on Thursday 29 October 2026? Please note that the rest will stay overdue.
+[negotiate] USER: Yes, I can do that.
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=86.6s)
+   -> node negotiate  (t=87.6s)
+[negotiate] ASSISTANT: For your personal loan, that is a payment of 700.00 on Thursday 29 October 2026. Do you confirm?
+[negotiate] USER: Yes, I confirm.
+   extracted turn_intent
+   extracted turn_item
+   -> node negotiate_turn  (t=106.1s)
+   -> node negotiate  (t=107.1s)
+   -> node record  (t=108.7s)
+   CALL create_promise {"date": "2026-10-29", "amount": 700.0, "product_id": "p1", "customer_id": "c_0945e409-944"}
+   RESULT {"ok": true, "promise_id": "pr1", "what_to_do_next": "The promise for personal loan IS recorded: 700.00 on Thursday 29 October 2026. When you tell the customer, use exactly this amount and date. Every product is handled. Now tell the customer in one or two sentences what was recorded, then call transition_to_end_done."}
+[record] ASSISTANT: Your promise for the personal loan of 700.00 on Thursday 29 October 2026 is recorded.
+   -> node end_done  (t=142.0s)
+   -> node farewell  (t=142.8s)
+   -> node close  (t=144.1s)
+   CALL api_call {"outcome": "promise", "customer_id": "c_0945e409-944"}
+   RESULT {"ok": true}
+   -> node hang_up  (t=145.0s)
+[hang_up] ASSISTANT: You will receive a text message confirming this promise. Thank you for your time, Mr Ionescu. Goodbye.
+   CALL end_call {"message_mode": "none"}
+   RESULT {"status": "success", "message": "Call ended"}

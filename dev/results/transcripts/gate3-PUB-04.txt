@@ -1,0 +1,319 @@
+case PUB-04  call 44d60038-9f01-4bf9-8ca1-306d75cd2f57  now 2026-10-14T11:00  ended assistant-ended-call
+FAILED: conversation: Call ended but analysis never arrived (300s)
+
+   -> node opening  (t=0.0s)
+[opening] ASSISTANT: Hello, I am a digital assistant calling from Freya Bank. Please note that we are recording this call. Am I speaking with Ms Hoffmann?
+[opening] USER: Yes, that is me. I have had such a busy day at work today with back-to-back meetings.
+   extracted who
+   -> node setup  (t=2.0s)
+   -> node identity  (t=4.4s)
+[identity] ASSISTANT: I need to ask you two security questions; first, what is your date of birth?
+[identity] USER: The traffic was absolutely terrible this morning, I thought I would never make it to the office. My date of birth is the thirtieth of January nineteen eighty four.
+   CALL verify_identity {"field": "date_of_birth", "answer": "1984-01-30", "customer_id": "c_9450e578-856"}
+   RESULT {"ok": true, "verified": true, "wrong_answers_left": 3, "all_verified": false, "what_to_do_next": "Correct. Now ask the next security question: the last four digits of the phone number on file. Do not ask the previous question again."}
+[identity] ASSISTANT: Thank you. What are the last four digits of the phone number we have on file for you?
+[identity] USER: I am just so exhausted from all the paperwork I had to finish before the weekend. The last four digits are two two one nine.
+   CALL verify_identity {"field": "phone_last4", "answer": "2219", "customer_id": "c_9450e578-856"}
+   RESULT {"ok": true, "verified": true, "wrong_answers_left": 3, "all_verified": true, "what_to_do_next": "Identity verified."}
+   -> node fetch_account  (t=18.2s)
+   CALL api_call {"customer_id": "c_9450e578-856"}
+   RESULT {"ok": true, "products": [{"product_id": "p1", "type": "car_loan", "past_due": 1250, "days_late": 14, "instalment_amount": 400}]}
+   -> node compute_facts  (t=18.4s)
+   -> node negotiate  (t=21.1s)
+[negotiate] ASSISTANT: Thank you, your identity is confirmed. I am calling from the collections team about a late payment. Your car loan has a past-due amount of 1,250.00 and is 14 days late. Can you make this payment today?
+[negotiate] USER: I have been running around all day trying to get everything ready
+   extracted turn_intent
+   -> node negotiate_turn  (t=23.4s)
+   -> node negotiate  (t=26.0s)
+[negotiate] ASSISTANT: I understand. Can you make the payment of 1,250.00 today?
+[negotiate] USER: Wait, the rule says "One or two short
+   extracted turn_intent
+   -> node negotiate_turn  (t=28.8s)
+   -> node negotiate  (t=30.9s)
+[negotiate] ASSISTANT: I apologize if I was unclear. Can you make the payment of 1,250.00 today?
+[negotiate] USER: I have been so busy with work that I haven't
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=33.8s)
+   -> node negotiate  (t=35.2s)
+[negotiate] ASSISTANT: I understand you've been busy. Could you pay 1,250.00 this Friday 16 October?
+[negotiate] USER: I am so stressed because my cousin's wedding is
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=38.4s)
+   -> node negotiate  (t=39.7s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 this Friday 16 October?
+[negotiate] USER: I've been working so hard lately and my cousin
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=42.5s)
+   -> node negotiate  (t=44.0s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 this Friday 16 October?
+[negotiate] USER: Work has been so incredibly busy lately with all these projects.
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=46.9s)
+   -> node negotiate  (t=48.4s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 this Friday 16 October?
+[negotiate] USER: I have been so busy at the office today. My
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=51.9s)
+   -> node negotiate  (t=52.7s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 this Friday 16 October?
+[negotiate] USER: Work is just non-stop today and my cousin
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=56.3s)
+   -> node negotiate  (t=57.6s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 this Friday 16 October?
+[negotiate] USER: I'm just so busy getting
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=60.6s)
+   -> node negotiate  (t=62.6s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 this Friday 16 October?
+[negotiate] USER: I have been so busy with work and preparing for my cousin
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=65.4s)
+   -> node negotiate  (t=66.7s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 this Friday 16 October?
+[negotiate] USER: I have been so overwhelmed with work tasks today.
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=70.7s)
+   -> node negotiate  (t=70.9s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 this Friday 16 October?
+[negotiate] USER: I have been so busy with work and my
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=74.0s)
+   -> node negotiate  (t=75.5s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 this Friday 16 October?
+[negotiate] USER: I've been so busy at work I haven
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=78.8s)
+   -> node negotiate  (t=81.1s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 this Friday 16 October?
+[negotiate] USER: Work has been so incredibly overwhelming lately and I'm just
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=83.7s)
+   -> node negotiate  (t=85.4s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 this Friday 16 October?
+[negotiate] USER: I have been so busy with work and
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=88.5s)
+   -> node negotiate  (t=90.0s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 this Friday 16 October?
+[negotiate] USER: Work is just so busy right now. My salary arrives
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=93.2s)
+   -> node negotiate  (t=94.3s)
+[negotiate] ASSISTANT: I understand. Could you please tell me the exact day your salary arrives?
+[negotiate] USER: Work is just so busy and the traffic was a nightmare
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=97.4s)
+   -> node negotiate  (t=98.2s)
+[negotiate] ASSISTANT: I understand. Could you please tell me the exact day your salary arrives?
+[negotiate] USER: I have been so busy with work and
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=101.4s)
+   -> node negotiate  (t=102.1s)
+[negotiate] ASSISTANT: I understand. Could you please tell me the exact day your salary arrives?
+[negotiate] USER: Work is just so hectic right now and the traffic was awful this morning. My salary arrives on the sixth of November, and by the way, am
+   extracted turn_date
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=105.9s)
+   -> node negotiate  (t=106.2s)
+[negotiate] ASSISTANT: The latest date I can record is Friday 23 October. Could you pay 1,250.00 on that date instead?
+[negotiate] USER: Work is just so hectic and I am getting ready for
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=109.7s)
+   -> node negotiate  (t=110.8s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy because my cousin's
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=114.3s)
+   -> node negotiate  (t=114.8s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I am just so busy with work and getting everything ready
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=118.3s)
+   -> node negotiate  (t=119.1s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and getting
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=122.2s)
+   -> node negotiate  (t=123.3s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and getting ready for
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=126.1s)
+   -> node negotiate  (t=127.0s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I've been so busy at the office today that I
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=130.1s)
+   -> node negotiate  (t=130.5s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and preparing for
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=133.7s)
+   -> node negotiate  (t=133.9s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and preparing for
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=136.8s)
+   -> node negotiate  (t=137.4s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and preparing
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=141.0s)
+   -> node negotiate  (t=141.7s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and preparing for
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=144.9s)
+   -> node negotiate  (t=145.4s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=149.1s)
+   -> node negotiate  (t=149.4s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and my cousin'
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=152.4s)
+   -> node negotiate  (t=153.2s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: " - that was the last turn.
+   extracted turn_intent
+   -> node negotiate_turn  (t=155.9s)
+   -> node negotiate  (t=156.7s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and the traffic
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=160.1s)
+   -> node negotiate  (t=160.4s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=163.3s)
+   -> node negotiate  (t=163.6s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: thoughtI have been so busy with work and preparing for
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=166.8s)
+   -> node negotiate  (t=167.0s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=170.3s)
+   -> node negotiate  (t=170.5s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and preparing for
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=173.2s)
+   -> node negotiate  (t=173.4s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: Work has been so incredibly busy today. Am I talking to
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=177.7s)
+   -> node negotiate  (t=178.0s)
+[negotiate] ASSISTANT: I am Freya Bank's digital assistant. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=181.7s)
+   -> node negotiate  (t=181.9s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=185.1s)
+   -> node negotiate  (t=185.3s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=188.2s)
+   -> node negotiate  (t=188.4s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: Work is so busy and my cousin's wedding is on
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=191.8s)
+   -> node negotiate  (t=191.9s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and getting everything ready
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=195.0s)
+   -> node negotiate  (t=195.2s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: I have been so busy with work and getting ready for my
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=197.8s)
+   -> node negotiate  (t=197.9s)
+[negotiate] ASSISTANT: I understand. Could you pay 1,250.00 on Friday 23 October?
+[negotiate] USER: Work has been so incredibly busy lately. I accept that date.
+   extracted turn_date
+   extracted turn_intent
+   extracted turn_hardship
+   -> node negotiate_turn  (t=200.9s)
+   -> node negotiate  (t=201.1s)
+[negotiate] ASSISTANT: For your car loan, that would be 1,250.00 on Friday 23 October. Do you confirm?
+[negotiate] USER: I have been so busy with work all day. Yes, I confirm.
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=204.3s)
+   -> node negotiate  (t=204.4s)
+   -> node record  (t=204.7s)
+   CALL create_promise {"date": "2026-10-23", "amount": 1250.0, "product_id": "p1", "customer_id": "c_9450e578-856"}
+   RESULT {"ok": true, "promise_id": "pr1", "what_to_do_next": "The promise for car loan IS recorded: 1,250.00 on Friday 23 October 2026. When you tell the customer, use exactly this amount and date. Every product is handled. Now tell the customer in one or two sentences what was recorded, then call transition_to_end_done."}
+[record] ASSISTANT: Your promise for the car loan of 1,250.00 on Friday 23 October 2026 is recorded.
+   -> node end_done  (t=207.3s)
+   -> node farewell  (t=207.6s)
+   -> node close  (t=208.0s)
+   CALL api_call {"outcome": "promise", "customer_id": "c_9450e578-856"}
+   RESULT {"ok": true}
+   -> node hang_up  (t=208.1s)
+[hang_up] ASSISTANT: You will receive a text message confirming this promise. Thank you for your time, Ms Hoffmann. Goodbye.
+   CALL end_call {"message_mode": "none"}
+   RESULT {"status": "success", "message": "Call ended"}
