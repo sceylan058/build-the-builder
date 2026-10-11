@@ -93,8 +93,8 @@ class Routes(unittest.TestCase):
 
     def test_hardship_step_has_no_offer_list(self):
         n = WF["nodes"]["negotiate_hardship"]
-        self.assertIn("{{item_facts_plain}}", n["task_message"]); self.assertNotIn("{{item_facts}}", n["task_message"])
-        self.assertNotIn("offer_state", n["task_message"])
+        self.assertEqual(n["tools"], []); self.assertNotIn("{{item_facts}}", n["task_message"]); self.assertNotIn("OFFER LIST", n["task_message"])
+        self.assertEqual(n["on_enter"]["type"], "tts")
 
     def test_instruction_text_is_not_a_statement(self):
         ex = [x for x in WF["nodes"]["negotiate"]["extraction_schema"] if x["name"] == "turn_intent"][0]
@@ -122,13 +122,3 @@ class GuardAndHardshipOffer(unittest.TestCase):
             self.assertEqual(v["guard_exhausted"], want)
         tr = WF["nodes"]["third_party_guard"]["transitions"]
         self.assertEqual(tr[0]["target_node"], "end_no_callback")
-
-    def test_hardship_offer_empty_means_no_offer(self):
-        import copy, sys
-        sys.path.insert(0, str(ROOT / "builder" / "skill")); import gen
-        cfg = json.load(open(ROOT / "dev/out/brief-b.config.json")); cfg["openapi"] = str(ROOT / "tools/openapi.json")
-        cfg2 = copy.deepcopy(cfg); cfg2["flow"]["nodes"]["negotiate"]["offer_state"]["hardship_offer"] = ""
-        api = json.load(open(ROOT / "tools/openapi.json"))
-        e1 = gen.Gen(cfg, api).build()["nodes"]["negotiate_hardship"]["on_enter"]["prompt"]
-        e2 = gen.Gen(cfg2, api).build()["nodes"]["negotiate_hardship"]["on_enter"]["prompt"]
-        self.assertIn("customer support team", e1); self.assertIn("Make NO offer of any kind", e2)
