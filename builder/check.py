@@ -598,6 +598,10 @@ def rule_provenance(cfg, bundle_text, E):
             return
         E.append(f"R4 provenance: {where} = {x} does not appear in the brief (add provenance.derived[\"{where}={x}\"] with its formula if it is derived)")
 
+    low = bundle_text.lower()
+    for v in cfg.get("call_variables", []):
+        if v.lower() not in low and not ok_derived(v):
+            E.append(f"R4 provenance: call variable {v!r} is not mentioned in the brief (a greeting or tool must not assume it exists)")
     cal = cfg.get("calendar", {})
     for h in cal.get("holidays", []):
         if h not in dates and not ok_derived(h):

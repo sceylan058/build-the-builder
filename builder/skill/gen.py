@@ -612,6 +612,16 @@ except Exception as ex:
 
 # end_<hint>: outcome from the ledger by ordered rules, then the closing line.
 FINAL_CODE = r'''
+def count_ok(spec, L, notes, order):
+    what, op, n = spec.get('of', 'records'), spec.get('op', '>='), int(spec.get('n', 1))
+    if what == 'records':
+        x = len(L['records'])
+    elif what == 'items':
+        x = len(iids())
+    else:
+        x = sum(1 for p in order if notes[p] == what)
+    return {'>=': x >= n, '<=': x <= n, '==': x == n, '>': x > n, '<': x < n}.get(op, False)
+
 def match(c, L, notes, order):
     for k, v in c.items():
         if k == 'flag' and not L['flags'].get(v):
@@ -628,6 +638,12 @@ def match(c, L, notes, order):
             return False
         if k == 'notes_all' and not (notes and all(notes[p] == v for p in order)):
             return False
+        if k == 'notes_none' and any(notes[p] == v for p in order):
+            return False
+        if k == 'notes_with' and not any(notes[p] == v for p in order):
+            return False
+        if k == 'count' and not count_ok(v, L, notes, order):
+            return False
     return True
 
 try:
@@ -640,9 +656,18 @@ try:
         if not match(R['when'], L, notes, order):
             continue
         if 'from_note' in R:
-            skip = R['from_note'].get('skip', [])
-            first = [p for p in order if notes[p] not in skip][0]
-            out, why = R['from_note']['map'].get(notes[first], [R.get('outcome', ''), notes[first]])
+            FN = R['from_note']
+            skip = FN.get('skip', [])
+            cand = [p for p in order if notes[p] not in skip]
+            if not cand:
+                continue
+            if FN.get('priority'):
+                pick = sorted(cand, key=lambda p: (FN['priority'].index(notes[p]) if notes[p] in FN['priority'] else 99, order.index(p)))[0]
+            elif FN.get('order') == 'last':
+                pick = cand[-1]
+            else:
+                pick = cand[0]
+            out, why = FN['map'].get(notes[pick], [R.get('outcome', ''), notes[pick]])
         else:
             out = R['outcome']
             rs = R.get('reason', '')
@@ -682,22 +707,102 @@ try:
     else:
         pairs = [(q['field'], q['field']) for q in QUESTIONS]
     vars['vi_field'] = pairs[0][0] if ARG_FIELD else ''
+    vars['vi_malformed'] = ''
     for f, arg in pairs:
         a = str(b.get(arg) or '').strip()
         kind = KINDS.get(f, 'text')
         if kind == 'date':
             a = norm_date(a)
         elif kind == 'digits':
-            d = re.sub(r'\D', '', a)
-            a = d if d else a
-        if a:
-            b[arg] = a
+            a = spoken_digits(a)
+        elif kind == 'year':
+            y = spoken_year(a)
+            a = y if y else a
+        elif kind == 'code':
+            a = spoken_code(a)
+        n_ = LENGTHS.get(f)
+        if n_ and kind in ('digits', 'year') and len(re.sub(r'\D', '', a)) != n_:
+            vars['vi_malformed'] = f + ' needs ' + str(n_) + ' digits, got ' + str(len(re.sub(r'\D', '', a)))
+            a = ''
+        b[arg] = a
     config['body'] = b
 except Exception:
     pass
 '''
 
 NORM_DATE = r'''
+SPOKEN = {'zero': '0', 'oh': '0', 'o': '0', 'nought': '0', 'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5', 'six': '6', 'seven': '7', 'eight': '8', 'nine': '9'}
+TENS = {'ten': 10, 'eleven': 11, 'twelve': 12, 'thirteen': 13, 'fourteen': 14, 'fifteen': 15, 'sixteen': 16, 'seventeen': 17, 'eighteen': 18, 'nineteen': 19,
+        'twenty': 20, 'thirty': 30, 'forty': 40, 'fifty': 50, 'sixty': 60, 'seventy': 70, 'eighty': 80, 'ninety': 90}
+def spoken_digits(s):
+    words = re.findall(r'[a-z]+|\d+', str(s).lower().replace('-', ' '))
+    out, i = '', 0
+    while i < len(words):
+        w = words[i]
+        nxt = words[i + 1] if i + 1 < len(words) else ''
+        if w in ('double', 'triple') and nxt:
+            d = SPOKEN.get(nxt, nxt if nxt.isdigit() and len(nxt) == 1 else '')
+            out += d * (2 if w == 'double' else 3); i += 2; continue
+        if w.isdigit():
+            out += w
+        elif w in SPOKEN:
+            out += SPOKEN[w]
+        elif w in TENS:
+            v = TENS[w]
+            if v >= 20 and nxt in SPOKEN and SPOKEN[nxt] != '0':
+                v += int(SPOKEN[nxt]); i += 1
+            out += str(v)
+        i += 1
+    return out
+def spoken_year(s):
+    t = str(s).lower().replace('-', ' ')
+    m = re.search(r'\b(1[89]\d\d|20\d\d)\b', t)
+    if m:
+        return m.group(1)
+    w = re.findall(r'[a-z]+', t)
+    def two(ws):
+        if not ws:
+            return None
+        if ws[0] in TENS:
+            v = TENS[ws[0]]
+            if len(ws) > 1 and ws[1] in SPOKEN:
+                v += int(SPOKEN[ws[1]])
+            return v
+        if ws[0] in SPOKEN:
+            return int(SPOKEN[ws[0]])
+        return None
+    if 'thousand' in w:
+        rest = w[w.index('thousand') + 1:]
+        rest = [x for x in rest if x != 'and']
+        v = two(rest) or 0
+        return str(2000 + v)
+    for i in range(1, len(w)):
+        a, b = two(w[:i]), two(w[i:])
+        if a in (18, 19, 20) and b is not None and b < 100:
+            return str(a * 100 + b)
+    d = spoken_digits(t)
+    return d if len(d) == 4 else None
+def spoken_code(s):
+    out = []
+    for w in re.findall(r'[A-Za-z]+|\d', str(s)):
+        lw = w.lower()
+        if lw in SPOKEN and len(lw) > 1:
+            out.append(SPOKEN[lw])
+        elif lw in ('double',):
+            out.append('*2')
+        elif len(w) <= 2 or w.isupper():
+            out.append(w.upper())
+        else:
+            out.append(w[0].upper())
+    res = ''
+    for x in out:
+        if x == '*2':
+            res += '\x00'
+        elif res.endswith('\x00'):
+            res = res[:-1] + x * 2
+        else:
+            res += x
+    return res.replace('\x00', '')
 MONTHS = {'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6, 'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12}
 def norm_date(s):
     t = str(s).strip().lower()
@@ -718,6 +823,12 @@ def norm_date(s):
             rest.append(n)
     if year is None:
         return s
+    if mon is not None and not rest:
+        ws = re.findall(r'[a-z]+', t)
+        for i, w in enumerate(ws):
+            if w in ORDW:
+                rest = [ORDW[w] + (NUMW.get(ws[i - 1], 0) if i and ws[i - 1] in ('twenty', 'thirty') else 0)]
+                break
     if mon is not None and rest:
         day = rest[0]
     elif mon is None and len(rest) >= 2:
@@ -750,7 +861,9 @@ try:
     f = str(vars.get('vi_field') or '')
     names = [q['field'] for q in QUESTIONS]
     ask = dict((q['field'], q['ask']) for q in QUESTIONS)
-    if not isinstance(d, dict) or result.get('status_code') not in (200, '200', None):
+    if vars.get('vi_malformed'):
+        msg = 'The answer was incomplete (' + str(vars.get('vi_malformed')) + '), so it was NOT checked and does not count. Ask only for the missing part, then call the tool with the complete answer.'
+    elif not isinstance(d, dict) or result.get('status_code') not in (200, '200', None):
         msg = 'The check service failed and nothing was counted. Say there was a short technical problem and ask the same question again.'
     elif RESP.get('ok') and d.get(RESP['ok']) is False:
         msg = 'The answer could not be read and it does NOT count as a wrong answer. Ask the same question again, for example ask for the date with the month as a word.'
@@ -1254,6 +1367,7 @@ class Gen:
             if order not in ("dmy", "mdy"):
                 raise SystemExit("config error: calendar.numeric_date_order must be 'dmy' or 'mdy'")
             head = (lib + "\nKINDS = " + lit(dict((x["field"], x.get("kind", "text")) for x in q)) + "\nQUESTIONS = " + lit(q) +
+                    "\nLENGTHS = " + lit(dict((x["field"], x["length"]) for x in q if x.get("length"))) +
                     "\nRESP = " + lit(v["response"]) + "\nARG_FIELD = " + repr(v["args"].get("field", "")) + "\nARG_ANSWER = " + repr(v["args"].get("answer", "")) +
                     "\nORDER = " + repr(order) + "\nMAX_WRONG = " + str(int(v.get("max_wrong", 3))) + "\n")
             return self.api_tool(name, descr, field_info=fields, pre=head + NORM_DATE + VERIFY_PRE, post=head + VERIFY_POST, mapping=mapping)

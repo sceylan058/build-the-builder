@@ -392,7 +392,8 @@
       {
        "field": "phone_last4",
        "ask": "the last four digits of the phone number on file",
-       "kind": "digits"
+       "kind": "digits",
+       "length": 4
       }
      ],
      "args": {

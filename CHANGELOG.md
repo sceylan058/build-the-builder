@@ -76,3 +76,16 @@ Each entry: what changed, why, and the evidence (a command and its result).
   - an automatic per-turn code node (always transition → `<node>_turn` → back), verified with a live probe. It counts refusals only on `refuse`, makes small talk and questions explicit no-attempt turns, sets a hardship flag that removes every offer for that item, and resolves the date and amount against `now`, the limits and the floor.
   - Its `CODE STATE` is injected into the prompt. The non-answer rule was removed from the example config and SKILL.md.
 - Evidence: `dev/tests/test_offer_engine.py` (small talk uses no attempt; refusal counting; hardship blocks offers; dates and amounts resolved, too-late, non-business day, below-floor, vague). check.py OK on A/B.
+
+### C4 Identity generality
+- Root cause: identity normalisation knew only `date` and `digits`. A partly given answer (2 of 4 digits) was sent and could burn an attempt. A greeting could assume a call variable the brief does not declare.
+- Fix:
+  - New kinds `year` and `code`, plus spoken digits ("double", "oh", "forty four"), spoken years, character-by-character codes, and ordinal day words in dates.
+  - An optional `length`: an answer of the wrong length is blanked (not counted), and the model is told to ask for the rest.
+  - check.py R4: every call variable must be named in the brief.
+- Evidence: `dev/tests/test_identity_close.py` normaliser tests. Offline: the config compiled against `openapi.drift.json` with postcode (code) and birth_year (year, length 4) passes check.py; "S W one A one A A" → SW1A1AA, "nineteen eighty three" → 1983, "nineteen" → blanked.
+
+### C6 Close-rule schema
+- Root cause: `from_note` could only take the first non-paid note, so V-CLEAN's "last" rule could not be expressed (VC-14).
+- Fix: `from_note.order: first|last`, a `from_note.priority` list, and conditions `notes_with`, `notes_none`, `count {of, op, n}`, alongside `notes_any`, `notes_all`, `records`, `recorded_by`, `flag`, `hint`, `gave_up`.
+- Evidence: close-rule tests on 1–3 items, including Brief B's rule (first → dispute) and V-CLEAN's (last → refused). 46 unit tests OK.

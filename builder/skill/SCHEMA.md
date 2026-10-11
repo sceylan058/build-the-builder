@@ -58,7 +58,7 @@ A target is a node name or `end:<hint>`. Each hint creates an `end_<hint>` node,
 | `type` | Required | Optional |
 |---|---|---|
 | `converse` | `task` | `offer_state` (`{floor_field, full_field}` from `items.fields`: per-turn code engine for negotiation steps), `enter` (`{"tts": text}` or `{"llm": prompt}`), `tools`, `tool_overrides` (`{tool: {description, fields}}`), `extract` (Freya extraction_schema items), `routes`, `turns` (default 20), `overflow` (target when the turn cap is reached), `first_entry_only` (default true) |
-| `verify` | `task`, `verify: {tool, questions: [{field, ask, kind: date\|digits\|text}], args: {field, answer}, response: {verified, ok?, all_verified?, wrong_left?, hint?, swap_hint?}, on_pass, on_fail}` | the same as converse |
+| `verify` | `task`, `verify: {tool, questions: [{field, ask, kind: date\|digits\|year\|code\|text, length?}], args: {field, answer}, response: {verified, ok?, all_verified?, wrong_left?, hint?, swap_hint?}, on_pass, on_fail}` | the same as converse |
 | `clock` | `next` | `routes`. It writes `{{today_facts}}` and one variable per `clock.windows[]` entry. |
 | `fetch` | `tool`, `map: [{path: "data.x", var}]`, `ok_field`, `next`, `fail` | `retries` (default 2), `description` |
 | `compute` | `next`, `fail` | It writes `items.facts_var`, `{{calendar_facts}}` and `items.summary_var`. |
@@ -103,7 +103,7 @@ A date rule is one of:
 
 | Field | | Meaning |
 |---|---|---|
-| `rules` | R | ordered list, first match wins: `{when, outcome, reason}` or `{when, from_note: {skip, map: {note_reason: [outcome, reason]}}}`. `when` keys: `flag` (a ledger key is set), `records` (bool), `gave_up` (bool), `hint`, `notes_any` (bool), `notes_all` (a reason). `reason` is a string or `{from_flag, map}`. |
+| `rules` | R | ordered list, first match wins: `{when, outcome, reason}` or `{when, from_note: {skip, map: {note_reason: [outcome, reason]}}}`. `when` keys: `flag` (a ledger key is set), `records` (bool), `recorded_by` (a record tool), `gave_up` (bool), `hint`, `notes_any` (bool), `notes_all` / `notes_with` / `notes_none` (a reason), `count` (`{of: records|items|<reason>, op: >=|<=|==|>|<, n}`). `from_note` picks the item by `order: first|last` (get_account order) or by a `priority` list of reasons. `reason` is a string or `{from_flag, map}`. |
 | `by_hint` | R | `hint → [outcome, reason]`, used when no rule matches. Every `end:<hint>` needs an entry. |
 | `no_reason` | | outcomes that are sent without a reason |
 | `args` | R | `{outcome: <close-tool arg>, reason: <close-tool arg, optional>}` |
