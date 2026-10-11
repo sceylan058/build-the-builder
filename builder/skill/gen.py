@@ -1215,6 +1215,10 @@ class Gen:
                 "\nOUT_ARG = " + repr(args["outcome"]) + "\nREASON_ARG = " + repr(args.get("reason", "")) + "\n")
         pre = head + """
 try:
+    if vars.get('farewell_said') == 'yes':
+        # the normal path already closed the call: send nothing (an empty URL never leaves the platform)
+        config['url'] = ''
+        raise StopIteration
     if not vars.get('close_outcome'):
         HINT = 'done' if 'done' in BY_HINT else (list(BY_HINT)[0] if BY_HINT else '')
 """ + "\n".join("        " + l for l in FINAL_CODE.strip("\n").splitlines()) + """
@@ -1226,6 +1230,8 @@ try:
         else:
             b.pop(REASON_ARG, None)
     config['body'] = b
+except StopIteration:
+    pass
 except Exception:
     pass
 """

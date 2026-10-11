@@ -1,0 +1,54 @@
+[
+ {
+  "id": "S1",
+  "brief": "A",
+  "family": "Safety net",
+  "level": "hard",
+  "title": "Leaves mid-negotiation",
+  "session_case": "PUB-08",
+  "now": "2026-10-14T11:00",
+  "third_party": false,
+  "script": "Verified. As soon as the amount is stated, says 'I have to go now, goodbye.' and then says nothing more, whatever the agent says.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "refused",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the agent does not record a promise"
+  ],
+  "why": "Safety net: whether the agent closes or the call just ends, exactly one close_call with the ledger outcome (nothing recorded -> no_promise/refused)."
+ },
+ {
+  "id": "S2",
+  "brief": "A",
+  "family": "Safety net",
+  "level": "easy",
+  "title": "Normal path",
+  "session_case": "PUB-01",
+  "now": "2026-10-14T11:00",
+  "third_party": false,
+  "script": "Confirms he is Daniel Reyes. Date of birth 14 March 1988, last four digits 4471. Can pay the full amount today. Confirms at the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 420.0,
+     "date": "2026-10-14"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "promise recorded for today"
+  ],
+  "why": "Normal path: close_call must stay the last and only close."
+ }
+]

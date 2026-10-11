@@ -142,3 +142,7 @@ Each entry: what changed, why, and the evidence (a command and its result).
 - (1) close_call safety net: a workflow-level close tool with `alwaysRunsAt: ["end_of_call"]` (the kit's base-agent pattern). Its pre-hook reuses the normal close's outcome if computed, else computes outcome/reason from the ledger with the same rules (hint "done"). A duplicate close is therefore identical. The outcome field bakes a valid default (no model fill). Offline: hang-up with nothing recorded → no_promise/refused; after a promise → promise; after notes → the note rule; after a normal close → the same values.
 - (3) X03: a `retry_guard` on a step. Code counts not-allowed proposals per turn (extracted `turn_proposal` inside/outside/none) and routes to `on_exhausted` after `max_reasks`. VC-08: `offer_state.hardship_offer` is required and quoted from the brief; when "", the hardship step makes no offer at all.
 - Tests: guard counting and route; empty hardship offer → "Make NO offer". All unit tests OK; leak scan clean.
+
+### C2 follow-up: safety net skips on the normal path
+- The end-of-call safety close sends nothing (empty URL) when the normal close already ran (`farewell_said == 'yes'`), because the mock rejects a second close ("the call is already closed"). On hang-up it computes the outcome from the ledger with the same rules.
+- Evidence: offline hook test (normal path → url '', hang-up → no_promise/refused, after a promise → promise). Live S1/S2: rep 1 both pass; rep 2 ledgers correct, judge verdict never arrived (analysis lag); rep 3 not completed (slot closed).
