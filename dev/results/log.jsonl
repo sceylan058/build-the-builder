@@ -46,3 +46,4 @@
 {"at": "2026-10-11 17:48:51", "agent": "e25a7405-6eb3-4a76-95e9-88d24ab06e16", "cases": "dev/cases/v_raw.json", "style": null, "reps": 1, "passed": 13, "total": 15, "failed": ["VR-02", "VR-10"], "median_slowest_s": 13.7}
 {"at": "2026-10-11 17:52:10", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/pub_A.json", "style": "talkative", "reps": 1, "passed": 10, "total": 10, "failed": [], "median_slowest_s": 12.9}
 {"at": "2026-10-11 17:55:59", "agent": "292ae78f-f433-422d-be01-9f51c98a6705", "cases": "dev/cases/pub_A.json", "style": "corrects", "reps": 1, "passed": 8, "total": 10, "failed": ["PUB-03", "PUB-06"], "median_slowest_s": 14.6}
+{"at": "2026-10-11 18:00:37", "agent": "9bccc985-dd48-4b90-997f-9b91353a1b29", "cases": "dev/cases/v_clean.json", "style": null, "reps": 1, "passed": 17, "total": 17, "failed": [], "median_slowest_s": 12.5}
