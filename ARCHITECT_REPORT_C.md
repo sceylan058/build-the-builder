@@ -60,3 +60,34 @@ Not run in the final state: styles asks_back/in_words; B styles; v_clean in full
 
 ## Commits
 safe-1 = a8de9f0 (tag pushed). Phase C commits 37b8008 … (see `git log`); the final commit follows this report.
+
+
+---
+# FREEZE PHASE (final state)
+
+**`freeze-1` tagged.** Decision rule met: plain A 10/10 (9/10 first pass; the single miss was an environment failure and passed on its one allowed re-run), plain B 3/3, and no wrong ledger on any call that completed normally. The code is commit `c46de85`; the agents were built from exactly that tree (verified: the live practice-a hooks and prompts equal the committed generator output; the only differences are `task_message` None vs "" that the platform fills in).
+
+## Gate table (reps 1) vs safe-1 (a8de9f0 / Phase B baseline)
+| Suite | safe-1 | freeze-1 | Notes |
+|---|---|---|---|
+| plain A | 10/10 | 10/10 | PUB-05 failed once (customer hung up during a 27 s turn, ended=customer-ended-call), passed on re-run |
+| plain B | 3/3 | 3/3 | median slowest turn 21 s, worst 42 s (Freya slow) |
+| abx A (19) | 19/19 | 18/19 | X01: ledger correct, judge verdict never arrived (no-verdict) |
+| abx B (5) | 5/5 | 0/5 as run | 4 × customer-ended-call after 36-44 s turns (ENVIRONMENT); X24 ledger correct, judge: persuaded the loan after the job loss (behaviour defect, see open items). **Not re-run: out of time.** |
+| v_raw (15) | 14/15 | not completed | run closed at the deadline (Freya latency) |
+| v_clean (17) | 12/17 | not run | out of time |
+| styles A (pieces, corrects, talkative, asks_back, in_words) | n/a (Phase B+: 6/4/4/9/8 of 10, reps 3) | not run | out of time |
+| S1/S2 safety (reps 3) | n/a | rep 1 2/2 pass; rep 2 ledgers correct, judge verdict missing; rep 3 not completed | |
+
+Honest summary: the gate that matters for the decision (plain A/B) holds. The Brief B extended suite and everything after it did NOT get a clean run, because Freya was 3-5x slower than normal (median slowest turn 21-61 s), so I cannot claim "at least as good as safe-1" for abx B, v_raw, v_clean or the styles. Those need a quiet-platform re-run.
+
+## Safety net evidence
+- Offline hook test: normal path sends nothing; hang-up with nothing recorded → no_promise/refused; after a promise → promise; after notes → the note rule.
+- Live: PUB-05's customer hung up before verification finished and the ledger still got exactly one close (no_promise/refused). Limit: the net uses hint "done", so a hang-up BEFORE verification is closed as no_promise/refused rather than not_verified.
+
+## Open items (not fixed in the freeze)
+1. X24 / multi-product hardship: after the customer names a hardship for one product, the hardship step handled the other products with offers (and repeated the support offer). Ledger was right; the judge fails it. Fix: restrict the hardship step to the affected item and return to the offer engine for the others.
+2. Safety net hint: choose the hint from the ledger/state (identity not verified → not_verified).
+3. In-flight tool after end of call (X21: add_note after close_call when the customer hung up): needs the engine to stop queued writes after the end-of-call close.
+4. Deterministic recording rewrite: cancelled by the architect.
+5. Builder key out of credit: the login fallback works; repair rounds after a fallback session returned "Credit balance is too low" once (dev-raw at 09:26), which a clean rebuild avoided. Root cause not found.

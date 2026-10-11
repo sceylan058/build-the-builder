@@ -146,3 +146,6 @@ Each entry: what changed, why, and the evidence (a command and its result).
 ### C2 follow-up: safety net skips on the normal path
 - The end-of-call safety close sends nothing (empty URL) when the normal close already ran (`farewell_said == 'yes'`), because the mock rejects a second close ("the call is already closed"). On hang-up it computes the outcome from the ledger with the same rules.
 - Evidence: offline hook test (normal path → url '', hang-up → no_promise/refused, after a promise → promise). Live S1/S2: rep 1 both pass; rep 2 ledgers correct, judge verdict never arrived (analysis lag); rep 3 not completed (slot closed).
+
+### Freeze phase
+- Committed the safety-net skip (c46de85). Candidate gate on agents built from that tree: plain A 9/10 → 10/10 after one re-run of an environment failure, plain B 3/3, abx A 18/19 (judge no-verdict), abx B and later suites disturbed by Freya latency (36–61 s turns). freeze-1 tagged under the architect's decision rule. Details and open items in ARCHITECT_REPORT_C.md.
