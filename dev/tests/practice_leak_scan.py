@@ -21,7 +21,7 @@ for c in cases:
 # values the briefs themselves contain are allowed (they reach the builder through the brief at run time)
 needles = {n for n in needles if n.lower() not in brief_text and len(n) >= 4}
 hits = []
-for f in sorted((ROOT / "builder").rglob("*")):
+for f in sorted(list((ROOT / "builder").rglob("*")) + [x for x in (ROOT / "dev" / "tests").rglob("*") if x.name != "practice_leak_scan.py"]):
     if f.is_file() and f.suffix in (".py", ".md", ".json", ".txt"):
         t = f.read_text(errors="replace")
         for n in needles:

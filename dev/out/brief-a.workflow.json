@@ -1859,7 +1859,7 @@
       "dispute",
       "other"
      ],
-     "description": "What the customer's LAST message does: accept (agrees to the last offer or read-back), refuse (says no to paying or to the offer without proposing anything), propose (names their own date or amount), too_much (says the amount is too much), hardship (mentions illness, a death in the family or losing their job), question (asks something), off_topic (only small talk, nothing about the offer), paid (says it is already paid), dispute (says it is not theirs), other."
+     "description": "What the customer's LAST message does: accept (agrees to the last offer or read-back), refuse (says no to paying or to the offer without proposing anything), propose (names their own date or amount), too_much (says the amount is too much), hardship (mentions one of these, as the brief defines hardship: illness, a death in the family or job loss), question (asks something), off_topic (only small talk, nothing about the offer), paid (says it is already paid), dispute (says it is not theirs), other."
     },
     {
      "name": "turn_item",
@@ -1876,13 +1876,13 @@
      "name": "turn_date",
      "type": "string",
      "min_confidence": 0.5,
-     "description": "The payment date the customer states as THEIR payment date, in their own words, after any correction (the last value wins). Join pieces said over consecutive messages. Empty if none. Never a date of an unrelated event (a wedding, a trip)."
+     "description": "The payment date the customer states as THEIR payment date, in their own words, after any correction (the last value wins). Join pieces said over consecutive messages. Empty if none. Never the date of anything other than the payment."
     },
     {
      "name": "turn_amount",
      "type": "string",
      "min_confidence": 0.5,
-     "description": "The amount the customer offers to pay, in their own words, after any correction (the last value wins). Join pieces said over consecutive messages (for example 'five hundred' then 'and ten'). Empty if none."
+     "description": "The amount the customer offers to pay, in their own words, after any correction (the last value wins). Join pieces said over consecutive messages into one value. Empty if none."
     }
    ]
   },

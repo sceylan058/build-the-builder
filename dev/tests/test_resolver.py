@@ -43,7 +43,7 @@ class Resolver(unittest.TestCase):
 class Amounts(unittest.TestCase):
     def test_words(self):
         cases = {"five hundred and ten": 510, "two thousand one hundred twenty-five point one": 2125.1, "four hundred fifty five": 455,
-                 "six hundred thirty seven euros and fifty cents": 637.5, "1,250": 1250, "420.00": 420, "seventy five point five": 75.5,
+                 "six hundred thirty seven euros and fifty cents": 637.5, "1,250": 1250, "730.00": 730, "seventy five point five": 75.5,
                  "one thousand two hundred and fifty": 1250, "a hundred": 100, "nine hundred": 900}
         for s, want in cases.items():
             self.assertEqual(W(s), want, s)

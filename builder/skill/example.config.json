@@ -508,7 +508,8 @@
     ],
     "offer_state": {
      "floor_field": "floor",
-     "full_field": "due"
+     "full_field": "due",
+     "hardship_triggers": "illness, a death in the family or job loss"
     }
    },
    "record": {

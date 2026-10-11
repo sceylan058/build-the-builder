@@ -10,8 +10,8 @@ exec(gen.date_lib(CFG) + "\nORDER = 'dmy'\n" + gen.NORM_DATE, L)
 
 class Normalisers(unittest.TestCase):
     def test_digits(self):
-        for s, want in {"four four one zero": "4410", "double four one oh": "4410", "4 4, 1 0": "4410", "forty four ten": "4410",
-                        "six six oh four": "6604", "triple three seven": "3337"}.items():
+        for s, want in {"seven three one zero": "7310", "double seven one oh": "7710", "7 3, 1 0": "7310", "seventy three ten": "7310",
+                        "nine two oh five": "9205", "triple three seven": "3337"}.items():
             self.assertEqual(L["spoken_digits"](s), want, s)
 
     def test_years(self):
@@ -24,7 +24,7 @@ class Normalisers(unittest.TestCase):
             self.assertEqual(L["spoken_code"](s), want, s)
 
     def test_dates(self):
-        for s, want in {"the eighth of January 1991": "1991-01-08", "08/01/1991": "1991-01-08", "14 March 1988": "1988-03-14", "1988-03-14": "1988-03-14"}.items():
+        for s, want in {"the ninth of February 1985": "1985-02-09", "09/02/1985": "1985-02-09", "17 June 1979": "1979-06-17", "1979-06-17": "1979-06-17"}.items():
             self.assertEqual(L["norm_date"](s), want, s)
 
 

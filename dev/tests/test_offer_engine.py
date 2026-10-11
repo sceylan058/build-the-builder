@@ -13,9 +13,9 @@ def run(src, v):
 
 def start(now="2026-10-14T11:00"):
     v = {"now": now, "products": json.dumps([
-        {"product_id": "p1", "type": "credit_card", "card_last4": "9015", "past_due": 510, "days_late": 16, "minimum_payment": 153},
-        {"product_id": "p2", "type": "personal_loan", "past_due": 1320, "days_late": 16, "instalment_amount": 440},
-        {"product_id": "p3", "type": "car_loan", "past_due": 140, "days_late": 7, "instalment_amount": 46}])}
+        {"product_id": "p1", "type": "credit_card", "card_last4": "7777", "past_due": 333, "days_late": 16, "minimum_payment": 100},
+        {"product_id": "p2", "type": "personal_loan", "past_due": 2000, "days_late": 16, "instalment_amount": 650},
+        {"product_id": "p3", "type": "car_loan", "past_due": 150, "days_late": 7, "instalment_amount": 50}])}
     run(code("setup"), v); run(code("compute_facts"), v)
     return v
 
@@ -56,10 +56,10 @@ class Engine(unittest.TestCase):
         self.assertIn("Friday 30 October 2026", s); self.assertIn("TOO LATE", s)
         s = turn(v, 2, turn_intent="propose", turn_item="1", turn_date="Saturday")
         self.assertIn("NOT a business day", s)
-        s = turn(v, 3, turn_intent="propose", turn_item="1", turn_amount="five hundred and ten")
-        self.assertIn("= 510.00", s); self.assertIn("acceptable", s)
-        s = turn(v, 4, turn_intent="propose", turn_item="1", turn_amount="one hundred")
-        self.assertIn("BELOW the minimum 153.00", s)
+        s = turn(v, 3, turn_intent="propose", turn_item="1", turn_amount="two hundred")
+        self.assertIn("= 200.00", s); self.assertIn("acceptable", s)
+        s = turn(v, 4, turn_intent="propose", turn_item="1", turn_amount="fifty")
+        self.assertIn("BELOW the minimum 100.00", s)
         s = turn(v, 5, turn_intent="propose", turn_item="1", turn_date="next week")
         self.assertIn("vague", s)
 

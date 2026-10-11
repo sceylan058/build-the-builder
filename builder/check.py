@@ -379,8 +379,8 @@ def static_produced(wf, cfg):
 
 def sample_items(item_schema, n, offset=0):
     props = item_schema.get("properties", {})
-    ints = [1, 4, 7, 8, 12, 20, 30, 45, 60]
-    nums = [420.0, 2125.1, 75.5, 310.25, 99.0]
+    ints = [1, 3, 6, 9, 13, 21, 33, 41, 58]
+    nums = [111.11, 2345.67, 66.6, 512.34, 87.0]
     out = []
     for i in range(n):
         it = {}
@@ -397,7 +397,7 @@ def sample_items(item_schema, n, offset=0):
             elif k.lower().endswith("id"):
                 it[k] = f"x{i + 1}"
             else:
-                it[k] = str(4821 + 37 * j)[-4:]
+                it[k] = str(9876 - 37 * j)[-4:]
         out.append(it)
     return out
 
@@ -630,6 +630,11 @@ def rule_provenance(cfg, bundle_text, E):
             if k not in ("min", "max", "limit", "ladder", "name", "values") and isinstance(v, (int, float)):
                 num_ok(v, f"items.tiers.list[{i}].{k}")
     for name, n in cfg.get("flow", {}).get("nodes", {}).items():
+        os_ = n.get("offer_state")
+        if os_ is not None and not os_.get("hardship_triggers"):
+            E.append(f"R4 provenance: flow.nodes.{name}.offer_state.hardship_triggers is missing (quote the brief's hardship list)")
+        elif os_ and not quote_in(norm(os_["hardship_triggers"]), ntext) and not ok_derived(os_["hardship_triggers"]):
+            E.append(f"R4 provenance: offer_state.hardship_triggers \"{os_['hardship_triggers'][:60]}\" is not quoted from the brief")
         if n.get("verify", {}).get("max_wrong") is not None:
             num_ok(n["verify"]["max_wrong"], f"flow.nodes.{name}.verify.max_wrong")
     # quoted sentences (three words or more) in any text must come from the brief

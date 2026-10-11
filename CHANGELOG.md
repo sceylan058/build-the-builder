@@ -96,3 +96,9 @@ Each entry: what changed, why, and the evidence (a command and its result).
 - Root cause 2: the resolver checked weekday names before day numbers, so "Monday the 26th" became next Monday (PUB-07 in pieces).
 - Fix: an explicit day number or ordinal wins over a weekday name.
 - Evidence: new resolver tests; 46+ unit tests OK. Live verification follows in C8.
+
+### Architect audit fixes (before the C8 gate)
+- SKILL.md: removed the leftover old sub-bullet ("…is a non-answer: go to the next step"). A grep of SKILL.md, SCHEMA.md, gen.py and the configs finds no other remnant; the only match is the new "is NOT a refusal" rule.
+- Hardship triggers: `offer_state.hardship_triggers` is now required and quoted from the brief. gen.py builds the intent description from it and fails without it; check.py R4 fails if it is missing or not quoted from the brief. The brief-flavoured examples were removed from the turn_date and turn_amount descriptions.
+- check.py grid fixtures use neutral numbers (111.11, 2345.67, 9876…). The practice-leak scan now also covers dev/tests; test fixtures were neutralised; the scan is clean.
+- Tag `safe-1` → a8de9f0, pushed.

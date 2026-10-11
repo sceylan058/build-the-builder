@@ -1142,6 +1142,9 @@ class Gen:
                     raise SystemExit(f"config error: flow.nodes.{name} uses tool '{t}' that is not in 'tools'")
             if typ in ("converse", "verify"):
                 need(n, "task", f"flow.nodes.{name}", str)
+            if n.get("offer_state"):
+                for k in ("floor_field", "full_field", "hardship_triggers"):
+                    need(n["offer_state"], k, f"flow.nodes.{name}.offer_state")
             if typ == "verify":
                 v = need(n, "verify", f"flow.nodes.{name}", dict)
                 for k in ("tool", "questions", "args", "response", "on_pass", "on_fail"):
@@ -1395,13 +1398,13 @@ class Gen:
         ex = [
             {"name": "turn_intent", "type": "string", "min_confidence": 0.5,
              "enum_values": ["accept", "refuse", "propose", "too_much", "hardship", "question", "off_topic", "paid", "dispute", "other"],
-             "description": os_.get("intent_description", "What the customer's LAST message does: accept (agrees to the last offer or read-back), refuse (says no to paying or to the offer without proposing anything), propose (names their own date or amount), too_much (says the amount is too much), hardship (mentions illness, a death in the family or losing their job), question (asks something), off_topic (only small talk, nothing about the offer), paid (says it is already paid), dispute (says it is not theirs), other.")},
+             "description": "What the customer's LAST message does: accept (agrees to the last offer or read-back), refuse (says no to paying or to the offer without proposing anything), propose (names their own date or amount), too_much (says the amount is too much), hardship (mentions one of these, as the brief defines hardship: " + os_["hardship_triggers"] + "), question (asks something), off_topic (only small talk, nothing about the offer), paid (says it is already paid), dispute (says it is not theirs), other."},
             {"name": "turn_item", "type": "string", "min_confidence": 0.5, "enum_values": ["1", "2", "3"],
              "description": "Which item, by its position in the order the agent listed them (1, 2 or 3), the customer's last message is about; if unclear, the item the agent is currently discussing."},
             {"name": "turn_date", "type": "string", "min_confidence": 0.5,
-             "description": "The payment date the customer states as THEIR payment date, in their own words, after any correction (the last value wins). Join pieces said over consecutive messages. Empty if none. Never a date of an unrelated event (a wedding, a trip)."},
+             "description": "The payment date the customer states as THEIR payment date, in their own words, after any correction (the last value wins). Join pieces said over consecutive messages. Empty if none. Never the date of anything other than the payment."},
             {"name": "turn_amount", "type": "string", "min_confidence": 0.5,
-             "description": "The amount the customer offers to pay, in their own words, after any correction (the last value wins). Join pieces said over consecutive messages (for example 'five hundred' then 'and ten'). Empty if none."}]
+             "description": "The amount the customer offers to pay, in their own words, after any correction (the last value wins). Join pieces said over consecutive messages into one value. Empty if none."}]
         # Freya runs no routing after a tool result once a step was re-entered through the per-turn loop: give every
         # flag-variable route a tool-call twin, and the flag tool's success text tells the model to call it.
         flag_vars = dict((t["flag"]["var"], k) for k, t in self.cfg["tools"].items() if t.get("role") == "flag")
