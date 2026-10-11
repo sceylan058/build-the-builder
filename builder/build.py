@@ -190,7 +190,7 @@ class Writer:
     """One Claude session that writes and repairs config.json inside the work folder."""
 
     def __init__(self, workdir, T):
-        self.workdir, self.T, self.client = workdir, T, None
+        self.workdir, self.T, self.client, self.fatal = workdir, T, None, None
 
     async def start(self):
         from claude_agent_sdk import ClaudeAgentOptions, ClaudeSDKClient, HookMatcher
@@ -226,6 +226,9 @@ class Writer:
                         elif isinstance(b, TextBlock) and b.text.strip():
                             what.append("says: " + b.text.strip().splitlines()[0][:70])
                     self.T.line(f"model call {calls} [{stage}] model={getattr(m, 'model', MODEL)}: {'; '.join(what) or 'thinking'}")
+                    for b in m.content:
+                        if isinstance(b, TextBlock) and re.search(r"credit balance is too low|invalid api key|authentication_error|invalid x-api-key|permission_error", b.text, re.I):
+                            self.fatal = b.text.strip()[:200]
                 elif isinstance(m, ResultMessage):
                     u = m.usage or {}
                     self.T.line(f"model session [{stage}] done: turns={m.num_turns} duration={m.duration_ms / 1000:.0f}s "
@@ -352,6 +355,15 @@ async def run(a):
         await writer.start()
         await writer.ask("Write config.json now, following skill/SKILL.md. Read brief_bundle.md and openapi.json first. "
                          "When the self-checks in SKILL.md pass, reply 'config ready'.", "write config", SAVE_BY - 5 * 60 - T.elapsed())
+        if writer.fatal and CREDENTIALS == "api_key" and os.environ.get("BUILDER_FALLBACK_LOGIN") == "1":
+            T.line(f"api_key rejected ({writer.fatal[:80]}); BUILDER_FALLBACK_LOGIN=1 -> retrying with the Claude login")
+            await writer.stop()
+            os.environ.pop("ANTHROPIC_API_KEY", None)
+            globals()["CREDENTIALS"] = "claude_login (fallback)"
+            writer = Writer(workdir, T)
+            await writer.start()
+            await writer.ask("Write config.json now, following skill/SKILL.md. Read brief_bundle.md and openapi.json first. "
+                             "When the self-checks in SKILL.md pass, reply 'config ready'.", "write config (fallback)", SAVE_BY - 5 * 60 - T.elapsed())
         stage_t["write"] = time.time() - s
         while True:
             s2 = time.time()
@@ -362,6 +374,9 @@ async def run(a):
                 if best is None or cand[:2] > best[:2]:
                     best = cand
             if not errors:
+                break
+            if writer.fatal:
+                T.line(f"MODEL CREDENTIALS FAILED ({CREDENTIALS}): {writer.fatal} -- not retrying; fix the key or set BUILDER_FALLBACK_LOGIN=1")
                 break
             if rnd >= MAX_REPAIR_ROUNDS or T.elapsed() > NO_NEW_ROUND_AFTER:
                 T.line(f"no further repair round (round {rnd}, elapsed {T.elapsed():.0f}s)")

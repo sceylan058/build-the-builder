@@ -175,7 +175,7 @@ def main():
     waits.sort()
     med = waits[len(waits) // 2] if waits else 0
     n = sum(f["pass"] for f in final)
-    print(f"{n} / {len(final)} passed (every rep must pass). median slowest turn {med:.0f}s")
+    print(f"{n} / {len(final)} passed (every rep must pass). median slowest turn {med:.0f}s, worst {(waits[-1] if waits else 0):.0f}s")
     (ROOT / "dev" / "results").mkdir(parents=True, exist_ok=True)
     with open(ROOT / "dev" / "results" / "log.jsonl", "a") as f:
         f.write(json.dumps({"at": time.strftime("%Y-%m-%d %H:%M:%S"), "agent": a.agent_id, "cases": a.cases, "style": a.style, "reps": a.reps,
