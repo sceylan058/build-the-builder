@@ -1,0 +1,7 @@
+PASS PUB-11 Multi-product    2026-10-14T11:00 | verify > verify > get_account > promise > promise > promise > close_call | call 87ceecd2-1e3f-475e-9c2d-fe484f567795
+PASS PUB-12 Multi-product    2026-10-14T11:00 | verify > verify > verify > get_account > promise > add_note > add_note > close_call | call 6d5c2614-b22d-4b78-9cfc-f65f72f585c7
+PASS PUB-13 Multi-product    2026-10-14T11:00 | verify > verify > get_account > promise > promise > close_call | call abd99197-fcc1-4120-a1ee-23cd683c75e8
+-- rep 1/1: 3/3 passed, simulation 8ff2ea4e-4001-479e-93ec-1848ee8b6908 completed, 201s
+
+per family: Multi-product 3/3
+3 / 3 passed (every rep must pass). median slowest turn 21s, worst 42s
