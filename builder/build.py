@@ -15,6 +15,15 @@ sys.path.insert(0, str(ROOT / "builder"))
 import check  # noqa: E402
 
 MODEL = os.environ.get("BUILDER_MODEL", "claude-opus-5-5")
+
+# The builder's own API key lives in a gitignored file and is loaded only into this process (never the user's shell).
+KEY_FILE = ROOT / ".anthropic_key"
+CREDENTIALS = "api_key (environment)" if os.environ.get("ANTHROPIC_API_KEY") else "claude_login"
+if not os.environ.get("ANTHROPIC_API_KEY") and KEY_FILE.exists():
+    _k = KEY_FILE.read_text().strip()
+    if _k:
+        os.environ["ANTHROPIC_API_KEY"] = _k
+        CREDENTIALS = "api_key"
 NO_NEW_ROUND_AFTER = 20 * 60
 SAVE_BY = 25 * 60
 MAX_REPAIR_ROUNDS = 3
@@ -193,7 +202,7 @@ class Writer:
             system_prompt=("You write config.json for a phone-agent generator, inside the current folder only. "
                            "Follow skill/SKILL.md exactly. Never read or write outside the current folder."),
             env=dict({"BASH_DEFAULT_TIMEOUT_MS": "120000"}, **({"ANTHROPIC_API_KEY": os.environ["ANTHROPIC_API_KEY"]} if os.environ.get("ANTHROPIC_API_KEY") else {})))
-        self.T.line("model credentials: " + ("ANTHROPIC_API_KEY (from the environment)" if os.environ.get("ANTHROPIC_API_KEY") else "Claude login (no ANTHROPIC_API_KEY set)"))
+        self.T.line("credentials: " + CREDENTIALS)
         self.client = ClaudeSDKClient(options=opts)
         await self.client.connect()
 
