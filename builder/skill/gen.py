@@ -582,7 +582,7 @@ try:
     elif intent == 'refuse':
         it['refusals'] += 1
     elif intent in ('off_topic', 'question'):
-        msgs.append('The last customer message was small talk or a question: it uses NO persuasion attempt. Answer a question briefly, then repeat your last offer or question.')
+        msgs.append('The last customer message was small talk or a question: it uses NO persuasion attempt. Answer a question briefly. Then, if an offer is still open, ask ONLY whether they accept it (a yes or no, "does that work for you?"); do NOT state its amount or date again as if it were a new offer. If you were waiting for another answer, ask that same question once more.')
     f = pf.get(iid, dict())
     offers = f.get('offers') or []
     if iid:
@@ -1169,6 +1169,12 @@ class Gen:
             if n.get("offer_state"):
                 for k in ("floor_field", "full_field", "hardship_triggers", "hardship_offer"):
                     need(n["offer_state"], k, f"flow.nodes.{name}.offer_state")
+                hs = n["offer_state"].get("hardship_script")
+                if hs is not None:
+                    for k in ("say", "decline_to", "volunteer_to"):
+                        need(hs, k, f"flow.nodes.{name}.offer_state.hardship_script")
+                    if hs.get("accept_queue"):
+                        hints.add("transfer")
             if typ == "verify":
                 v = need(n, "verify", f"flow.nodes.{name}", dict)
                 for k in ("tool", "questions", "args", "response", "on_pass", "on_fail"):
@@ -1210,9 +1216,23 @@ class Gen:
         Its pre-hook reuses the normal close's outcome if it was computed, else computes it from the ledger with the same rules,
         so a duplicate close is identical to the normal one."""
         c = self.cfg
+        # stage of the call at hang-up: the deepest visited step decides the ending hint (the step's own turn-cap ending, which the
+        # brief's flow already maps to the right outcome for that stage); a step without an ending, or after verification, uses 'done'
+        N, start = c["flow"]["nodes"], c["flow"]["start"]
+        depth, todo = {start: 0}, [start]
+        while todo:
+            x = todo.pop(0)
+            for t in self._targets(N[x]):
+                if t in N and t not in depth:
+                    depth[t] = depth[x] + 1
+                    todo.append(t)
+        vdepth = [depth[k] for k, v in N.items() if v.get("verify") and k in depth]
+        stages = [[k, N[k]["overflow"][4:], bool(vdepth) and d <= max(vdepth)]
+                  for k, d in sorted(depth.items(), key=lambda kv: -kv[1])
+                  if str(N[k].get("overflow") or "").startswith("end:")]
         head = (self.lib() + "\nRULES = " + lit(c["outcomes"]["rules"]) + "\nBY_HINT = " + lit(c["outcomes"]["by_hint"]) +
                 "\nNO_REASON = " + lit(c["outcomes"].get("no_reason", [])) + "\nCLOSING = " + lit(c["closing"]) +
-                "\nOUT_ARG = " + repr(args["outcome"]) + "\nREASON_ARG = " + repr(args.get("reason", "")) + "\n")
+                "\nSTAGES = " + lit(stages) + "\nOUT_ARG = " + repr(args["outcome"]) + "\nREASON_ARG = " + repr(args.get("reason", "")) + "\n")
         pre = head + """
 try:
     if vars.get('farewell_said') == 'yes':
@@ -1221,6 +1241,13 @@ try:
         raise StopIteration
     if not vars.get('close_outcome'):
         HINT = 'done' if 'done' in BY_HINT else (list(BY_HINT)[0] if BY_HINT else '')
+        for _st in STAGES:
+            if _st[2] and vars.get('id_state') == 'verified':
+                continue
+            if vars.get(_st[0] + '.total_turns') is not None or vars.get(_st[0] + '.current_turns') is not None:
+                if _st[1] in BY_HINT:
+                    HINT = _st[1]
+                break
 """ + "\n".join("        " + l for l in FINAL_CODE.strip("\n").splitlines()) + """
     b = config.get('body') or dict()
     b[OUT_ARG] = vars.get('close_outcome') or ''
@@ -1266,6 +1293,8 @@ except Exception:
                 known |= {m["var"] for m in n["map"]}
             if n.get("retry_guard"):
                 known.add("guard_state")
+            if (n.get("offer_state") or {}).get("hardship_script"):
+                known |= {"hs_reply", "hs_transfer_ok"}
             known |= {x["name"] for x in n.get("extract", [])}
         for t in c["tools"].values():
             known |= {m["var"] for m in t.get("map", [])}
@@ -1289,6 +1318,9 @@ except Exception:
             out += [n["verify"]["on_pass"], n["verify"]["on_fail"]]
         if n.get("retry_guard"):
             out.append(n["retry_guard"]["on_exhausted"])
+        hs = (n.get("offer_state") or {}).get("hardship_script")
+        if hs:
+            out += [hs["decline_to"], hs["volunteer_to"]] + (["end:transfer"] if hs.get("accept_queue") else [])
         return out
 
     # ------------------------------------------------------------------ building blocks
@@ -1530,6 +1562,9 @@ except Exception:
         self.nodes[name + "_turn"] = self.code_node(name + "_turn", code, [
             {"target_node": name + "_hardship", "description": "Hardship mentioned", "condition": cond({"eq": ["route_hardship", "yes"]})},
             always(name)])
+        if os_.get("hardship_script"):
+            self.scripted_hardship(name, n, os_["hardship_script"])
+            return
         # the hardship step: same rules and items, but item facts without any offer list, and no offer engine
         it = self.cfg["items"]
         hn = {"type": "converse", "turns": 12, "overflow": n.get("overflow"),
@@ -1545,6 +1580,46 @@ except Exception:
               "routes": [r for r in n.get("routes", []) if r.get("when") != "always"] +
                         [{"to": name, "tool_call": True, "description": "The customer volunteered their own amount or date, or other items still need to be discussed after the hardship was handled."}]}
         self.nodes[name + "_hardship"] = self.converse(name + "_hardship", hn)
+
+    def scripted_hardship(self, name, n, hs):
+        """Hardship with NO model-written text: one fixed line from the config, the next turn classified by an extraction enum
+        and routed in code (accept -> transfer with the brief's queue, decline/other -> the brief's ending or next item,
+        names a date or amount -> back to recording)."""
+        hname = name + "_hardship"
+        accept_q = hs.get("accept_queue", "")
+        decline_to, volunteer_to = self.target(hs["decline_to"]), self.target(hs["volunteer_to"])
+        kinds = (["accept"] if accept_q else []) + ["decline", "names_date_or_amount", "other"]
+        desc = ("What the customer's LAST message does: " + ("accept (agrees to what was just offered), " if accept_q else "") +
+                "decline (refuses or does not want it), names_date_or_amount (names a date or an amount they will pay), other (anything else).")
+        routes = []
+        if accept_q:
+            routes.append(("accept", name + "_hs_transfer"))
+        routes += [("names_date_or_amount", volunteer_to), ("decline", decline_to), ("other", decline_to)]
+        node = {"name": hname, "node_type": "conversation",
+                "task_message": ("The fixed hardship line has already been spoken. If you must speak at all (the customer's reply could not be classified), "
+                                 "repeat exactly this sentence and nothing else: " + hs["say"]),
+                "tools": [], "on_enter": {"type": "tts", "text": hs["say"]}, "on_enter_first_entry_only": False, "max_node_turns": 3,
+                "max_turn_transition": decline_to,
+                "extraction_schema": [{"name": "hs_reply", "type": "string", "enum_values": kinds, "description": desc, "min_confidence": 0.5}],
+                "transitions": [{"target_node": tgt, "description": "hardship reply " + k, "condition": cond({"eq": ["hs_reply", k]})} for k, tgt in routes] +
+                               [{"target_node": hname, "description": "reply not classified: stay", "condition": {"operator": "always"}}]}
+        self.nodes[hname] = node
+        if accept_q:
+            tool = hs.get("transfer_tool") or next(k for k, t in self.cfg["tools"].items() if t.get("flag", {}).get("ledger_key"))
+            F = self.cfg["tools"][tool]["flag"]
+            arg = F.get("value_arg")
+            okmap = [{"path": "data.ok", "variable": "hs_transfer_ok"}]
+            conds = [{"eq": ["hs_transfer_ok", "true"]}, {"eq": ["hs_transfer_ok", "True"]}, {"eq": [tool + "_response.data.ok", "true"]}, {"eq": [tool + "_response.data.ok", "True"]}]
+            self.nodes[name + "_hs_transfer"] = {
+                "name": name + "_hs_transfer", "node_type": "api_request", "passthrough": True, "passthrough_default_transition": decline_to,
+                "on_enter": {"type": "silent"}, "disable_inactivity_monitor": True, "suppress_tool_results": True,
+                "pre_actions": [self.pre_action(tool, retries=0, baked={arg: accept_q})], "response_mapping": okmap,
+                "transitions": [{"target_node": name + "_hs_mark", "description": "Transfer done", "condition": cond({"any": conds})}, always(decline_to)]}
+            mark = ("try:\n    L = ledger()\n    L['flags'][" + repr(F["ledger_key"]) + "] = " + repr(accept_q) + "\n    save_ledger(L)\n    vars[" + repr(F["var"]) + "] = " + repr(accept_q) +
+                    "\n    vars['hs_mark'] = 'done'\nexcept Exception:\n    vars['hs_mark'] = 'error'\n")
+            self.nodes[name + "_hs_mark"] = self.code_node(name + "_hs_mark", self.lib() + "\n" + mark, [
+                {"target_node": name + "_hs_mark", "description": "retry", "condition": cond({"all": [{"unset": "hs_mark"}, {"lt": [name + "_hs_mark_failure_count", 3]}]})},
+                always(self.target("end:transfer"))])
 
     @staticmethod
     def enter(e):
