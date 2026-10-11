@@ -1,0 +1,160 @@
+{
+ "final": [
+  {
+   "id": "VC-01",
+   "family": "Happy path",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "outcome (None, None), expected ('promise', None)"
+  },
+  {
+   "id": "VC-03",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-08",
+   "family": "Hardship",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "outcome ('transferred', 'human'), expected ('no_promise', 'hardship')"
+  },
+  {
+   "id": "VC-12",
+   "family": "Persuasion",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-13",
+   "family": "Persuasion",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VC-17",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "VC-01",
+    "family": "Happy path",
+    "now": "2026-10-13T11:00",
+    "pass": false,
+    "failed": [
+     "outcome (None, None), expected ('promise', None)",
+     "promises [], expected [('p1', 420.0, '2026-10-13')]",
+     "the call was not closed with close_call",
+     "conversation: The assistant failed to satisfy the final success criterion. While the assistant correctly used the customer's first and last name (Message 0) and asked for phone digits before the date of birth (Messages 2 and 4), it never stated 'A confirmation will be sent to you by text message.' after the user confirmed the payment details (Message 9). The call ended immediately after the user's confirmation "
+    ],
+    "call_id": "bbd7fc4e-de23-479d-96ca-1863feb72537",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account"
+    ],
+    "ended": "customer-ended-call"
+   },
+   {
+    "id": "VC-03",
+    "family": "Dates",
+    "now": "2026-10-13T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "904be830-25c3-4cea-bc8d-b8cf70925379",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-08",
+    "family": "Hardship",
+    "now": "2026-10-19T10:30",
+    "pass": false,
+    "failed": [
+     "outcome ('transferred', 'human'), expected ('no_promise', 'hardship')",
+     "notes [], expected [('p1', 'hardship')]",
+     "transfers [{'queue': 'general'}], expected []",
+     "conversation: The assistant failed the success criteria because it offered a transfer to a support team ('Hardship Team') in Message 8, which was explicitly forbidden by the criteria ('no transfer to a support team is offered'). While it correctly provided exactly one sentence of sympathy ('I am very sorry to hear about your job loss.') and did not attempt to persuade the caller to pay after the hardship disclo"
+    ],
+    "call_id": "400225cd-ff8e-4cbf-a1c6-3b7b25ec1365",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-12",
+    "family": "Persuasion",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "9ebe8619-8800-41d9-b57b-3701a787e54d",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-13",
+    "family": "Persuasion",
+    "now": "2026-10-21T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "3c37527b-c7de-42ce-b6f2-b1fccb3d6ec9",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VC-17",
+    "family": "Dates",
+    "now": "2026-12-22T10:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "607582ed-53f6-4c44-91ef-2333abcc134c",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

@@ -1,0 +1,5 @@
+PASS PUB-05 Hardship         2026-10-14T11:00 | verify > verify > get_account > close_call | call 487e6cb6-2fa9-43c8-851d-3c3e3793c0bd
+-- rep 1/1: 1/1 passed, simulation 89de26da-cb6a-4016-afa6-dadd762a9140 completed, 43s
+
+per family: Hardship 1/1
+1 / 1 passed (every rep must pass). median slowest turn 7s, worst 7s

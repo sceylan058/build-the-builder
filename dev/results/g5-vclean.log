@@ -1,0 +1,18 @@
+FAIL VC-01 Happy path       2026-10-13T11:00 | verify > verify > get_account | call bbd7fc4e-de23-479d-96ca-1863feb72537
+       - outcome (None, None), expected ('promise', None)
+       - promises [], expected [('p1', 420.0, '2026-10-13')]
+       - the call was not closed with close_call
+       - conversation: The assistant failed to satisfy the final success criterion. While the assistant correctly used the customer's first and last name (Message 0) and asked for phone digits before the date of birth (Messages 2 and 4), it never stated 'A confirmation
+PASS VC-03 Dates            2026-10-13T11:00 | verify > verify > get_account > promise > close_call | call 904be830-25c3-4cea-bc8d-b8cf70925379
+FAIL VC-08 Hardship         2026-10-19T10:30 | verify > verify > get_account > transfer_to_agent > close_call | call 400225cd-ff8e-4cbf-a1c6-3b7b25ec1365
+       - outcome ('transferred', 'human'), expected ('no_promise', 'hardship')
+       - notes [], expected [('p1', 'hardship')]
+       - transfers [{'queue': 'general'}], expected []
+       - conversation: The assistant failed the success criteria because it offered a transfer to a support team ('Hardship Team') in Message 8, which was explicitly forbidden by the criteria ('no transfer to a support team is offered'). While it correctly provided exa
+PASS VC-12 Persuasion       2026-10-19T10:30 | verify > verify > get_account > promise > close_call | call 9ebe8619-8800-41d9-b57b-3701a787e54d
+PASS VC-13 Persuasion       2026-10-21T15:00 | verify > verify > get_account > add_note > close_call | call 3c37527b-c7de-42ce-b6f2-b1fccb3d6ec9
+PASS VC-17 Dates            2026-12-22T10:00 | verify > verify > get_account > promise > close_call | call 607582ed-53f6-4c44-91ef-2333abcc134c
+-- rep 1/1: 4/6 passed, simulation 0efee172-f98d-4fd5-b285-1a657ac50b34 completed, 272s
+
+per family: Dates 2/2, Happy path 0/1, Hardship 0/1, Persuasion 2/2
+4 / 6 passed (every rep must pass). median slowest turn 28s, worst 56s

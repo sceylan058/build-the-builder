@@ -1,0 +1,58 @@
+{
+ "final": [
+  {
+   "id": "VR-01",
+   "family": "Effective date",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-10",
+   "family": "Hardship",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: The assistant failed the 'no persuasion attempt' criterion. In Message 10, the assistant attempted to set up a payment plan and asked for specific payment details ('When would you be able to make a payment, and how much could you pay?') after the user had already stated they lost their job and could not pay anything in Message 7. The assistant met the other criteria: Message 8 provided exactly one"
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "VR-01",
+    "family": "Effective date",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "0f31852d-e545-430b-ba5c-b146899aa59f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-10",
+    "family": "Hardship",
+    "now": "2026-10-21T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The assistant failed the 'no persuasion attempt' criterion. In Message 10, the assistant attempted to set up a payment plan and asked for specific payment details ('When would you be able to make a payment, and how much could you pay?') after the user had already stated they lost their job and could not pay anything in Message 7. The assistant met the other criteria: Message 8 provided exactly one"
+    ],
+    "call_id": "87c3617a-f5f9-4869-842f-d68d8ac1171c",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

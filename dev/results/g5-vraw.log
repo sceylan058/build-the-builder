@@ -1,0 +1,7 @@
+PASS VR-01 Effective date   2026-10-14T11:00 | verify > verify > get_account > add_note > close_call | call 0f31852d-e545-430b-ba5c-b146899aa59f
+FAIL VR-10 Hardship         2026-10-21T11:00 | verify > verify > get_account > add_note > close_call | call 87c3617a-f5f9-4869-842f-d68d8ac1171c
+       - conversation: The assistant failed the 'no persuasion attempt' criterion. In Message 10, the assistant attempted to set up a payment plan and asked for specific payment details ('When would you be able to make a payment, and how much could you pay?') after the
+-- rep 1/1: 1/2 passed, simulation ef771771-bfe2-4bb3-b5dd-6e84d2c64891 completed, 128s
+
+per family: Effective date 1/1, Hardship 0/1
+1 / 2 passed (every rep must pass). median slowest turn 16s, worst 16s
