@@ -1,0 +1,24 @@
+PASS X01 Third party      2026-10-14T11:00 | close_call | call e30353d5-f831-4a9e-8764-c31d7e89ebbf
+PASS X02 Third party      2026-10-14T11:00 | close_call | call 4522cc87-ff5a-4e1d-ae24-79333cf2f072
+FAIL X03 Third party      2026-10-16T11:00 | close_call | call faad6994-acc8-472b-8d75-f1757e2bc7dd
+       - conversation: The agent successfully avoided booking a callback and ended the call properly. However, it failed the criterion of asking for another time 'once'. The agent asked the user for another time or to pick a time within its window on two separate occas
+PASS X04 Third party      2026-10-14T11:00 | schedule_callback > close_call | call 8f064c63-e3d8-41c1-b025-0a8f02e34b91
+PASS X05 Third party      2026-10-23T15:00 | schedule_callback > close_call | call 982b90ed-6283-40fd-8a28-af3dee0fd426
+PASS X06 Opening          2026-10-14T11:00 | close_call | call 84037b0c-b526-4128-839f-26a52ea01366
+PASS X07 Identity         2026-10-14T11:00 | close_call | call 94feb3d2-a844-4b7d-a580-2bd7506393ab
+PASS X09 Identity         2026-10-14T11:00 | verify > verify > verify > verify > close_call | call a0d3cf84-5765-4fa9-a1e8-ceb23bf15e4c
+PASS X10 Dates            2026-10-16T09:30 | verify > verify > get_account > promise > close_call | call af5f31a4-ff4b-4740-865f-e5e1e3095b4c
+PASS X11 Dates            2026-10-16T18:00 | verify > verify > get_account > promise > close_call | call 83ed6b74-6ecb-47e3-873d-b433960978c5
+PASS X12 Dates            2026-12-24T10:00 | verify > verify > get_account > promise > close_call | call df706baa-3a10-48c2-a8e2-afdb5ba8d99f
+PASS X13 Persuasion       2026-10-19T10:30 | verify > verify > get_account > promise > close_call | call 1c96c8d9-7639-4c64-87c6-6e404d0f0349
+PASS X14 Persuasion       2026-10-19T10:30 | verify > verify > get_account > close_call | call dab2698b-29d0-4d4c-9f7b-d676d6c3c866
+PASS X15 Amounts          2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 97b71172-3604-48e3-b8cd-95f2b4b5f8df
+PASS X16 Amounts          2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 3579800e-2acc-4353-b39c-9d8930273d11
+PASS X17 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 95f18052-0353-4d95-99c0-0c803ba3244a
+PASS X18 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 7cd1da6d-c78f-4b45-864b-d9ae8fa9514a
+PASS X19 Hardship         2026-10-14T11:00 | verify > verify > get_account > transfer_to_agent > close_call | call 0172b6d4-3091-4e33-b981-d77c2c2156c1
+PASS X20 Adversarial      2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 9bf984b5-971e-4b3a-bd6a-19b5b30a9fab
+-- rep 1/1: 18/19 passed, simulation 363716a2-7ae6-4a13-837d-7c8334fcd479 completed, 136s
+
+per family: Adversarial 1/1, Amounts 2/2, Dates 5/5, Hardship 1/1, Identity 2/2, Opening 1/1, Persuasion 2/2, Third party 4/5
+18 / 19 passed (every rep must pass). median slowest turn 3s, worst 6s

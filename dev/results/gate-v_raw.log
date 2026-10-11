@@ -1,0 +1,21 @@
+FAIL VR-01 Effective date   2026-10-14T11:00 | verify > verify > get_account > add_note > close_call | call 2e382c88-bc32-406b-bd65-98d485a1fecd
+       - conversation: The assistant failed the success criteria because it made two persuasion attempts instead of exactly one. According to the criteria, a customer who is 6 days late is considered 'EARLY', and the assistant should have only made one attempt. However
+PASS VR-02 Effective date   2026-10-20T11:00 | verify > verify > get_account > promise > close_call | call ce7cf5a7-d3f2-4ff9-8bbe-745f061c101e
+PASS VR-03 Memo override    2026-10-20T11:00 | verify > verify > get_account > promise > close_call | call 959a9dba-686f-405d-9f64-0b09b0dc9d28
+PASS VR-04 Memo override    2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 0080fa52-1919-497b-b97c-98aa00fbc66a
+PASS VR-05 Cancelled holiday 2026-11-09T10:30 | verify > verify > get_account > promise > close_call | call 9e8808c7-53e9-491d-b341-025f0102f324
+PASS VR-06 Wording          2026-10-15T11:00 | verify > verify > get_account > promise > close_call | call 6e42c3d0-2833-445d-ac37-4b608c171c88
+PASS VR-07 Code list        2026-10-20T11:00 | verify > verify > get_account > promise > close_call | call 8783dbb9-0e38-40a5-b34c-99d81e3670b4
+PASS VR-08 Third party      2026-10-21T11:00 | schedule_callback > close_call | call 2ac8c6fa-59c7-4548-b6bd-5c5eab013de3
+PASS VR-09 Identity         2026-10-20T11:00 | verify > verify > verify > close_call | call 051fccde-130c-4307-bfef-999f0774da23
+FAIL VR-10 Hardship         2026-10-21T11:00 | verify > verify > get_account > add_note > close_call | call a2634da4-19ba-4c7a-8063-81130298b1df
+       - conversation: - One sentence of sympathy: Met (Message 8). - Support team offered once: Met (Message 8). - No persuasion attempt: Failed. In Message 10, the assistant attempted to persuade the customer to commit to a future payment promise after the customer h
+PASS VR-11 Restructuring    2026-10-21T11:00 | verify > verify > get_account > transfer_to_agent > close_call | call 1006b726-23b4-453b-aba5-79cfe728e66a
+PASS VR-12 Multi-product    2026-10-20T11:00 | verify > verify > get_account > promise > add_note > add_note > close_call | call 9932bc20-e47d-4bd4-b0e4-62aef4f22781
+PASS VR-13 Multi-product    2026-10-14T11:00 | verify > verify > get_account > promise > promise > promise > close_call | call 4cd0dd17-6eca-4d2a-81bb-98dfbcfd0a75
+PASS VR-14 Multi-product    2026-10-19T10:30 | verify > verify > get_account > promise > promise > close_call | call ed3798cf-a648-4e96-9795-90bebe0533ad
+PASS VR-15 Tool failure     2026-10-23T10:00 | verify > verify > get_account > promise > promise > close_call | call 6eadc479-5f5a-4402-bf02-ace1bbea6a8a
+-- rep 1/1: 13/15 passed, simulation bb26ac0c-0a8a-49b6-a2e4-33510f56bf0a completed, 125s
+
+per family: Cancelled holiday 1/1, Code list 1/1, Effective date 1/2, Hardship 0/1, Identity 1/1, Memo override 2/2, Multi-product 3/3, Restructuring 1/1, Third party 1/1, Tool failure 1/1, Wording 1/1
+13 / 15 passed (every rep must pass). median slowest turn 3s, worst 6s

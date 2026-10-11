@@ -1,0 +1,10 @@
+PASS X08 Identity         2026-10-14T11:00 | verify > verify > verify > get_account > promise > promise > close_call | call 787a226b-e0eb-40fb-aa7b-7fe19a61a34b
+PASS X21 Multi-product    2026-10-14T11:00 | verify > verify > get_account > promise > add_note > add_note > close_call | call 3253cdaf-f1e9-4b66-9b04-0c1bbb47ec57
+PASS X22 Multi-product    2026-10-14T11:00 | verify > verify > get_account > transfer_to_agent > close_call | call 2af05639-dfba-41cb-b955-8d195bbc0b43
+PASS X23 Multi-product    2026-10-14T11:00 | verify > verify > get_account > add_note > add_note > close_call | call ebc0720a-a2c5-4837-883a-57115934704f
+FAIL X24 Multi-product    2026-10-14T11:00 | verify > verify > get_account > add_note > add_note > add_note > close_call | call 604e91c8-c879-42c1-8e02-33a202bb8c8a
+       - conversation: The assistant violated the requirement to avoid persuasion attempts on the loan after being informed of a job loss. In [Message 7], the user clearly stated they lost their job and could not pay the personal loan. However, in [Message 14], the ass
+-- rep 1/1: 4/5 passed, simulation 47337608-ab25-47ac-89b6-34d63a75f291 completed, 53s
+
+per family: Identity 1/1, Multi-product 3/4
+4 / 5 passed (every rep must pass). median slowest turn 4s, worst 7s
