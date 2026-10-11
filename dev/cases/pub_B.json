@@ -1,0 +1,117 @@
+[
+ {
+  "id": "PUB-11",
+  "brief": "B",
+  "family": "Multi-product",
+  "level": "medium",
+  "title": "Three products, one date for all",
+  "script": "Verified. Cannot pay today. Agrees to pay all three this Friday. Confirms once.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 220.0,
+     "date": "2026-10-16"
+    },
+    {
+     "product_id": "p2",
+     "amount": 640.0,
+     "date": "2026-10-16"
+    },
+    {
+     "product_id": "p3",
+     "amount": 75.0,
+     "date": "2026-10-16"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "all three products stated before any ask",
+   "one read-back and one confirmation for all three",
+   "one create_promise per product"
+  ],
+  "session_case": "PUB-11",
+  "third_party": false,
+  "why": "kit case"
+ },
+ {
+  "id": "PUB-12",
+  "brief": "B",
+  "family": "Multi-product",
+  "level": "hard",
+  "title": "Promises one product, refuses two",
+  "script": "Gives the date of birth correctly. Gives last four digits 4401 first, then 4410. Will pay the credit card tomorrow. Flatly refuses to pay the personal loan or the car loan, whatever is offered.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 510.0,
+     "date": "2026-10-15"
+    }
+   ],
+   "notes": [
+    {
+     "product_id": "p2",
+     "reason": "refused"
+    },
+    {
+     "product_id": "p3",
+     "reason": "refused"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the phone question is asked again once, the date of birth is not",
+   "exactly one promise, on the credit card",
+   "one 'refused' note for each of the other two products",
+   "two attempts on the personal loan (late band), one on the car loan (early band)"
+  ],
+  "session_case": "PUB-12",
+  "third_party": false,
+  "why": "kit case"
+ },
+ {
+  "id": "PUB-13",
+  "brief": "B",
+  "family": "Multi-product",
+  "level": "hard",
+  "title": "One date for both, but the deadlines differ",
+  "script": "Verified. Cannot pay today. Wants to pay both on 30 October. Accepts when told the loan has an earlier latest date.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 300.0,
+     "date": "2026-10-30"
+    },
+    {
+     "product_id": "p2",
+     "amount": 900.0,
+     "date": "2026-10-23"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "credit card recorded on 30 October (early band, inside its deadline)",
+   "loan recorded on its own deadline, 23 October",
+   "the read-back names both dates"
+  ],
+  "session_case": "PUB-13",
+  "third_party": false,
+  "why": "kit case"
+ }
+]

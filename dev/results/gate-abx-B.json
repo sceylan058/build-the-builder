@@ -1,0 +1,137 @@
+{
+ "final": [
+  {
+   "id": "X08",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X21",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X22",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X23",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X24",
+   "family": "Multi-product",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: The assistant violated the requirement to avoid persuasion attempts on the loan after being informed of a job loss. In [Message 7], the user clearly stated they lost their job and could not pay the personal loan. However, in [Message 14], the assistant still attempted to secure a payment promise for that specific loan. The other criterion of one note per product was met, as system events show the "
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "X08",
+    "family": "Identity",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "787a226b-e0eb-40fb-aa7b-7fe19a61a34b",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X21",
+    "family": "Multi-product",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "3253cdaf-f1e9-4b66-9b04-0c1bbb47ec57",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X22",
+    "family": "Multi-product",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "2af05639-dfba-41cb-b955-8d195bbc0b43",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X23",
+    "family": "Multi-product",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "ebc0720a-a2c5-4837-883a-57115934704f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X24",
+    "family": "Multi-product",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The assistant violated the requirement to avoid persuasion attempts on the loan after being informed of a job loss. In [Message 7], the user clearly stated they lost their job and could not pay the personal loan. However, in [Message 14], the assistant still attempted to secure a payment promise for that specific loan. The other criterion of one note per product was met, as system events show the "
+    ],
+    "call_id": "604e91c8-c879-42c1-8e02-33a202bb8c8a",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

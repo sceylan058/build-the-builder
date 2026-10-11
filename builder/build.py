@@ -352,9 +352,13 @@ async def run(a):
     rnd = 0
     s = time.time()
     try:
-        await writer.start()
-        await writer.ask("Write config.json now, following skill/SKILL.md. Read brief_bundle.md and openapi.json first. "
-                         "When the self-checks in SKILL.md pass, reply 'config ready'.", "write config", SAVE_BY - 5 * 60 - T.elapsed())
+        if a.reuse_config:
+            shutil.copy2(a.reuse_config, workdir / "config.json")
+            T.line(f"--reuse-config: no model stage; recompiling {a.reuse_config} (sha256={sha256(a.reuse_config)[:16]}) with the current generator")
+        else:
+            await writer.start()
+            await writer.ask("Write config.json now, following skill/SKILL.md. Read brief_bundle.md and openapi.json first. "
+                             "When the self-checks in SKILL.md pass, reply 'config ready'.", "write config", SAVE_BY - 5 * 60 - T.elapsed())
         if writer.fatal and CREDENTIALS == "api_key" and os.environ.get("BUILDER_FALLBACK_LOGIN") == "1":
             T.line(f"api_key rejected ({writer.fatal[:80]}); BUILDER_FALLBACK_LOGIN=1 -> retrying with the Claude login")
             await writer.stop()
@@ -374,6 +378,9 @@ async def run(a):
                 if best is None or cand[:2] > best[:2]:
                     best = cand
             if not errors:
+                break
+            if a.reuse_config:
+                T.line("--reuse-config: no repair rounds")
                 break
             if writer.fatal:
                 T.line(f"MODEL CREDENTIALS FAILED ({CREDENTIALS}): {writer.fatal} -- not retrying; fix the key or set BUILDER_FALLBACK_LOGIN=1")
@@ -398,7 +405,7 @@ async def run(a):
                 T.line(f"[dry-run] Freya validation FAILED: {str(ex)[:600]}")
                 if transient(ex):
                     T.line("[dry-run] the validator is unavailable (platform outage), not a config problem: continuing without it")
-                elif T.elapsed() < NO_NEW_ROUND_AFTER:
+                elif T.elapsed() < NO_NEW_ROUND_AFTER and not a.reuse_config:
                     rnd += 1
                     await writer.ask("Freya's validator rejected the workflow compiled from config.json:\n" + str(ex)[:3000] +
                                      "\nFix config.json, run the self-checks, reply 'config ready'.", f"repair {rnd} (validator)",
@@ -471,6 +478,7 @@ def main():
     ap.add_argument("--slot")
     ap.add_argument("--no-save", action="store_true")
     ap.add_argument("--practice-test", choices=["A", "B"])
+    ap.add_argument("--reuse-config", help="skip the model: recompile this previously written config.json with the current generator, then run every later stage")
     a = ap.parse_args()
     if len(a.paths) < 2:
         ap.error("give at least one brief path and then the tool API file")

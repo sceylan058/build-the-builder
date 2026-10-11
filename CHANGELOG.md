@@ -102,3 +102,14 @@ Each entry: what changed, why, and the evidence (a command and its result).
 - Hardship triggers: `offer_state.hardship_triggers` is now required and quoted from the brief. gen.py builds the intent description from it and fails without it; check.py R4 fails if it is missing or not quoted from the brief. The brief-flavoured examples were removed from the turn_date and turn_amount descriptions.
 - check.py grid fixtures use neutral numbers (111.11, 2345.67, 9876…). The practice-leak scan now also covers dev/tests; test fixtures were neutralised; the scan is clean.
 - Tag `safe-1` → a8de9f0, pushed.
+
+### C8 gate run 1 → engine fixes
+- Gate run 1 (rebuilt agents, reps 1): plain A 10/10, B 3/3, abx-A 18/19, abx-B 4/5, v_raw 13/15. Median slowest turn 3–5 s, worst 6–7 s, so there is no latency problem. The style runs did not run: a Freya 502 killed the kit's run_cases polling, and the unfinished simulation then blocked the rest.
+- Root causes:
+  - VR-01: off-by-one. The customer's "no" to "can you pay today?" counted as refusing offer 1, although the brief says that "no" triggers attempt 1.
+  - VR-10, X24: "lost my job and can't pay" was extracted as `refuse`, never `hardship`.
+- Fix:
+  - The first refusal of the call answers the today question and triggers offer 1 without using it.
+  - A separate sticky `turn_hardship` yes/no extraction is built from the brief's triggers.
+  - build.py `--reuse-config` recompiles a previously model-written config with the current generator (no model stage; every later stage runs). Needed because the builder's API key ran out of credit ("Credit balance is too low"); build.py now stops at once on such errors instead of spending repair rounds.
+- Evidence: offer-engine tests (today no → offer 1; hardship together with a refusal). All unit tests OK.

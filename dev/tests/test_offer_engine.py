@@ -22,7 +22,7 @@ def start(now="2026-10-14T11:00"):
 
 def turn(v, n, **kw):
     v["negotiate.total_turns"] = str(n)
-    for k in ("turn_intent", "turn_item", "turn_date", "turn_amount"):
+    for k in ("turn_intent", "turn_item", "turn_date", "turn_amount", "turn_hardship"):
         v.pop(k, None)
     v.update(kw)
     run(code("negotiate_turn"), v)
@@ -30,8 +30,19 @@ def turn(v, n, **kw):
 
 
 class Engine(unittest.TestCase):
+    def test_today_no_triggers_offer_1(self):
+        v = start()
+        s = turn(v, 1, turn_intent="refuse", turn_item="1"); self.assertIn("triggers offer 1", s); self.assertIn("= 0", s)
+        s = turn(v, 2, turn_intent="refuse", turn_item="1"); self.assertIn("= 1", s); self.assertIn("offer 2", s)
+
+    def test_hardship_with_refusal(self):
+        v = start()
+        turn(v, 1, turn_intent="refuse", turn_item="1")
+        s = turn(v, 2, turn_intent="refuse", turn_hardship="yes", turn_item="2"); self.assertIn("HARDSHIP", s)
+
     def test_small_talk_uses_no_attempt(self):
         v = start()
+        turn(v, 0, turn_intent="refuse", turn_item="1")
         s = turn(v, 1, turn_intent="off_topic", turn_item="2")
         self.assertIn("NO persuasion attempt", s); self.assertIn("refusals counted by code = 0", s)
         s = turn(v, 2, turn_intent="refuse", turn_item="2"); self.assertIn("= 1", s); self.assertIn("offer 2", s)
@@ -40,12 +51,14 @@ class Engine(unittest.TestCase):
 
     def test_same_turn_not_counted_twice(self):
         v = start()
+        turn(v, 0, turn_intent="refuse", turn_item="1")
         turn(v, 1, turn_intent="refuse", turn_item="3")
         v["turn_intent"] = "refuse"; run(code("negotiate_turn"), v)   # same total_turns again
         self.assertIn("= 1", turn(v, 1, turn_intent="refuse", turn_item="2") if False else v["offer_state"].replace("all 1 offers", "= 1"))
 
     def test_hardship_blocks_offers(self):
         v = start()
+        turn(v, 0, turn_intent="refuse", turn_item="1")
         s = turn(v, 1, turn_intent="hardship", turn_item="2")
         self.assertIn("HARDSHIP", s); self.assertNotIn("offer 1:", s)
         s = turn(v, 2, turn_intent="refuse", turn_item="2"); self.assertIn("HARDSHIP", s)
