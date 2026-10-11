@@ -1,0 +1,9 @@
+PASS X08 Identity         2026-10-14T11:00 | verify > verify > verify > get_account > promise > promise > close_call | call a00b29ef-1011-4844-9d2a-a509fc52244f
+PASS X21 Multi-product    2026-10-14T11:00 | verify > verify > get_account > add_note > add_note > promise > close_call | call 9b08a143-45b8-4e7c-9d41-1c0e4fc59494
+PASS X22 Multi-product    2026-10-14T11:00 | verify > verify > get_account > transfer_to_agent > close_call | call 0d3eb839-8d99-499d-bacd-d312bbad6f33
+PASS X23 Multi-product    2026-10-14T11:00 | verify > verify > get_account > add_note > add_note > close_call | call a6226afb-57de-4541-ac14-b47175b98925
+PASS X24 Multi-product    2026-10-14T11:00 | verify > verify > get_account > add_note > add_note > add_note > close_call | call 515e8170-32ab-47ba-ba80-7bae5e0d7bb3
+-- rep 1/1: 5/5 passed, simulation 76735e4d-9895-4a27-9e55-73545be801e7 completed, 104s
+
+per family: Identity 1/1, Multi-product 4/4
+5 / 5 passed (every rep must pass). median slowest turn 21s, worst 24s
