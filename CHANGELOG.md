@@ -149,3 +149,9 @@ Each entry: what changed, why, and the evidence (a command and its result).
 
 ### Freeze phase
 - Committed the safety-net skip (c46de85). Candidate gate on agents built from that tree: plain A 9/10 → 10/10 after one re-run of an environment failure, plain B 3/3, abx A 18/19 (judge no-verdict), abx B and later suites disturbed by Freya latency (36–61 s turns). freeze-1 tagged under the architect's decision rule. Details and open items in ARCHITECT_REPORT_C.md.
+
+### Rehearsal + runbook
+- Duplicate promise: the bank rejects a second `create_promise` for the same product ("this product already has a promise"); the ledger holds exactly one (X21's two parallel calls: one ok, one rejected). Condition for a guard not met; freeze-1 unchanged.
+- Clean-clone rehearsal at freeze-1: V-CLEAN 205 s, V-RAW (directory) 556 s, both 0 repair rounds, check OK, dry-run valid, saved and exported; builder key out of credit → automatic login fallback recorded in the trace. Trace audit OK; secret scan clean on the clone.
+- Workspace: 7 workflows; two hidden slots fit (9 of an assumed 10).
+- RUNBOOK_FINAL.md written.
