@@ -35,6 +35,8 @@ class Resolver(unittest.TestCase):
         self.assertEqual(R("the fifth", t), D(2026, 11, 5))           # past day of this month -> next month
         self.assertEqual(R("2026-10-23", t), D(2026, 10, 23))
         self.assertEqual(R("on the 2nd of January", D(2026, 12, 24)), D(2027, 1, 2))
+        self.assertEqual(R("Monday the 26th", t), D(2026, 10, 26))
+        self.assertEqual(R("Friday the thirtieth", t), D(2026, 10, 30))
         self.assertIsNone(R("whenever", t))
 
 

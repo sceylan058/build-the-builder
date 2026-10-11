@@ -222,7 +222,8 @@ def resolve_date(phrase, today):
         return today
     if re.search(r'\btomorrow\b', t):
         return today + datetime.timedelta(days=1)
-    names = [n.lower() for n in DOW]
+    has_day = bool(re.search(r'\b\d{1,2}(?:st|nd|rd|th)?\b', t)) or any(w in ORDW for w in re.findall(r'[a-z]+', t))
+    names = [n.lower() for n in DOW] if not has_day else []
     for k, n in enumerate(names):
         mm = re.search(r'\b(next|this|coming|on)?\s*' + n + r'\b', t)
         if mm:
@@ -1336,7 +1337,10 @@ class Gen:
         lib = self.lib(single_fallback=(role == "record"))
         node_tools = node.get("tools", [])
         if role == "flag":
-            F = t["flag"]
+            F = dict(t["flag"])
+            nxt = getattr(self, "flag_next", {}).get((node.get("_name"), name))
+            if nxt:
+                F["ok_text"] = F["ok_text"] + " Now call " + nxt + "."
             head = (lib + "\nSTASH = 'flag_" + name + "'\nVALUE_ARG = " + repr(F.get("value_arg", "")) + "\nVALUE = " + repr(F.get("value", "")) +
                     "\nLEDGER_KEY = " + repr(F.get("ledger_key", "")) + "\nVAR = " + repr(F["var"]) +
                     "\nOK_TEXT = " + repr(F["ok_text"]) + "\nFAIL_TEXT = " + repr(F["fail_text"]) + "\n")
@@ -1375,6 +1379,7 @@ class Gen:
 
     # ------------------------------------------------------------------ nodes by type
     def converse(self, name, n, auto=()):
+        n = dict(n, _name=name)
         node = {"name": name, "node_type": "conversation", "task_message": n["task"],
                 "tools": [self.build_tool(t, n) for t in n.get("tools", [])],
                 "transitions": list(auto) + self.routes(n), "on_enter": self.enter(n.get("enter")),
@@ -1397,6 +1402,19 @@ class Gen:
              "description": "The payment date the customer states as THEIR payment date, in their own words, after any correction (the last value wins). Join pieces said over consecutive messages. Empty if none. Never a date of an unrelated event (a wedding, a trip)."},
             {"name": "turn_amount", "type": "string", "min_confidence": 0.5,
              "description": "The amount the customer offers to pay, in their own words, after any correction (the last value wins). Join pieces said over consecutive messages (for example 'five hundred' then 'and ten'). Empty if none."}]
+        # Freya runs no routing after a tool result once a step was re-entered through the per-turn loop: give every
+        # flag-variable route a tool-call twin, and the flag tool's success text tells the model to call it.
+        flag_vars = dict((t["flag"]["var"], k) for k, t in self.cfg["tools"].items() if t.get("role") == "flag")
+        twins, self.flag_next = [], getattr(self, "flag_next", {})
+        for r in n.get("routes", []):
+            w = r.get("when")
+            v = w.get("set") if isinstance(w, dict) else None
+            if isinstance(w, dict) and "eq" in w:
+                v = w["eq"][0]
+            if v in flag_vars and not r.get("tool_call"):
+                twins.append({"to": r["to"], "tool_call": True, "description": "Call this right after " + flag_vars[v] + " succeeded."})
+                self.flag_next[(name, flag_vars[v])] = "transition_to_" + self.target(r["to"])
+        n = dict(n, routes=list(n.get("routes", [])) + twins)
         task = n["task"] + "\n\n{{offer_state}}\nThe CODE STATE above is computed by code after every customer message. When it names the next offer, the counted refusals or a resolved date or amount, follow it; never count refusals yourself. Never offer, accept or read back a value that may be incomplete: ask for the rest."
         return dict(n, task=task, extract=list(n.get("extract", [])) + ex,
                     routes=list(n.get("routes", [])) + [{"to": name + "_turn", "when": "always", "description": "always"}])

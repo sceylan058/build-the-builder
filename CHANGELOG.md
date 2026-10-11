@@ -89,3 +89,10 @@ Each entry: what changed, why, and the evidence (a command and its result).
 - Root cause: `from_note` could only take the first non-paid note, so V-CLEAN's "last" rule could not be expressed (VC-14).
 - Fix: `from_note.order: first|last`, a `from_note.priority` list, and conditions `notes_with`, `notes_none`, `count {of, op, n}`, alongside `notes_any`, `notes_all`, `records`, `recorded_by`, `flag`, `hint`, `gave_up`.
 - Evidence: close-rule tests on 1–3 items, including Brief B's rule (first → dispute) and V-CLEAN's (last → refused). 46 unit tests OK.
+
+### C2 follow-up (found in the first live run of the rebuilt practice-a)
+- Root cause 1: once a step has been re-entered through the per-turn loop, Freya runs no routing after a tool result (no `route_evaluated` event; "model returned no speakable content"). After `transfer_to_agent` the call was never closed (PUB-09 in pieces and talkative).
+- Fix: in an `offer_state` step, every route on a flag tool's variable gets a tool-call twin, and that tool's success text says "Now call transition_to_<end>".
+- Root cause 2: the resolver checked weekday names before day numbers, so "Monday the 26th" became next Monday (PUB-07 in pieces).
+- Fix: an explicit day number or ordinal wins over a weekday name.
+- Evidence: new resolver tests; 46+ unit tests OK. Live verification follows in C8.
