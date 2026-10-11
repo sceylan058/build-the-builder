@@ -57,7 +57,7 @@ A target is a node name or `end:<hint>`. Each hint creates an `end_<hint>` node,
 
 | `type` | Required | Optional |
 |---|---|---|
-| `converse` | `task` | `offer_state` (`{floor_field, full_field}` from `items.fields`: per-turn code engine for negotiation steps), `enter` (`{"tts": text}` or `{"llm": prompt}`), `tools`, `tool_overrides` (`{tool: {description, fields}}`), `extract` (Freya extraction_schema items), `routes`, `turns` (default 20), `overflow` (target when the turn cap is reached), `first_entry_only` (default true) |
+| `converse` | `task` | `offer_state` (`{floor_field, full_field, hardship_triggers, hardship_offer}`: per-turn code engine for negotiation steps; `hardship_triggers` and `hardship_offer` are quoted from the brief, `hardship_offer` is "" when the brief makes no offer), `retry_guard` (`{what, max_reasks, on_exhausted}`: code counts not-allowed proposals and routes to `on_exhausted` after `max_reasks` re-asks), `enter` (`{"tts": text}` or `{"llm": prompt}`), `tools`, `tool_overrides` (`{tool: {description, fields}}`), `extract` (Freya extraction_schema items), `routes`, `turns` (default 20), `overflow` (target when the turn cap is reached), `first_entry_only` (default true) |
 | `verify` | `task`, `verify: {tool, questions: [{field, ask, kind: date\|digits\|year\|code\|text, length?}], args: {field, answer}, response: {verified, ok?, all_verified?, wrong_left?, hint?, swap_hint?}, on_pass, on_fail}` | the same as converse |
 | `clock` | `next` | `routes`. It writes `{{today_facts}}` and one variable per `clock.windows[]` entry. |
 | `fetch` | `tool`, `map: [{path: "data.x", var}]`, `ok_field`, `next`, `fail` | `retries` (default 2), `description` |

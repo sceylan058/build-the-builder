@@ -355,7 +355,12 @@
       "tool_call": true,
       "description": "The person says the customer has died."
      }
-    ]
+    ],
+    "retry_guard": {
+     "what": "a callback day and time (today or the next business day, inside the callback window)",
+     "max_reasks": 1,
+     "on_exhausted": "end:no_callback"
+    }
    },
    "identity": {
     "type": "verify",
@@ -513,7 +518,8 @@
     "offer_state": {
      "floor_field": "floor",
      "full_field": "due",
-     "hardship_triggers": "illness, a death in the family or job loss"
+     "hardship_triggers": "illness, a death in the family or job loss",
+     "hardship_offer": "offer to connect them with the customer support team"
     }
    },
    "record": {

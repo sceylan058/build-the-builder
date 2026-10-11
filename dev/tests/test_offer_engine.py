@@ -112,3 +112,23 @@ class ReplayX13(unittest.TestCase):
         self.assertIn("refusals counted by code = 1", s); self.assertIn("must be offer 2: 650.00", s)
         s = turn(v, 3, turn_intent="accept", turn_item="2")
         self.assertIn("must be offer 2", s)
+
+
+class GuardAndHardshipOffer(unittest.TestCase):
+    def test_retry_guard_counts_outside_proposals(self):
+        code_g = code("third_party_guard"); v = {"now": "2026-10-14T11:00"}
+        for t, prop, want in ((1, "outside", "no"), (2, "outside", "yes")):
+            v["third_party.total_turns"] = str(t); v["turn_proposal"] = prop; run(code_g, v)
+            self.assertEqual(v["guard_exhausted"], want)
+        tr = WF["nodes"]["third_party_guard"]["transitions"]
+        self.assertEqual(tr[0]["target_node"], "end_no_callback")
+
+    def test_hardship_offer_empty_means_no_offer(self):
+        import copy, sys
+        sys.path.insert(0, str(ROOT / "builder" / "skill")); import gen
+        cfg = json.load(open(ROOT / "dev/out/brief-b.config.json")); cfg["openapi"] = str(ROOT / "tools/openapi.json")
+        cfg2 = copy.deepcopy(cfg); cfg2["flow"]["nodes"]["negotiate"]["offer_state"]["hardship_offer"] = ""
+        api = json.load(open(ROOT / "tools/openapi.json"))
+        e1 = gen.Gen(cfg, api).build()["nodes"]["negotiate_hardship"]["on_enter"]["prompt"]
+        e2 = gen.Gen(cfg2, api).build()["nodes"]["negotiate_hardship"]["on_enter"]["prompt"]
+        self.assertIn("customer support team", e1); self.assertIn("Make NO offer of any kind", e2)

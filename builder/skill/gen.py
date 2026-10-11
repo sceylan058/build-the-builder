@@ -1167,7 +1167,7 @@ class Gen:
             if typ in ("converse", "verify"):
                 need(n, "task", f"flow.nodes.{name}", str)
             if n.get("offer_state"):
-                for k in ("floor_field", "full_field", "hardship_triggers"):
+                for k in ("floor_field", "full_field", "hardship_triggers", "hardship_offer"):
                     need(n["offer_state"], k, f"flow.nodes.{name}.offer_state")
             if typ == "verify":
                 v = need(n, "verify", f"flow.nodes.{name}", dict)
@@ -1191,6 +1191,9 @@ class Gen:
                 for w in c.get("clock", {}).get("windows", []):
                     for k in ("var", "intro", "outro", "start", "end", "days"):
                         need(w, k, "clock.windows[]")
+            if n.get("retry_guard"):
+                for k in ("what", "max_reasks", "on_exhausted"):
+                    need(n["retry_guard"], k, f"flow.nodes.{name}.retry_guard")
             for tgt in self._targets(n):
                 if tgt.startswith("end:"):
                     hints.add(tgt[4:])
@@ -1201,6 +1204,48 @@ class Gen:
                 raise SystemExit(f"config error: ending 'end:{h}' has no entry in outcomes.by_hint")
             if h not in cl["lines"] and "default" not in cl["lines"]:
                 raise SystemExit(f"config error: ending 'end:{h}' has no closing line (closing.lines.{h} or closing.lines.default)")
+
+    def safety_close(self, closer, args):
+        """Safety net: the close tool also runs at the end of EVERY call (customer hang-up, turn cap, max duration, silence).
+        Its pre-hook reuses the normal close's outcome if it was computed, else computes it from the ledger with the same rules,
+        so a duplicate close is identical to the normal one."""
+        c = self.cfg
+        head = (self.lib() + "\nRULES = " + lit(c["outcomes"]["rules"]) + "\nBY_HINT = " + lit(c["outcomes"]["by_hint"]) +
+                "\nNO_REASON = " + lit(c["outcomes"].get("no_reason", [])) + "\nCLOSING = " + lit(c["closing"]) +
+                "\nOUT_ARG = " + repr(args["outcome"]) + "\nREASON_ARG = " + repr(args.get("reason", "")) + "\n")
+        pre = head + """
+try:
+    if not vars.get('close_outcome'):
+        HINT = 'done' if 'done' in BY_HINT else (list(BY_HINT)[0] if BY_HINT else '')
+""" + "\n".join("        " + l for l in FINAL_CODE.strip("\n").splitlines()) + """
+    b = config.get('body') or dict()
+    b[OUT_ARG] = vars.get('close_outcome') or ''
+    if REASON_ARG:
+        if vars.get('close_reason') and vars.get('close_outcome') not in NO_REASON:
+            b[REASON_ARG] = vars.get('close_reason')
+        else:
+            b.pop(REASON_ARG, None)
+    config['body'] = b
+except Exception:
+    pass
+"""
+        props, _ = self.schema(closer)
+        body = {}
+        for f in props:
+            if f in self.call_vars:
+                body[f] = {"type": "string", "default": "{{" + f + "}}"}
+            elif f == args["outcome"]:
+                en = props[f].get("enum") or []
+                dflt = (c["outcomes"]["by_hint"].get("done") or [None])[0]
+                body[f] = {"type": props[f].get("type", "string"), "default": dflt if (dflt and (not en or dflt in en)) else (en[0] if en else "unknown")}
+        return {"type": "function", "config": {"timeoutMs": 15000, "maxRetries": 0, "alwaysRunsAt": ["end_of_call"]},
+                "function": {"name": closer, "handler": "__function__:api_call", "description": "Safety-net close at the end of every call.",
+                             "parameters": {"type": "object", "properties": {
+                                 "url": {"type": "string", "default": self.base + "/" + closer},
+                                 "method": {"type": "string", "default": "POST"},
+                                 "headers": {"type": "object", "properties": {"Content-Type": {"type": "string", "default": "application/json"}}},
+                                 "body": {"type": "object", "properties": body, "required": []}}}},
+                "pre_process_code": check_code(pre, "safety close pre")}
 
     def check_placeholders(self, wf):
         """Every {{var}} in a prompt or spoken line must be produced by something; otherwise the model sees the raw placeholder."""
@@ -1213,6 +1258,8 @@ class Gen:
                 known |= {c["items"]["facts_var"], c["items"]["summary_var"], "calendar_facts", "item_count", "offer_state", "item_facts_plain"}
             if n["type"] == "fetch":
                 known |= {m["var"] for m in n["map"]}
+            if n.get("retry_guard"):
+                known.add("guard_state")
             known |= {x["name"] for x in n.get("extract", [])}
         for t in c["tools"].values():
             known |= {m["var"] for m in t.get("map", [])}
@@ -1234,6 +1281,8 @@ class Gen:
                 out.append(n[k])
         if n.get("verify"):
             out += [n["verify"]["on_pass"], n["verify"]["on_fail"]]
+        if n.get("retry_guard"):
+            out.append(n["retry_guard"]["on_exhausted"])
         return out
 
     # ------------------------------------------------------------------ building blocks
@@ -1452,6 +1501,21 @@ class Gen:
         return dict(n, task=task, extract=list(n.get("extract", [])) + ex,
                     routes=list(n.get("routes", [])) + [{"to": name + "_turn", "when": "always", "description": "always"}])
 
+    def with_retry_guard(self, name, n):
+        g = n["retry_guard"]
+        ex = [{"name": "turn_proposal", "type": "string", "min_confidence": 0.5, "enum_values": ["inside", "outside", "none"],
+               "description": "The other person's LAST message: inside if it proposes " + g["what"] + " that is allowed, outside if it proposes one that is not allowed, none if it proposes nothing."}]
+        code = ("vars['guard_turn'] = vars.get('guard_turn')\ntry:\n    t = str(vars.get(NODE + '.total_turns') or '')\n    if vars.get('guard_seen') != t:\n"
+                "        vars['guard_seen'] = t\n        if str(vars.get('turn_proposal') or '') == 'outside':\n            vars['guard_outside'] = str(int(vars.get('guard_outside') or 0) + 1)\n"
+                "    k = int(vars.get('guard_outside') or 0)\n    vars['guard_state'] = 'GUARD (code): not-allowed proposals so far = ' + str(k) + '. ' + ("
+                "'Ask once more for an allowed one.' if k <= MAXR else 'Do not ask again.')\n    vars['guard_exhausted'] = 'yes' if k > MAXR else 'no'\nexcept Exception:\n    pass\n")
+        code = "NODE = " + repr(name) + "\nMAXR = " + str(int(g["max_reasks"])) + "\n" + code
+        self.nodes[name + "_guard"] = self.code_node(name + "_guard", code, [
+            {"target_node": self.target(g["on_exhausted"]), "description": "Too many not-allowed proposals", "condition": cond({"eq": ["guard_exhausted", "yes"]})},
+            always(name)])
+        return dict(n, task=n["task"] + "\n\n{{guard_state}}", extract=list(n.get("extract", [])) + ex,
+                    routes=list(n.get("routes", [])) + [{"to": name + "_guard", "when": "always", "description": "always"}])
+
     def offer_node(self, name, n):
         os_ = n["offer_state"]
         it = self.cfg["items"]
@@ -1464,12 +1528,13 @@ class Gen:
         it = self.cfg["items"]
         hn = {"type": "converse", "turns": 12, "overflow": n.get("overflow"),
               "task": ("The customer has just mentioned a hardship (" + os_["hardship_triggers"] + "). Apply ONLY the hardship rule of the brief below: "
-                       "one short sentence of sympathy, then the offer the brief's hardship rule describes (connecting the customer with the team it names), once. "
+                       "one short sentence of sympathy, then " + ("this offer, once: " + os_["hardship_offer"] + ". " if os_["hardship_offer"].strip() else "NO offer of any kind (the brief defines none). ") +
                        "Make NO payment offer, propose no amount and no date, and never mention a payment plan, a discount, a waiver, an arrangement or any new terms. If the customer accepts the support offer, use the transfer tool. If the customer declines, "
                        "follow the brief's rule for a declined hardship at once. Your FIRST message in this step already made the offer: never make it again, in any wording. Only if the customer volunteers an amount or a date themselves may you go back "
                        "to the conversation to record it.\n\nThe brief's rules (for reference; the offer lists are removed here):\n" +
                        n["task"].replace("{{" + it["facts_var"] + "}}", "{{item_facts_plain}}")),
-              "enter": {"llm": "Say one short sentence of sympathy. Then offer, once, only what the brief's hardship rule offers (for example connecting the customer with the team the brief names). Never mention a payment plan, a discount, a waiver, an arrangement or any new terms."},
+              "enter": {"llm": ("Say one short sentence of sympathy. Then make exactly this offer, once: " + os_["hardship_offer"] + ". Never mention a payment plan, a discount, a waiver, an arrangement or any new terms.")
+                        if os_["hardship_offer"].strip() else "Say one short sentence of sympathy. Make NO offer of any kind (the brief defines none) and no payment proposal."},
               "tools": list(n.get("tools", [])), "tool_overrides": n.get("tool_overrides", {}),
               "routes": [r for r in n.get("routes", []) if r.get("when") != "always"] +
                         [{"to": name, "tool_call": True, "description": "The customer volunteered their own amount or date, or other items still need to be discussed after the hardship was handled."}]}
@@ -1509,7 +1574,9 @@ class Gen:
                 c["flow"]["nodes"][name] = dict(n, task=n["task"] + "\n\n{{today_facts}}")
         for name, n in c["flow"]["nodes"].items():
             typ = n["type"]
-            if typ == "converse" and n.get("offer_state"):
+            if typ == "converse" and n.get("retry_guard"):
+                self.nodes[name] = self.converse(name, self.with_retry_guard(name, n))
+            elif typ == "converse" and n.get("offer_state"):
                 self.nodes[name] = self.converse(name, self.with_offer_state(name, n))
                 self.offer_node(name, n)
             elif typ == "converse":
@@ -1567,7 +1634,7 @@ class Gen:
                                      "name": "call_closed", "handler": "__function__:end_call",
                                      "parameters": {"type": "object", "properties": {"message_mode": {"type": "string", "default": "none"}}}}}}
         wf = {"initial_node": c["flow"]["start"], "system_prompt": c["system_prompt"], "nodes": self.nodes, "global_nodes": {},
-              "test_variables": c.get("test_variables", {})}
+              "test_variables": c.get("test_variables", {}), "tools": [self.safety_close(closer, args)]}
         self.check_placeholders(wf)
         return wf
 

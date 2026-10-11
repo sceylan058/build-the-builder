@@ -137,3 +137,8 @@ Each entry: what changed, why, and the evidence (a command and its result).
 - Fix (gen.py, generic): every step holding record or note tools gets "THIS STEP ONLY RECORDS. Never ask for a date or an amount, never make or repeat an offer… for every item without a confirmed promise, only call the note tool."
 - PUB-05 (gate run 4): the hardship step offered the support team a second time after the decline. Fix: its task now says the first message already made the offer, never repeat it, and a decline goes straight to the brief's declined-hardship rule.
 - X03: the third-party step (model-written prompt, unchanged by Phase C apart from the appended date facts) asked a second time; 2 of 3 failed. Open, classed (c).
+
+## Phase C2
+- (1) close_call safety net: a workflow-level close tool with `alwaysRunsAt: ["end_of_call"]` (the kit's base-agent pattern). Its pre-hook reuses the normal close's outcome if computed, else computes outcome/reason from the ledger with the same rules (hint "done"). A duplicate close is therefore identical. The outcome field bakes a valid default (no model fill). Offline: hang-up with nothing recorded → no_promise/refused; after a promise → promise; after notes → the note rule; after a normal close → the same values.
+- (3) X03: a `retry_guard` on a step. Code counts not-allowed proposals per turn (extracted `turn_proposal` inside/outside/none) and routes to `on_exhausted` after `max_reasks`. VC-08: `offer_state.hardship_offer` is required and quoted from the brief; when "", the hardship step makes no offer at all.
+- Tests: guard counting and route; empty hardship offer → "Make NO offer". All unit tests OK; leak scan clean.
