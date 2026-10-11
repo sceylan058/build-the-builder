@@ -1170,6 +1170,12 @@ class Gen:
                 for k in ("floor_field", "full_field", "hardship_triggers", "hardship_offer"):
                     need(n["offer_state"], k, f"flow.nodes.{name}.offer_state")
                 hs = n["offer_state"].get("hardship_script")
+                if hs is None:
+                    raise SystemExit(f"config error: missing 'hardship_script' in flow.nodes.{name}.offer_state. Add "
+                                     '{"say": "<the brief\'s sympathy sentence plus its support offer, in the brief\'s words; sympathy only if the brief offers nothing>", '
+                                     '"accept_queue": "<the transfer queue value the brief names for an accepted offer, or \"\" if none>", '
+                                     '"decline_to": "<the brief\'s hardship ending as end:<hint>, or the step that continues with the next item>", '
+                                     '"volunteer_to": "<the step that records a date or amount the customer names themselves>"} (see SCHEMA.md)')
                 if hs is not None:
                     for k in ("say", "decline_to", "volunteer_to"):
                         need(hs, k, f"flow.nodes.{name}.offer_state.hardship_script")

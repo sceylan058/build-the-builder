@@ -519,7 +519,13 @@
      "floor_field": "floor",
      "full_field": "due",
      "hardship_triggers": "illness, a death in the family or job loss",
-     "hardship_offer": "offer to connect them with the customer support team"
+     "hardship_offer": "offer to connect them with the customer support team",
+     "hardship_script": {
+      "say": "I am very sorry to hear that. Would you like me to connect you with our customer support team?",
+      "accept_queue": "support",
+      "decline_to": "end:hardship",
+      "volunteer_to": "negotiate"
+     }
     }
    },
    "record": {
