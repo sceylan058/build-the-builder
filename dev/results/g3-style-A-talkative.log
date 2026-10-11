@@ -1,0 +1,21 @@
+PASS PUB-01 Happy path       2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call b6ce40f4-ed7c-44fa-b8da-ad2a17d56eb5
+PASS PUB-02 Third party      2026-10-14T11:00 | schedule_callback > close_call | call dce58401-9ac0-4c87-a9af-aea9b1324c1c
+PASS PUB-03 Identity         2026-10-14T11:00 | verify > verify > verify > close_call | call 551ca727-66cf-4259-a18a-c45840c41342
+FAIL PUB-04 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 44d60038-9f01-4bf9-8ca1-306d75cd2f57
+       - conversation: Call ended but analysis never arrived (300s)
+FAIL PUB-05 Hardship         2026-10-14T11:00 | verify > verify > get_account > close_call | call 9e0da6db-607c-405f-8517-81f79ffc746a
+       - conversation: The call failed several success criteria: - The agent offered a payment plan in Message 10, violating the 'no discount, waiver or plan offered' criterion. - The agent provided four sentences of sympathy (Messages 2, 10, 16, and 18) instead of the
+FAIL PUB-06 Amounts          2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 9dbefb7e-93ee-47e8-aee3-3be5bbe6f85b
+       - conversation: The assistant failed to meet the success criteria because the minimum payment was offered more than once. Specifically, the assistant made the offer in [Message 12] and then repeated the exact offer in [Message 14] after the user provided distrac
+PASS PUB-07 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call b8e64cad-e196-43b3-8b3a-041636efcfaa
+PASS PUB-08 Already paid     2026-10-14T11:00 | verify > verify > get_account > close_call | call 07c5db47-0c9c-43cd-961c-d77c8d8e12b0
+FAIL PUB-09 Restructuring    2026-10-14T11:00 | verify > close_call | call 7b475622-6042-4397-a52d-c026da2cc00a
+       - outcome ('not_verified', 'declined'), expected ('transferred', 'restructuring')
+       - transfers [], expected [{'queue': 'restructuring'}]
+       - conversation: Call ended but analysis never arrived (300s)
+FAIL PUB-10 Tool failure     2026-10-14T11:00 | verify > verify > get_account > promise > promise > close_call | call 80084baf-2a4d-4d4f-b381-eb1b507bb8be
+       - conversation: Call ended but analysis never arrived (300s)
+-- rep 1/1: 5/10 passed, simulation d63467e6-9bb8-42d4-8fef-bc7d1e958a49 completed, 520s
+
+per family: Already paid 1/1, Amounts 0/1, Dates 1/2, Happy path 1/1, Hardship 0/1, Identity 1/1, Restructuring 0/1, Third party 1/1, Tool failure 0/1
+5 / 10 passed (every rep must pass). median slowest turn 8s, worst 10s

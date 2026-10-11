@@ -1,0 +1,19 @@
+FAIL PUB-01 Happy path       2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call bf68a6a7-5116-489c-95f9-7563f0466cfa
+       - promises [('p1', 400.0, '2026-10-14')], expected [('p1', 420.0, '2026-10-14')]
+PASS PUB-02 Third party      2026-10-14T11:00 | schedule_callback > close_call | call df324cde-09b6-4c43-8263-07051a105cb0
+PASS PUB-03 Identity         2026-10-14T11:00 | verify > verify > verify > close_call | call 758310c8-3070-4876-8a49-add8babc1756
+FAIL PUB-04 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 8b0a59e9-1dbd-4be2-a437-1fbe8aeb755f
+       - promises [('p1', 1250.0, '2026-10-22')], expected [('p1', 1250.0, '2026-10-23')]
+       - conversation: The conversation failed to meet the specific requirement for the promise date. While the agent correctly identified itself as a digital assistant (Message 10) and did not treat the customer's proposed date as a refusal (Message 8), the success cr
+FAIL PUB-05 Hardship         2026-10-14T11:00 | verify > verify > get_account > close_call | call 3899cef5-7594-4fd7-99e8-25b008a4c350
+       - conversation: The agent failed one of the success criteria. While the agent correctly provided a single sentence of sympathy ('I am very sorry to hear about your job loss' in [Message 12]), did not attempt persuasion after the hardship was stated, and offered 
+FAIL PUB-06 Amounts          2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call 3a95e4d2-bd06-4e64-ba96-949377c43af8
+       - conversation: The conversation failed on two success criteria. First, the agent asked the customer how much she could pay multiple times (Messages 10, 30, 32, 34, 36), which was explicitly forbidden. Second, the minimum payment was offered four times (Messages
+PASS PUB-07 Dates            2026-10-14T11:00 | verify > verify > get_account > promise > close_call | call e098ef8a-f742-4b2c-8c79-ce061b4a487a
+PASS PUB-08 Already paid     2026-10-14T11:00 | verify > verify > get_account > close_call | call 51cc9cf6-4227-4a34-a8ca-6a61b1f4feb7
+PASS PUB-09 Restructuring    2026-10-14T11:00 | verify > verify > get_account > transfer_to_agent > close_call | call 1541949e-ea00-4547-afa3-a21252d16753
+PASS PUB-10 Tool failure     2026-10-14T11:00 | verify > verify > get_account > promise > promise > close_call | call 068bcad1-517b-4665-b112-fc103827d412
+-- rep 1/1: 6/10 passed, simulation 4ffedd78-5d10-427b-96b9-3b74a215ef1b completed, 251s
+
+per family: Already paid 1/1, Amounts 0/1, Dates 1/2, Happy path 0/1, Hardship 0/1, Identity 1/1, Restructuring 1/1, Third party 1/1, Tool failure 1/1
+6 / 10 passed (every rep must pass). median slowest turn 21s, worst 43s

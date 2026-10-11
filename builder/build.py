@@ -186,6 +186,14 @@ def make_guard(workdir, T):
 
 # --------------------------------------------------------------------------------------------------- LLM session
 
+CRED_RE = re.compile(r"credit balance is too low|invalid api key|invalid x-api-key|authentication_error|permission_error|billing|insufficient credit|api key.*(revoked|disabled)", re.I)
+
+
+def credential_error(text):
+    """True when a model reply is a credential/billing failure (never a config problem)."""
+    return bool(CRED_RE.search(str(text or "")))
+
+
 class Writer:
     """One Claude session that writes and repairs config.json inside the work folder."""
 
@@ -227,7 +235,7 @@ class Writer:
                             what.append("says: " + b.text.strip().splitlines()[0][:70])
                     self.T.line(f"model call {calls} [{stage}] model={getattr(m, 'model', MODEL)}: {'; '.join(what) or 'thinking'}")
                     for b in m.content:
-                        if isinstance(b, TextBlock) and re.search(r"credit balance is too low|invalid api key|authentication_error|invalid x-api-key|permission_error", b.text, re.I):
+                        if isinstance(b, TextBlock) and credential_error(b.text):
                             self.fatal = b.text.strip()[:200]
                 elif isinstance(m, ResultMessage):
                     u = m.usage or {}
@@ -359,8 +367,8 @@ async def run(a):
             await writer.start()
             await writer.ask("Write config.json now, following skill/SKILL.md. Read brief_bundle.md and openapi.json first. "
                              "When the self-checks in SKILL.md pass, reply 'config ready'.", "write config", SAVE_BY - 5 * 60 - T.elapsed())
-        if writer.fatal and CREDENTIALS == "api_key" and os.environ.get("BUILDER_FALLBACK_LOGIN") == "1":
-            T.line(f"api_key rejected ({writer.fatal[:80]}); BUILDER_FALLBACK_LOGIN=1 -> retrying with the Claude login")
+        if writer.fatal and CREDENTIALS.startswith("api_key"):
+            T.line(f"credentials: api_key -> claude_login ({writer.fatal[:80]})")
             await writer.stop()
             os.environ.pop("ANTHROPIC_API_KEY", None)
             globals()["CREDENTIALS"] = "claude_login (fallback)"
@@ -383,7 +391,7 @@ async def run(a):
                 T.line("--reuse-config: no repair rounds")
                 break
             if writer.fatal:
-                T.line(f"MODEL CREDENTIALS FAILED ({CREDENTIALS}): {writer.fatal} -- not retrying; fix the key or set BUILDER_FALLBACK_LOGIN=1")
+                T.line(f"MODEL CREDENTIALS FAILED ({CREDENTIALS}): {writer.fatal} -- stopping (no repair rounds on a credential failure)")
                 break
             if rnd >= MAX_REPAIR_ROUNDS or T.elapsed() > NO_NEW_ROUND_AFTER:
                 T.line(f"no further repair round (round {rnd}, elapsed {T.elapsed():.0f}s)")

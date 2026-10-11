@@ -100,3 +100,15 @@ class Routes(unittest.TestCase):
         ex = [x for x in WF["nodes"]["negotiate"]["extraction_schema"] if x["name"] == "turn_intent"][0]
         self.assertIn("system note", ex["description"]); self.assertIn("is other", ex["description"])
         self.assertIn("not a statement of fact", WF["nodes"]["negotiate"]["task_message"])
+
+
+class ReplayX13(unittest.TestCase):
+    def test_late_band_today_no_then_two_offers(self):
+        """X13's turn sequence: 'cannot pay today' -> offer 1 (full); 'no' -> offer 2 (floor on the deadline); accept."""
+        v = start()
+        s = turn(v, 1, turn_intent="refuse", turn_item="2")
+        self.assertIn("triggers offer 1", s); self.assertIn("must be offer 1", s)
+        s = turn(v, 2, turn_intent="refuse", turn_item="2")
+        self.assertIn("refusals counted by code = 1", s); self.assertIn("must be offer 2: 650.00", s)
+        s = turn(v, 3, turn_intent="accept", turn_item="2")
+        self.assertIn("must be offer 2", s)

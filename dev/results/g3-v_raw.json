@@ -1,0 +1,372 @@
+{
+ "final": [
+  {
+   "id": "VR-01",
+   "family": "Effective date",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-02",
+   "family": "Effective date",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-03",
+   "family": "Memo override",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-04",
+   "family": "Memo override",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-05",
+   "family": "Cancelled holiday",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-06",
+   "family": "Wording",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-07",
+   "family": "Code list",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-08",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-09",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-10",
+   "family": "Hardship",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: The assistant failed to meet the success criteria because it did not offer the support team during the conversation. Although the assistant provided a sentence of sympathy in [Message 8] ('I am very sorry to hear about your job loss.') and did not engage in persuasion after the user's refusal, the requirement to offer the support team once was not fulfilled. The call ended correctly through the as"
+  },
+  {
+   "id": "VR-11",
+   "family": "Restructuring",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-12",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-13",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-14",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "VR-15",
+   "family": "Tool failure",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "VR-01",
+    "family": "Effective date",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "19629bb2-2a37-4da7-85b8-9da99edfb28f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-02",
+    "family": "Effective date",
+    "now": "2026-10-20T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "9a07bb39-0499-45eb-8e97-f5629d4e019a",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-03",
+    "family": "Memo override",
+    "now": "2026-10-20T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "9bb5157f-3f51-4fbb-a30f-7eb168c42c8e",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-04",
+    "family": "Memo override",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "4f71c036-3310-4cfe-a44f-4098ec7361b1",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-05",
+    "family": "Cancelled holiday",
+    "now": "2026-11-09T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "f4ec0055-bd1c-40df-adc8-a3202b46d19c",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-06",
+    "family": "Wording",
+    "now": "2026-10-15T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "ef35842a-ae33-4feb-a22d-3b9066c07af7",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-07",
+    "family": "Code list",
+    "now": "2026-10-20T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "adfecf0b-662b-40cf-85db-e3bc41e33bd5",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-08",
+    "family": "Third party",
+    "now": "2026-10-21T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "e4904fc0-19aa-45a0-9d95-e8199276da63",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-09",
+    "family": "Identity",
+    "now": "2026-10-20T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "e6bcbda1-e989-4160-bb76-81aa83b7f964",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-10",
+    "family": "Hardship",
+    "now": "2026-10-21T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The assistant failed to meet the success criteria because it did not offer the support team during the conversation. Although the assistant provided a sentence of sympathy in [Message 8] ('I am very sorry to hear about your job loss.') and did not engage in persuasion after the user's refusal, the requirement to offer the support team once was not fulfilled. The call ended correctly through the as"
+    ],
+    "call_id": "a36f29a2-0dc2-4535-81bb-0f3ba03cf711",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-11",
+    "family": "Restructuring",
+    "now": "2026-10-21T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "88c84dbb-c9f1-4394-876e-237fd3ff848b",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-12",
+    "family": "Multi-product",
+    "now": "2026-10-20T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "36062bd0-c962-48cb-af8c-31ac32ba9293",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-13",
+    "family": "Multi-product",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "e22fa113-b934-4061-b014-624f96fb1892",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-14",
+    "family": "Multi-product",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "f0149ff3-404b-425c-8469-6e622c3f3cae",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "VR-15",
+    "family": "Tool failure",
+    "now": "2026-10-23T10:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "a4dcdc26-781f-415a-b3ba-75b1e3be7cd3",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

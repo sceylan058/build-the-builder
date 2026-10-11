@@ -1,0 +1,7 @@
+41 agent turns: median 2.4s, p90 12.0s, worst 44.7s
+per-turn code step (<step>_turn): n=18, median 0.21s, worst 1.33s
+  reply time in record: n=5 median 10.7s worst 44.7s
+  reply time in hang_up: n=2 median 7.8s worst 12.5s
+  reply time in third_party: n=1 median 4.6s worst 4.6s
+  reply time in negotiate: n=18 median 2.2s worst 17.4s
+  reply time in identity: n=15 median 2.0s worst 11.0s

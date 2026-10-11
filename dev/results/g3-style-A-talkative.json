@@ -1,0 +1,252 @@
+{
+ "final": [
+  {
+   "id": "PUB-01",
+   "family": "Happy path",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-02",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-03",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-04",
+   "family": "Dates",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: Call ended but analysis never arrived (300s)"
+  },
+  {
+   "id": "PUB-05",
+   "family": "Hardship",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: The call failed several success criteria: - The agent offered a payment plan in Message 10, violating the 'no discount, waiver or plan offered' criterion. - The agent provided four sentences of sympathy (Messages 2, 10, 16, and 18) instead of the required 'one sentence'. - The agent attempted to persuade the user to pay in Messages 14 and 16 after the user had already stated they could not pay in "
+  },
+  {
+   "id": "PUB-06",
+   "family": "Amounts",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: The assistant failed to meet the success criteria because the minimum payment was offered more than once. Specifically, the assistant made the offer in [Message 12] and then repeated the exact offer in [Message 14] after the user provided distractor information in [Message 13]. While the rest of the criteria were met\u2014the agent never asked an open-ended question about the payment amount, secured th"
+  },
+  {
+   "id": "PUB-07",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-08",
+   "family": "Already paid",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-09",
+   "family": "Restructuring",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "outcome ('not_verified', 'declined'), expected ('transferred', 'restructuring')"
+  },
+  {
+   "id": "PUB-10",
+   "family": "Tool failure",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: Call ended but analysis never arrived (300s)"
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "PUB-01",
+    "family": "Happy path",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "b6ce40f4-ed7c-44fa-b8da-ad2a17d56eb5",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-02",
+    "family": "Third party",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "dce58401-9ac0-4c87-a9af-aea9b1324c1c",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-03",
+    "family": "Identity",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "551ca727-66cf-4259-a18a-c45840c41342",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-04",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: Call ended but analysis never arrived (300s)"
+    ],
+    "call_id": "44d60038-9f01-4bf9-8ca1-306d75cd2f57",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-05",
+    "family": "Hardship",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The call failed several success criteria: - The agent offered a payment plan in Message 10, violating the 'no discount, waiver or plan offered' criterion. - The agent provided four sentences of sympathy (Messages 2, 10, 16, and 18) instead of the required 'one sentence'. - The agent attempted to persuade the user to pay in Messages 14 and 16 after the user had already stated they could not pay in "
+    ],
+    "call_id": "9e0da6db-607c-405f-8517-81f79ffc746a",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-06",
+    "family": "Amounts",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The assistant failed to meet the success criteria because the minimum payment was offered more than once. Specifically, the assistant made the offer in [Message 12] and then repeated the exact offer in [Message 14] after the user provided distractor information in [Message 13]. While the rest of the criteria were met\u2014the agent never asked an open-ended question about the payment amount, secured th"
+    ],
+    "call_id": "9dbefb7e-93ee-47e8-aee3-3be5bbe6f85b",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-07",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "b8e64cad-e196-43b3-8b3a-041636efcfaa",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-08",
+    "family": "Already paid",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "07c5db47-0c9c-43cd-961c-d77c8d8e12b0",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-09",
+    "family": "Restructuring",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "outcome ('not_verified', 'declined'), expected ('transferred', 'restructuring')",
+     "transfers [], expected [{'queue': 'restructuring'}]",
+     "conversation: Call ended but analysis never arrived (300s)"
+    ],
+    "call_id": "7b475622-6042-4397-a52d-c026da2cc00a",
+    "tools": [
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-10",
+    "family": "Tool failure",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: Call ended but analysis never arrived (300s)"
+    ],
+    "call_id": "80084baf-2a4d-4d4f-b381-eb1b507bb8be",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

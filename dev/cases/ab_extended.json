@@ -364,8 +364,8 @@
    "transfers": []
   },
   "checks": [
-   "two persuasion attempts",
-   "the second offer is the instalment 700.00 on Thursday 29 October"
+   "after the customer declines paying today, the first offer is the full amount on Friday 23 October",
+   "after that is refused, the second offer is the instalment 700.00 on Thursday 29 October"
   ],
   "why": "Late band: deadline 7th business day after Mon 19 Oct = Thu 29 Oct."
  },

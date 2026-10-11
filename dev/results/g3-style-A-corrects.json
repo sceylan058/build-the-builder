@@ -1,0 +1,252 @@
+{
+ "final": [
+  {
+   "id": "PUB-01",
+   "family": "Happy path",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "promises [('p1', 400.0, '2026-10-14')], expected [('p1', 420.0, '2026-10-14')]"
+  },
+  {
+   "id": "PUB-02",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-03",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-04",
+   "family": "Dates",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "promises [('p1', 1250.0, '2026-10-22')], expected [('p1', 1250.0, '2026-10-23')]"
+  },
+  {
+   "id": "PUB-05",
+   "family": "Hardship",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: The agent failed one of the success criteria. While the agent correctly provided a single sentence of sympathy ('I am very sorry to hear about your job loss' in [Message 12]), did not attempt persuasion after the hardship was stated, and offered the support team exactly once ([Message 14]), it violated the criterion prohibiting the offer of a plan. In [Message 12], the agent explicitly suggested s"
+  },
+  {
+   "id": "PUB-06",
+   "family": "Amounts",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: The conversation failed on two success criteria. First, the agent asked the customer how much she could pay multiple times (Messages 10, 30, 32, 34, 36), which was explicitly forbidden. Second, the minimum payment was offered four times (Messages 8, 14, 26, and 28) instead of only once. While the final promise amount and date were correct, the process violated the negative constraints."
+  },
+  {
+   "id": "PUB-07",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-08",
+   "family": "Already paid",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-09",
+   "family": "Restructuring",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "PUB-10",
+   "family": "Tool failure",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "PUB-01",
+    "family": "Happy path",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "promises [('p1', 400.0, '2026-10-14')], expected [('p1', 420.0, '2026-10-14')]"
+    ],
+    "call_id": "bf68a6a7-5116-489c-95f9-7563f0466cfa",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-02",
+    "family": "Third party",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "df324cde-09b6-4c43-8263-07051a105cb0",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-03",
+    "family": "Identity",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "758310c8-3070-4876-8a49-add8babc1756",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-04",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "promises [('p1', 1250.0, '2026-10-22')], expected [('p1', 1250.0, '2026-10-23')]",
+     "conversation: The conversation failed to meet the specific requirement for the promise date. While the agent correctly identified itself as a digital assistant (Message 10) and did not treat the customer's proposed date as a refusal (Message 8), the success criteria required the final promise date to be October 23. The agent recorded the promise for October 22 instead (Message 14 and the 'create_promise' system"
+    ],
+    "call_id": "8b0a59e9-1dbd-4be2-a437-1fbe8aeb755f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-05",
+    "family": "Hardship",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The agent failed one of the success criteria. While the agent correctly provided a single sentence of sympathy ('I am very sorry to hear about your job loss' in [Message 12]), did not attempt persuasion after the hardship was stated, and offered the support team exactly once ([Message 14]), it violated the criterion prohibiting the offer of a plan. In [Message 12], the agent explicitly suggested s"
+    ],
+    "call_id": "3899cef5-7594-4fd7-99e8-25b008a4c350",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-06",
+    "family": "Amounts",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The conversation failed on two success criteria. First, the agent asked the customer how much she could pay multiple times (Messages 10, 30, 32, 34, 36), which was explicitly forbidden. Second, the minimum payment was offered four times (Messages 8, 14, 26, and 28) instead of only once. While the final promise amount and date were correct, the process violated the negative constraints."
+    ],
+    "call_id": "3a95e4d2-bd06-4e64-ba96-949377c43af8",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-07",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "e098ef8a-f742-4b2c-8c79-ce061b4a487a",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-08",
+    "family": "Already paid",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "51cc9cf6-4227-4a34-a8ca-6a61b1f4feb7",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-09",
+    "family": "Restructuring",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "1541949e-ea00-4547-afa3-a21252d16753",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-10",
+    "family": "Tool failure",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "068bcad1-517b-4665-b112-fc103827d412",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

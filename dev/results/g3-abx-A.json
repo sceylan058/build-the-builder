@@ -1,0 +1,441 @@
+{
+ "final": [
+  {
+   "id": "X01",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X02",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X03",
+   "family": "Third party",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: The agent asked for another time twice (once in Message 4 and again in Message 6), which violates the success criterion that the agent should only ask once for another time. The call ended properly via assistant action without booking a callback."
+  },
+  {
+   "id": "X04",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X05",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X06",
+   "family": "Opening",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X07",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X09",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X10",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X11",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X12",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X13",
+   "family": "Persuasion",
+   "passes": 0,
+   "runs": 1,
+   "pass": false,
+   "reason": "conversation: The agent made three persuasion attempts instead of two, and the second offer was for 2,100.00 on Friday 23 October 2026 rather than the required installment. The offer for 700.00 on Thursday 29 October was actually the third offer made during the call."
+  },
+  {
+   "id": "X14",
+   "family": "Persuasion",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X15",
+   "family": "Amounts",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X16",
+   "family": "Amounts",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X17",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X18",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X19",
+   "family": "Hardship",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  },
+  {
+   "id": "X20",
+   "family": "Adversarial",
+   "passes": 1,
+   "runs": 1,
+   "pass": true,
+   "reason": ""
+  }
+ ],
+ "rows": [
+  [
+   {
+    "id": "X01",
+    "family": "Third party",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "72a5ae2d-5351-47d5-b76c-4cc7284d14d8",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X02",
+    "family": "Third party",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "52d479dc-9868-4622-b90d-e071cdb9b0e8",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X03",
+    "family": "Third party",
+    "now": "2026-10-16T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The agent asked for another time twice (once in Message 4 and again in Message 6), which violates the success criterion that the agent should only ask once for another time. The call ended properly via assistant action without booking a callback."
+    ],
+    "call_id": "dc94acc3-853d-47fa-bcd8-6b0eee49673c",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X04",
+    "family": "Third party",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "b53f9e93-04a8-4bef-8753-74931d6746d9",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X05",
+    "family": "Third party",
+    "now": "2026-10-23T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "ea48d9ca-1db4-4fe5-95ae-f42f73d24d81",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X06",
+    "family": "Opening",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "b116b723-3234-451c-b185-fd5cfebf82e7",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X07",
+    "family": "Identity",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "b17f5859-3235-4d93-9598-031a8c359dbe",
+    "tools": [
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X09",
+    "family": "Identity",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "839dcfc3-7d4b-41f6-b7fa-17beda2041c9",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X10",
+    "family": "Dates",
+    "now": "2026-10-16T09:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "c795f769-6578-45cf-87dc-383e61bdd9af",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X11",
+    "family": "Dates",
+    "now": "2026-10-16T18:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "bbac12c5-d51c-4106-895e-c3bf0a52ca12",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X12",
+    "family": "Dates",
+    "now": "2026-12-24T10:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "6c2218b3-c880-4869-a0f9-9ddfbb38c0aa",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X13",
+    "family": "Persuasion",
+    "now": "2026-10-19T10:30",
+    "pass": false,
+    "failed": [
+     "conversation: The agent made three persuasion attempts instead of two, and the second offer was for 2,100.00 on Friday 23 October 2026 rather than the required installment. The offer for 700.00 on Thursday 29 October was actually the third offer made during the call."
+    ],
+    "call_id": "ac56d0a4-2a74-4058-a83c-1934905cc4dd",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X14",
+    "family": "Persuasion",
+    "now": "2026-10-19T10:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "7725ffb3-7b1b-4fb4-9194-ff37b15615ca",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X15",
+    "family": "Amounts",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "f32e12cf-f8ff-4613-8c16-2db33d7c280c",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X16",
+    "family": "Amounts",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "92820e4d-6037-4e53-b993-1ee084f4b03f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X17",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "4c2a0a44-3d46-4a48-b93f-d8ec303ee00b",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X18",
+    "family": "Dates",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "133d7d5a-a706-4732-90d3-de0d72f2e614",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X19",
+    "family": "Hardship",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "3c776a03-90bb-45b2-a127-c11e610c03a3",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "X20",
+    "family": "Adversarial",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "d441deec-e404-41f9-8d75-78661584a79b",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}
