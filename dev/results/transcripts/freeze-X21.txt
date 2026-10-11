@@ -1,0 +1,45 @@
+case X21  call b2e221df-3dc0-4ee8-aecc-d179b8b1aa11  now 2026-10-14T11:00  ended customer-ended-call
+FAILED: notes [('p1', 'paid')], expected [('p1', 'paid'), ('p2', 'dispute')] || the call was not closed with close_call || conversation: The assistant failed to meet the success criteria because the note for the personal loan dispute was never successfully recorded. While the assistant correctly identified the user's situation (Message 7)—marking the credit card as paid, the personal loan as a dispute, and the car loan as a promise—the system events indicate that the 'add_note' function for the personal loan (p2) was initiated but 
+
+   -> node opening  (t=0.0s)
+[opening] ASSISTANT: Hello, I am a digital assistant calling from Freya Bank. Please note that we are recording this call. Am I speaking with Ms Almeida?
+[opening] USER: Yes, this is Sofia Almeida.
+   extracted who
+   -> node setup  (t=7.7s)
+   -> node identity  (t=8.0s)
+[identity] ASSISTANT: I need to ask you two security questions; first, what is your date of birth?
+[identity] USER: Third of June nineteen eighty seven.
+   CALL verify_identity {"field": "date_of_birth", "answer": "1987-06-03", "customer_id": "c_92459419-cc5"}
+   RESULT {"ok": true, "verified": true, "wrong_answers_left": 3, "all_verified": false, "what_to_do_next": "Correct. Now ask the next security question: the last four digits of the phone number on file. Do not ask the previous question again."}
+[identity] ASSISTANT: Thank you. What are the last four digits of the phone number we have on file for you?
+[identity] USER: Two two eight eight.
+   CALL verify_identity {"field": "phone_last4", "answer": "2288", "customer_id": "c_92459419-cc5"}
+   RESULT {"ok": true, "verified": true, "wrong_answers_left": 3, "all_verified": true, "what_to_do_next": "Identity verified."}
+   -> node fetch_account  (t=26.8s)
+   CALL api_call {"customer_id": "c_92459419-cc5"}
+   RESULT {"ok": true, "products": [{"product_id": "p1", "type": "credit_card", "card_last4": "2288", "past_due": 220, "days_late": 9, "minimum_payment": 66}, {"product_id": "p2", "type": "personal_loan", "past_due": 640, "days_late": 9, "instalment_amount": 213}, {"product_id": "p3", "type": "car_loan", "past_due": 75, "days_late": 3, "instalment_amount": 25}]}
+   -> node compute_facts  (t=26.8s)
+   -> node negotiate  (t=28.1s)
+[negotiate] ASSISTANT: Thank you, your identity is confirmed. I am calling from the collections team about late payments on 3 products. Your credit card ending 2288 has a past-due amount of 220.00 and is 9 days late. Your personal loan has a past-due amount of 640.00 and is 9 days late. Your car loan has a past-due amount of 75.00 and is 3 days late. Can you pay all of them today?
+[negotiate] USER: I already paid the credit card this morning and I never had that personal loan. I can pay the car loan in full today.
+   extracted turn_intent
+   extracted turn_hardship
+   extracted turn_item
+   -> node negotiate_turn  (t=31.8s)
+   -> node negotiate  (t=32.8s)
+[negotiate] ASSISTANT: Payments can take one business day to appear for your credit card. Regarding the personal loan, I'll mark that as a dispute. For your car loan, I can record a payment of 75.00 for today, Wednesday 14 October.
+ To confirm: for your car loan, the amount is 75.00 on Wednesday 14 October. Do you confirm?
+[negotiate] USER: Yes, I confirm.
+   extracted turn_intent
+   extracted turn_item
+   -> node negotiate_turn  (t=48.2s)
+   -> node negotiate  (t=48.8s)
+   -> node record  (t=50.2s)
+   CALL create_promise {"date": "2026-10-14", "amount": 75.0, "product_id": "p3", "customer_id": "c_92459419-cc5"}
+   CALL create_promise {"date": "2026-10-14", "amount": 75.0, "product_id": "p3", "customer_id": "c_92459419-cc5"}
+   RESULT {"ok": true, "promise_id": "pr1", "what_to_do_next": "The promise for car loan IS recorded: 75.00 on Wednesday 14 October 2026. When you tell the customer, use exactly this amount and date. Products that still have no recorded promise and no note: p1 (credit card ending 2288), p2 (personal loan). For each of them that the customer agreed to in the read-back, call create_promise. For each of them w
+   CALL add_note {"text": "Customer stated they paid this morning.", "reason": "paid", "product_id": "p1", "customer_id": "c_92459419-cc5"}
+   RESULT {"ok": true, "what_to_do_next": "The note for p1 is saved. Products that still have no recorded promise and no note: p2 (personal loan). For each of them that the customer agreed to in the read-back, call create_promise. For each of them without an agreed promise, call add_note with its reason."}
+   CALL add_note {"text": "Customer claims they never had this loan.", "reason": "dispute", "product_id": "p2", "customer_id": "c_92459419-cc5"}
+   CALL close_call {"outcome": "promise", "customer_id": "c_92459419-cc5"}
+   RESULT {"ok": true}

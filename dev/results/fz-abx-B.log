@@ -1,0 +1,19 @@
+FAIL X08 Identity         2026-10-14T11:00 | verify > verify > verify > get_account > promise > close_call | call 58d159ef-7b37-4109-ac26-6d10fda23a30
+       - promises [('p1', 300.0, '2026-10-14')], expected [('p1', 300.0, '2026-10-14'), ('p2', 900.0, '2026-10-14')]
+FAIL X21 Multi-product    2026-10-14T11:00 | verify > verify > get_account > promise > add_note > close_call > add_note | call b2e221df-3dc0-4ee8-aecc-d179b8b1aa11
+       - notes [('p1', 'paid')], expected [('p1', 'paid'), ('p2', 'dispute')]
+       - the call was not closed with close_call
+       - conversation: The assistant failed to meet the success criteria because the note for the personal loan dispute was never successfully recorded. While the assistant correctly identified the user's situation (Message 7)—marking the credit card as paid, the perso
+FAIL X22 Multi-product    2026-10-14T11:00 | verify > verify > get_account > close_call | call eec11b24-6c16-4b83-a48b-cb5cb91b33b9
+       - outcome ('no_promise', 'refused'), expected ('transferred', 'restructuring')
+       - transfers [], expected [{'queue': 'restructuring'}]
+       - conversation: The agent failed to transfer the call to a human agent for restructuring, which was required following the user's request for 'lower instalments' in Message 7. System events show that instead of initiating a transfer, the agent called the 'close_
+FAIL X23 Multi-product    2026-10-14T11:00 | verify > verify > get_account > close_call | call 619aaa25-a8c7-44c1-ac85-19ad2b6e7c14
+       - outcome ('no_promise', 'refused'), expected ('paid', None)
+       - notes [], expected [('p1', 'paid'), ('p2', 'paid')]
+FAIL X24 Multi-product    2026-10-14T11:00 | verify > verify > get_account > add_note > add_note > add_note > close_call | call 488f4647-6a92-471c-a508-7cb6e8fb2b7f
+       - conversation: The assistant failed the success criterion regarding persuasion attempts. While one note was recorded for each product (p1, p2, and p3) as required, the assistant attempted to persuade the user to pay the personal loan in [Message 16] after the u
+-- rep 1/1: 0/5 passed, simulation eace0caf-86ab-4033-8960-b5b9a2d39358 completed, 372s
+
+per family: Identity 0/1, Multi-product 0/4
+0 / 5 passed (every rep must pass). median slowest turn 61s, worst 62s
